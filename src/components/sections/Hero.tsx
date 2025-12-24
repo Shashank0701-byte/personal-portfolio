@@ -87,7 +87,7 @@ export const Hero = () => {
                 Hello
               </h2>
               <h3 className="text-3xl md:text-4xl font-bold text-white mb-8">
-                I'm <span className="text-neon-primary">Your Name</span>
+                I'm <span className="text-neon-primary">Shashank Chakraborty</span>
               </h3>
             </motion.div>
 

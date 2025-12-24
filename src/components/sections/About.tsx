@@ -2,46 +2,64 @@ import { motion } from 'framer-motion';
 import { ScrollReveal } from '../animations/ScrollReveal';
 import { Card } from '../ui/Card';
 import { GlowEffect } from '../ui/GlowEffect';
-import { Code, Rocket, Brain, Zap } from 'lucide-react';
+import { OrbitingKeywords } from '../ui/OrbitingKeywords';
+import { useState, useEffect } from 'react';
 
-const stats = [
-  { 
-    label: 'Projects Completed', 
-    value: '10+',
-    icon: Rocket,
-    color: 'neon-primary',
-    description: 'Production-ready applications'
+const impactStatements = [
+  {
+    text: "I think in products, not features",
+    color: "neon-primary",
+    delay: 0.8
   },
-  { 
-    label: 'Technologies Mastered', 
-    value: '15+',
-    icon: Brain,
-    color: 'neon-secondary',
-    description: 'Modern tech stack'
+  {
+    text: "Full-stack depth: frontend polish meets backend reliability",
+    color: "neon-secondary",
+    delay: 1.0
   },
-  { 
-    label: 'Years Learning', 
-    value: '3+',
-    icon: Zap,
-    color: 'neon-accent',
-    description: 'Continuous growth'
-  },
+  {
+    text: "Curious builder who ships and learns",
+    color: "neon-accent",
+    delay: 1.2
+  }
 ];
 
-const techStack = [
-  { name: 'React', category: 'Frontend', icon: '⚛️' },
-  { name: 'Node.js', category: 'Backend', icon: '🟢' },
-  { name: 'Express.js', category: 'Backend', icon: '🚀' },
-  { name: 'Python', category: 'Language', icon: '🐍' },
-  { name: 'Flask', category: 'Backend', icon: '🌶️' },
-  { name: 'MongoDB', category: 'Database', icon: '🍃' },
-  { name: 'PostgreSQL', category: 'Database', icon: '🐘' },
-  { name: 'AWS', category: 'Cloud', icon: '☁️' },
-  { name: 'RESTful APIs', category: 'Architecture', icon: '🔌' },
-  { name: 'Generative AI', category: 'AI/ML', icon: '🤖' },
-];
+const codeSnippet = `const InterviewPrepAI = () => {
+  const [question, setQuestion] = useState('');
+  const [feedback, setFeedback] = useState('');
+
+  const generateQuestion = async () => {
+    const response = await fetch('/api/generate-question', {
+      method: 'POST',
+      body: JSON.stringify({ topic: 'react' })
+    });
+    const data = await response.json();
+    setQuestion(data.question);
+  };
+
+  return (
+    <div className="interview-prep">
+      <button onClick={generateQuestion}>
+        Generate Question
+      </button>
+      <p>{question}</p>
+    </div>
+  );
+};`;
 
 export const About = () => {
+  const [displayedCode, setDisplayedCode] = useState('');
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    if (currentIndex < codeSnippet.length) {
+      const timer = setTimeout(() => {
+        setDisplayedCode(prev => prev + codeSnippet[currentIndex]);
+        setCurrentIndex(prev => prev + 1);
+      }, 30);
+      return () => clearTimeout(timer);
+    }
+  }, [currentIndex]);
+
   return (
     <section
       id="about"
@@ -77,175 +95,83 @@ export const About = () => {
 
         {/* Main Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 mb-20">
-          {/* Left Column - Visual/Stats */}
-          <div className="space-y-8">
-            {/* Stats Cards */}
-            <div className="grid grid-cols-1 gap-6">
-              {stats.map((stat, index) => {
-                const Icon = stat.icon;
-                return (
-                  <motion.div
-                    key={stat.label}
-                    initial={{ opacity: 0, x: -50 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                  >
-                    <Card className="group relative overflow-hidden">
-                      <div className="absolute inset-0 bg-gradient-to-r from-neon-primary/0 via-neon-primary/5 to-neon-primary/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                      <div className="relative flex items-center gap-6">
-                        <div 
-                          className={`p-4 rounded-xl border ${
-                            stat.color === 'neon-primary' 
-                              ? 'bg-neon-primary/10 border-neon-primary/20' 
-                              : stat.color === 'neon-secondary'
-                              ? 'bg-neon-secondary/10 border-neon-secondary/20'
-                              : 'bg-neon-accent/10 border-neon-accent/20'
-                          }`}
-                        >
-                          <Icon 
-                            className={`w-8 h-8 ${
-                              stat.color === 'neon-primary' 
-                                ? 'text-neon-primary' 
-                                : stat.color === 'neon-secondary'
-                                ? 'text-neon-secondary'
-                                : 'text-neon-accent'
-                            }`} 
-                          />
-                        </div>
-                        <div className="flex-1">
-                          <motion.div
-                            className={`text-4xl font-bold bg-clip-text text-transparent mb-1 ${
-                              stat.color === 'neon-primary' 
-                                ? 'bg-gradient-to-r from-neon-primary to-neon-secondary' 
-                                : stat.color === 'neon-secondary'
-                                ? 'bg-gradient-to-r from-neon-secondary to-neon-accent'
-                                : 'bg-gradient-to-r from-neon-accent to-neon-primary'
-                            }`}
-                            initial={{ opacity: 0, scale: 0.5 }}
-                            whileInView={{ opacity: 1, scale: 1 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.5, delay: index * 0.1 + 0.2 }}
-                          >
-                            {stat.value}
-                          </motion.div>
-                          <p className="text-white font-semibold mb-1">{stat.label}</p>
-                          <p className="text-sm text-gray-400">{stat.description}</p>
-                        </div>
-                      </div>
-                    </Card>
-                  </motion.div>
-                );
-              })}
-            </div>
-
-            {/* Visual Element */}
-            <ScrollReveal direction="left" delay={0.4}>
-              <div className="relative h-64 rounded-2xl overflow-hidden glass-strong border border-white/10">
-                <div className="absolute inset-0 bg-gradient-to-br from-neon-primary/10 via-transparent to-neon-secondary/10" />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-center space-y-4">
-                    <Code className="w-16 h-16 text-neon-primary mx-auto animate-pulse" />
-                    <p className="text-gray-300 font-mono text-sm">
-                      {'<'} Full Stack Developer {'/>'}
-                    </p>
-                  </div>
-                </div>
-                {/* Animated grid pattern */}
-                <div className="absolute inset-0 opacity-10">
-                  <div className="grid grid-cols-8 gap-4 h-full w-full">
-                    {Array.from({ length: 32 }).map((_, i) => (
-                      <motion.div
-                        key={i}
-                        className="border border-white/10"
-                        animate={{
-                          opacity: [0.1, 0.3, 0.1],
-                        }}
-                        transition={{
-                          duration: 2 + Math.random() * 2,
-                          repeat: Infinity,
-                          delay: Math.random() * 2,
-                        }}
-                      />
-                    ))}
-                  </div>
-                </div>
-              </div>
+          {/* Left Column - Orbiting Keywords */}
+          <div className="flex items-center justify-center">
+            <ScrollReveal direction="left" delay={0.2}>
+              <OrbitingKeywords />
             </ScrollReveal>
           </div>
 
-          {/* Right Column - Description */}
+          {/* Right Column - Impact Statements & Code */}
           <div className="space-y-8">
-            <ScrollReveal direction="right" delay={0.2}>
+            {/* Impact Statements */}
+            <ScrollReveal direction="right" delay={0.4}>
               <div className="space-y-6">
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6 }}
-                  className="text-lg md:text-xl text-gray-300 leading-relaxed space-y-4"
-                >
-                  <p>
-                    I'm a <span className="text-neon-primary font-semibold text-glow-sm">full-stack developer</span> and{' '}
-                    <span className="text-neon-secondary font-semibold text-glow-sm">engineering student</span> with hands-on experience 
-                    building scalable web applications, AI-driven tools, and secure backend systems. I enjoy turning ideas 
-                    into production-ready solutions—whether it's designing RESTful APIs, integrating Generative AI models, 
-                    or developing responsive, modern user interfaces.
-                  </p>
-                  
-                  <p>
-                    My projects span interview-preparation platforms, cyber-safety applications, and real-time stock dashboards, 
-                    where I've worked across the entire development lifecycle. I have practical expertise in{' '}
-                    <span className="text-neon-accent font-medium">React</span>,{' '}
-                    <span className="text-neon-accent font-medium">Node.js</span>,{' '}
-                    <span className="text-neon-accent font-medium">Express.js</span>,{' '}
-                    <span className="text-neon-accent font-medium">Python</span>,{' '}
-                    <span className="text-neon-accent font-medium">Flask</span>,{' '}
-                    <span className="text-neon-accent font-medium">SQL/NoSQL databases</span>, and cloud tools like{' '}
-                    <span className="text-neon-accent font-medium">AWS</span>, along with a strong foundation in data handling, 
-                    authentication flows, and system reliability.
-                  </p>
-                </motion.div>
+                {impactStatements.map((statement, index) => (
+                  <motion.div
+                    key={statement.text}
+                    initial={{ opacity: 0, x: 50 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{
+                      duration: 0.6,
+                      delay: statement.delay,
+                      ease: [0.4, 0, 0.2, 1]
+                    }}
+                    className="group cursor-pointer"
+                    whileHover={{ x: 10 }}
+                  >
+                    <div className="flex items-start gap-4">
+                      <div
+                        className={`w-2 h-2 rounded-full mt-3 flex-shrink-0 ${
+                          statement.color === 'neon-primary'
+                            ? 'bg-neon-primary'
+                            : statement.color === 'neon-secondary'
+                            ? 'bg-neon-secondary'
+                            : 'bg-neon-accent'
+                        } group-hover:scale-150 transition-transform`}
+                      />
+                      <p className={`text-lg md:text-xl leading-relaxed group-hover:text-glow-sm transition-all ${
+                        statement.color === 'neon-primary'
+                          ? 'text-neon-primary'
+                          : statement.color === 'neon-secondary'
+                          ? 'text-neon-secondary'
+                          : 'text-neon-accent'
+                      }`}>
+                        {statement.text}
+                      </p>
+                    </div>
+                  </motion.div>
+                ))}
               </div>
             </ScrollReveal>
 
-            {/* Tech Stack Grid */}
-            <ScrollReveal direction="right" delay={0.4}>
-              <div>
-                <h3 className="text-2xl font-bold mb-6 text-white">
-                  Tech <GlowEffect color="secondary">Stack</GlowEffect>
-                </h3>
-                <div className="grid grid-cols-2 gap-3">
-                  {techStack.map((tech, index) => (
-                    <motion.div
-                      key={tech.name}
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: index * 0.05, duration: 0.3 }}
-                      whileHover={{ scale: 1.05, y: -5 }}
-                      className="group relative"
-                    >
-                      <div className="glass rounded-lg p-4 border border-white/10 hover:border-neon-primary/50 transition-all cursor-pointer">
-                        <div className="flex items-center gap-3">
-                          <span className="text-2xl">{tech.icon}</span>
-                          <div className="flex-1">
-                            <p className="text-white font-medium text-sm">{tech.name}</p>
-                            <p className="text-xs text-gray-400">{tech.category}</p>
-                          </div>
-                        </div>
-                        <div className="absolute inset-0 bg-gradient-to-r from-neon-primary/0 via-neon-primary/10 to-neon-primary/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg" />
-                      </div>
-                    </motion.div>
-                  ))}
+            {/* Animated Code Block */}
+            <ScrollReveal direction="right" delay={0.8}>
+              <Card className="relative overflow-hidden">
+                <div className="absolute top-4 left-4 flex gap-2">
+                  <div className="w-3 h-3 rounded-full bg-red-500/80" />
+                  <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
+                  <div className="w-3 h-3 rounded-full bg-green-500/80" />
                 </div>
-              </div>
+                <div className="pt-12 pb-6 px-6">
+                  <pre className="text-sm text-gray-300 font-mono leading-relaxed overflow-x-auto">
+                    <code>{displayedCode}</code>
+                    {currentIndex < codeSnippet.length && (
+                      <span className="inline-block w-2 h-5 bg-neon-primary ml-1 animate-pulse" />
+                    )}
+                  </pre>
+                </div>
+                <div className="absolute bottom-4 right-4 text-xs text-gray-500 font-mono">
+                  InterviewPrepAI.tsx
+                </div>
+              </Card>
             </ScrollReveal>
           </div>
         </div>
 
         {/* Bottom CTA Section */}
-        <ScrollReveal direction="up" delay={0.6}>
+        <ScrollReveal direction="up" delay={1.4}>
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
