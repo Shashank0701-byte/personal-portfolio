@@ -23,42 +23,45 @@ const impactStatements = [
   }
 ];
 
-const codeSnippet = `const InterviewPrepAI = () => {
+const codeSnippets = [
+  `const buildProduct = () => {
+  // Focus on user experience
+  const features = prioritize(
+    userNeeds,
+    performance,
+    accessibility
+  );
+  
+  return ship(features);
+};`,
+  `const InterviewPrepAI = () => {
   const [question, setQuestion] = useState('');
-  const [feedback, setFeedback] = useState('');
-
+  
   const generateQuestion = async () => {
-    const response = await fetch('/api/generate-question', {
-      method: 'POST',
-      body: JSON.stringify({ topic: 'react' })
-    });
+    const response = await fetch('/api/generate');
     const data = await response.json();
     setQuestion(data.question);
   };
-
-  return (
-    <div className="interview-prep">
-      <button onClick={generateQuestion}>
-        Generate Question
-      </button>
-      <p>{question}</p>
-    </div>
-  );
-};`;
+  
+  return <QuestionCard question={question} />;
+};`,
+  `const reliability = {
+  tests: 'comprehensive',
+  monitoring: 'real-time',
+  deployment: 'automated',
+  rollback: 'instant'
+};`
+];
 
 export const About = () => {
-  const [displayedCode, setDisplayedCode] = useState('');
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentSnippet, setCurrentSnippet] = useState(0);
 
   useEffect(() => {
-    if (currentIndex < codeSnippet.length) {
-      const timer = setTimeout(() => {
-        setDisplayedCode(prev => prev + codeSnippet[currentIndex]);
-        setCurrentIndex(prev => prev + 1);
-      }, 30);
-      return () => clearTimeout(timer);
-    }
-  }, [currentIndex]);
+    const interval = setInterval(() => {
+      setCurrentSnippet((prev) => (prev + 1) % codeSnippets.length);
+    }, 4000); // Change snippet every 4 seconds
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <section
@@ -107,7 +110,7 @@ export const About = () => {
             {/* Impact Statements */}
             <ScrollReveal direction="right" delay={0.4}>
               <div className="space-y-6">
-                {impactStatements.map((statement, index) => (
+                {impactStatements.map((statement) => (
                   <motion.div
                     key={statement.text}
                     initial={{ opacity: 0, x: 50 }}
@@ -123,21 +126,19 @@ export const About = () => {
                   >
                     <div className="flex items-start gap-4">
                       <div
-                        className={`w-2 h-2 rounded-full mt-3 flex-shrink-0 ${
-                          statement.color === 'neon-primary'
-                            ? 'bg-neon-primary'
-                            : statement.color === 'neon-secondary'
+                        className={`w-2 h-2 rounded-full mt-3 flex-shrink-0 ${statement.color === 'neon-primary'
+                          ? 'bg-neon-primary'
+                          : statement.color === 'neon-secondary'
                             ? 'bg-neon-secondary'
                             : 'bg-neon-accent'
-                        } group-hover:scale-150 transition-transform`}
+                          } group-hover:scale-150 transition-transform`}
                       />
-                      <p className={`text-lg md:text-xl leading-relaxed group-hover:text-glow-sm transition-all ${
-                        statement.color === 'neon-primary'
-                          ? 'text-neon-primary'
-                          : statement.color === 'neon-secondary'
+                      <p className={`text-lg md:text-xl leading-relaxed group-hover:text-glow-sm transition-all ${statement.color === 'neon-primary'
+                        ? 'text-neon-primary'
+                        : statement.color === 'neon-secondary'
                           ? 'text-neon-secondary'
                           : 'text-neon-accent'
-                      }`}>
+                        }`}>
                         {statement.text}
                       </p>
                     </div>
@@ -146,7 +147,7 @@ export const About = () => {
               </div>
             </ScrollReveal>
 
-            {/* Animated Code Block */}
+            {/* Animated Code Block - Crossfade, No Layout Shift */}
             <ScrollReveal direction="right" delay={0.8}>
               <Card className="relative overflow-hidden">
                 <div className="absolute top-4 left-4 flex gap-2">
@@ -154,19 +155,29 @@ export const About = () => {
                   <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
                   <div className="w-3 h-3 rounded-full bg-green-500/80" />
                 </div>
-                <div className="pt-12 pb-6 px-6">
-                  <pre className="text-sm text-gray-300 font-mono leading-relaxed overflow-x-auto">
-                    <code>{displayedCode}</code>
-                    {currentIndex < codeSnippet.length && (
-                      <span className="inline-block w-2 h-5 bg-neon-primary ml-1 animate-pulse" />
-                    )}
-                  </pre>
+
+                {/* Fixed height container - prevents layout shift */}
+                <div className="pt-12 pb-6 px-6 h-64 overflow-hidden relative">
+                  {codeSnippets.map((snippet, index) => (
+                    <motion.pre
+                      key={index}
+                      className="absolute inset-x-6 top-12 text-sm text-gray-300 font-mono leading-relaxed whitespace-pre"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: currentSnippet === index ? 1 : 0 }}
+                      transition={{ duration: 0.3 }}
+                      layout={false}
+                    >
+                      <code>{snippet}</code>
+                    </motion.pre>
+                  ))}
                 </div>
+
                 <div className="absolute bottom-4 right-4 text-xs text-gray-500 font-mono">
-                  InterviewPrepAI.tsx
+                  {currentSnippet === 0 ? 'philosophy.ts' : currentSnippet === 1 ? 'InterviewPrepAI.tsx' : 'config.ts'}
                 </div>
               </Card>
             </ScrollReveal>
+
           </div>
         </div>
 

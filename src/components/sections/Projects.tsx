@@ -23,11 +23,14 @@ export const Projects = () => {
   return (
     <section
       id="projects"
-      className="relative py-section-lg min-h-screen flex items-center"
+      className="relative py-12 min-h-screen flex items-center"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        {/* Subtle Divider */}
+        <div className="w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent mb-12" />
+
         {/* Section Header */}
-        <ScrollReveal direction="up" className="text-center mb-16">
+        <ScrollReveal direction="up" className="text-center mb-8">
           <h2 className="text-section font-bold mb-4">
             Featured <GlowEffect color="accent">Projects</GlowEffect>
           </h2>
@@ -35,6 +38,7 @@ export const Projects = () => {
             A collection of projects I've built with passion and attention to detail.
           </p>
         </ScrollReveal>
+
 
         {/* Projects Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
