@@ -88,3 +88,12 @@
   background-size: 1000px 100%;
 }
 
+/* Scrolling diagonal animation for tech stack background */
+@keyframes scroll-diagonal {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(-60px, -60px);
+  }
+}

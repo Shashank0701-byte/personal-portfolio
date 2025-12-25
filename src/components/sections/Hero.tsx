@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { Github, Linkedin, Instagram } from 'lucide-react';
+import CosmicBackground from '../ui/CosmicBackground';
 
 export const Hero = () => {
   const containerVariants = {
@@ -31,9 +32,14 @@ export const Hero = () => {
       id="home"
       className="relative min-h-screen flex items-center justify-center overflow-hidden pt-32"
     >
-      {/* Background Watermark Text Pattern */}
+      {/* --- 1. COSMIC BACKGROUND BASE --- 
+          This provides the nebula image and the blending edges. 
+          It sits at z-index -50 so everything else floats on top.
+      */}
+      <CosmicBackground variant="hero" />
 
-      <div className="absolute inset-0 z-0 opacity-5">
+      {/* --- 2. EXISTING WATERMARK PATTERN --- */}
+      <div className="absolute inset-0 z-0 opacity-5 pointer-events-none">
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="grid grid-cols-4 gap-32 rotate-12">
             {['design', 'code', 'develop', 'deploy', 'stack', 'web', 'build', 'create'].map((word, i) => (
@@ -57,8 +63,7 @@ export const Hero = () => {
         </div>
       </div>
 
-
-      {/* Main Content - Left Side */}
+      {/* --- 3. MAIN CONTENT --- */}
       <motion.div
         className="relative z-30 max-w-7xl mx-auto px-6 lg:px-12 w-full"
         variants={containerVariants}
@@ -73,17 +78,17 @@ export const Hero = () => {
                 Hello
               </h2>
               <h3 className="text-3xl md:text-4xl font-bold text-white mb-8">
-                I'm <span className="text-neon-primary">Shashank Chakraborty</span>
+                I'm <span className="text-cyan-400 drop-shadow-[0_0_10px_rgba(34,211,238,0.5)]">Shashank Chakraborty</span>
               </h3>
             </motion.div>
 
             <motion.div variants={itemVariants} transition={itemTransition}>
               <h1 className="text-6xl md:text-7xl lg:text-8xl font-black leading-tight mb-6">
-                <span className="text-white">FULLSTACK</span>
+                <span className="text-white drop-shadow-2xl">FULLSTACK</span>
                 <br />
-                <span className="text-neon-primary">WEB</span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500 drop-shadow-lg">WEB</span>
                 <br />
-                <span className="text-white">DEVELOPER</span>
+                <span className="text-white drop-shadow-2xl">DEVELOPER</span>
               </h1>
             </motion.div>
 
@@ -168,7 +173,7 @@ export const Hero = () => {
           href="https://github.com"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-white hover:text-neon-primary transition-colors"
+          className="text-white hover:text-cyan-400 transition-colors hover:scale-110 transform duration-200"
         >
           <Github size={24} />
         </a>
@@ -176,7 +181,7 @@ export const Hero = () => {
           href="https://linkedin.com"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-white hover:text-neon-primary transition-colors"
+          className="text-white hover:text-cyan-400 transition-colors hover:scale-110 transform duration-200"
         >
           <Linkedin size={24} />
         </a>
@@ -184,7 +189,7 @@ export const Hero = () => {
           href="https://instagram.com"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-white hover:text-neon-primary transition-colors"
+          className="text-white hover:text-cyan-400 transition-colors hover:scale-110 transform duration-200"
         >
           <Instagram size={24} />
         </a>

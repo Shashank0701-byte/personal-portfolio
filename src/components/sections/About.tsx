@@ -3,22 +3,26 @@ import { ScrollReveal } from '../animations/ScrollReveal';
 import { Card } from '../ui/Card';
 import { GlowEffect } from '../ui/GlowEffect';
 import { useState, useEffect } from 'react';
+import CosmicBackground from '../ui/CosmicBackground';
 
-
+// Updated to use explicit Tailwind colors that match the Cosmic Theme
 const impactStatements = [
   {
     text: "I think in products, not features",
-    color: "neon-primary",
+    color: "cyan-400",
+    bg: "bg-cyan-400",
     delay: 0.8
   },
   {
     text: "Full-stack depth: frontend polish meets backend reliability",
-    color: "neon-secondary",
+    color: "purple-400",
+    bg: "bg-purple-400",
     delay: 1.0
   },
   {
     text: "Curious builder who ships and learns",
-    color: "neon-accent",
+    color: "pink-400",
+    bg: "bg-pink-400",
     delay: 1.2
   }
 ];
@@ -66,13 +70,12 @@ export const About = () => {
   return (
     <section
       id="about"
-      className="relative py-section-lg min-h-screen flex items-center overflow-hidden"
+      className="relative py-32 min-h-screen flex items-center overflow-hidden"
     >
-      {/* Background Effects */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-neon-primary/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-neon-secondary/5 rounded-full blur-3xl" />
-      </div>
+      {/* --- 1. COSMIC BACKGROUND --- 
+          Variant 'about' uses a calmer, starry texture
+      */}
+      <CosmicBackground variant="about" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         {/* Section Header */}
@@ -83,14 +86,14 @@ export const About = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <span className="inline-block text-neon-primary text-sm font-mono mb-4 tracking-wider">
+            <span className="inline-block text-cyan-400 text-sm font-mono mb-4 tracking-wider drop-shadow-lg">
               01. ABOUT
             </span>
-            <h2 className="text-5xl md:text-6xl font-bold mb-6">
-              About <GlowEffect color="primary">Me</GlowEffect>
+            <h2 className="text-5xl md:text-6xl font-bold mb-6 text-white">
+              About <GlowEffect color="primary" intensity="sm">Me</GlowEffect>
             </h2>
-            <div className="w-24 h-1 bg-gradient-to-r from-neon-primary to-neon-secondary mx-auto mb-6" />
-            <p className="text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed">
+            <div className="w-24 h-1 bg-gradient-to-r from-cyan-400 to-purple-500 mx-auto mb-6" />
+            <p className="text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed">
               Crafting digital experiences through code, creativity, and continuous learning
             </p>
           </motion.div>
@@ -102,30 +105,25 @@ export const About = () => {
           <div className="flex flex-col items-center lg:items-start">
             <ScrollReveal direction="left" delay={0.2}>
               <div className="w-full max-w-[240px] sm:max-w-[280px] lg:max-w-[320px]">
-                {/* Photo Container - Static, No Effects */}
-                <div className="relative w-full aspect-[3/4] rounded-2xl overflow-hidden bg-gradient-to-br from-gray-800 to-gray-900">
-                  {/* 
-                    TO ADD YOUR PHOTO:
+                {/* Photo Container - Added border glow to match theme */}
+                <div className="relative w-full aspect-[3/4] rounded-2xl overflow-hidden border border-white/10 bg-slate-900 shadow-2xl">
+                  {/* TO ADD YOUR PHOTO:
                     1. Place your photo in the public folder (e.g., public/profile.jpg)
                     2. Update the src below to "/profile.jpg"
-                    3. Ensure the photo is:
-                       - Chest-up or shoulders-up crop
-                       - Well-lit and clear
-                       - Neutral, clean background
-                       - Professional appearance
                   */}
                   <img
                     src="/your-photo.jpg"
                     alt="Shashank Chakraborty"
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
                     style={{
                       filter: 'brightness(1.05) contrast(1.1)',
                     }}
                   />
+                  {/* Inner shadow overlay for better blending */}
+                  <div className="absolute inset-0 shadow-[inset_0_0_20px_rgba(0,0,0,0.5)] pointer-events-none" />
                 </div>
 
-                {/* Subtle Caption */}
-                <p className="text-sm text-gray-500 mt-3 text-center lg:text-left">
+                <p className="text-sm text-slate-400 mt-4 text-center lg:text-left font-mono">
                   Engineering student · Full-stack developer
                 </p>
               </div>
@@ -133,7 +131,7 @@ export const About = () => {
           </div>
 
           {/* Right Column - Impact Statements & Code */}
-          <div className="space-y-8">
+          <div className="space-y-8 lg:pt-6">
             {/* Impact Statements */}
             <ScrollReveal direction="right" delay={0.4}>
               <div className="space-y-6">
@@ -152,20 +150,12 @@ export const About = () => {
                     whileHover={{ x: 10 }}
                   >
                     <div className="flex items-start gap-4">
+                      {/* Colored Dot */}
                       <div
-                        className={`w-2 h-2 rounded-full mt-3 flex-shrink-0 ${statement.color === 'neon-primary'
-                          ? 'bg-neon-primary'
-                          : statement.color === 'neon-secondary'
-                            ? 'bg-neon-secondary'
-                            : 'bg-neon-accent'
-                          } group-hover:scale-150 transition-transform`}
+                        className={`w-2 h-2 rounded-full mt-3 flex-shrink-0 ${statement.bg} group-hover:scale-150 group-hover:shadow-[0_0_10px_currentColor] transition-all duration-300`}
                       />
-                      <p className={`text-lg md:text-xl leading-relaxed group-hover:text-glow-sm transition-all ${statement.color === 'neon-primary'
-                        ? 'text-neon-primary'
-                        : statement.color === 'neon-secondary'
-                          ? 'text-neon-secondary'
-                          : 'text-neon-accent'
-                        }`}>
+                      {/* Text */}
+                      <p className={`text-lg md:text-xl leading-relaxed text-slate-300 transition-colors duration-300 group-hover:text-${statement.color} group-hover:drop-shadow-md`}>
                         {statement.text}
                       </p>
                     </div>
@@ -174,21 +164,21 @@ export const About = () => {
               </div>
             </ScrollReveal>
 
-            {/* Animated Code Block - Crossfade, No Layout Shift */}
+            {/* Animated Code Block */}
             <ScrollReveal direction="right" delay={0.8}>
-              <Card className="relative overflow-hidden">
+              {/* Added glass effect background to Card */}
+              <Card className="relative overflow-hidden bg-slate-900/60 backdrop-blur-md border-white/10">
                 <div className="absolute top-4 left-4 flex gap-2">
                   <div className="w-3 h-3 rounded-full bg-red-500/80" />
                   <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
                   <div className="w-3 h-3 rounded-full bg-green-500/80" />
                 </div>
 
-                {/* Fixed height container - prevents layout shift */}
                 <div className="pt-12 pb-6 px-6 h-64 overflow-hidden relative">
                   {codeSnippets.map((snippet, index) => (
                     <motion.pre
                       key={index}
-                      className="absolute inset-x-6 top-12 text-sm text-gray-300 font-mono leading-relaxed whitespace-pre"
+                      className="absolute inset-x-6 top-12 text-sm text-cyan-100/80 font-mono leading-relaxed whitespace-pre"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: currentSnippet === index ? 1 : 0 }}
                       transition={{ duration: 0.3 }}
@@ -199,7 +189,7 @@ export const About = () => {
                   ))}
                 </div>
 
-                <div className="absolute bottom-4 right-4 text-xs text-gray-500 font-mono">
+                <div className="absolute bottom-4 right-4 text-xs text-slate-500 font-mono">
                   {currentSnippet === 0 ? 'philosophy.ts' : currentSnippet === 1 ? 'InterviewPrepAI.tsx' : 'config.ts'}
                 </div>
               </Card>
@@ -217,19 +207,19 @@ export const About = () => {
             transition={{ duration: 0.6 }}
             className="text-center"
           >
-            <Card className="max-w-2xl mx-auto bg-gradient-to-r from-neon-primary/10 via-neon-secondary/10 to-neon-accent/10 border-neon-primary/30">
+            <Card className="max-w-2xl mx-auto bg-slate-900/40 backdrop-blur-sm border-white/10 hover:border-cyan-500/30 transition-colors">
               <div className="flex flex-col md:flex-row items-center justify-between gap-6">
                 <div className="text-left">
                   <h3 className="text-2xl font-bold text-white mb-2">
                     Let's Build Something Amazing
                   </h3>
-                  <p className="text-gray-400">
+                  <p className="text-slate-400">
                     Interested in collaborating or have a project in mind?
                   </p>
                 </div>
                 <motion.a
                   href="#contact"
-                  className="px-8 py-3 rounded-lg bg-gradient-to-r from-neon-primary to-neon-secondary text-white font-semibold hover:shadow-lg hover:shadow-neon-primary/50 transition-all"
+                  className="px-8 py-3 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold hover:shadow-[0_0_20px_rgba(6,182,212,0.4)] transition-all"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={(e) => {
