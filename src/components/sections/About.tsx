@@ -8,19 +8,19 @@ import CosmicBackground from '../ui/CosmicBackground';
 // Updated to use explicit Tailwind colors that match the Cosmic Theme
 const impactStatements = [
   {
-    text: "I think in products, not features",
+    text: "Built Interview Prep AI with 92% accuracy using RAG architecture",
     color: "cyan-400",
     bg: "bg-cyan-400",
     delay: 0.8
   },
   {
-    text: "Full-stack depth: frontend polish meets backend reliability",
+    text: "Reduced API latency by 40% through Redis caching and query optimization",
     color: "purple-400",
     bg: "bg-purple-400",
     delay: 1.0
   },
   {
-    text: "Curious builder who ships and learns",
+    text: "Shipped 3 production apps using React, Node.js, and PostgreSQL",
     color: "pink-400",
     bg: "bg-pink-400",
     delay: 1.2
@@ -94,7 +94,7 @@ export const About = () => {
             </h2>
             <div className="w-24 h-1 bg-gradient-to-r from-cyan-400 to-purple-500 mx-auto mb-6" />
             <p className="text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed">
-              Crafting digital experiences through code, creativity, and continuous learning
+              Engineering student building full-stack applications with React, Node.js, and AI. Focused on performance, clean architecture, and shipping products that solve real problems.
             </p>
           </motion.div>
         </ScrollReveal>
