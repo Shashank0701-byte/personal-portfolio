@@ -1,8 +1,10 @@
 import { motion } from 'framer-motion';
 import { Github, Linkedin, Instagram } from 'lucide-react';
 import CosmicBackground from '../ui/CosmicBackground';
+import { useState } from 'react';
 
 export const Hero = () => {
+  const [imageLoaded, setImageLoaded] = useState(false);
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -38,22 +40,27 @@ export const Hero = () => {
       */}
       <CosmicBackground variant="hero" />
 
-      {/* --- 2. EXISTING WATERMARK PATTERN --- */}
-      <div className="absolute inset-0 z-0 opacity-5 pointer-events-none">
+      {/* --- 2. AMBIENT COSMIC TEXT PATTERN --- 
+          Subtle atmospheric element - like cosmic dust or distant signals
+          Barely readable, slow-moving, blends with background
+      */}
+      <div className="absolute inset-0 z-0 opacity-[0.02] pointer-events-none overflow-hidden">
         <div className="absolute inset-0 flex items-center justify-center">
-          <div className="grid grid-cols-4 gap-32 rotate-12">
+          <div className="grid grid-cols-3 gap-48 rotate-12 blur-[2px]">
             {['design', 'code', 'develop', 'deploy', 'stack', 'web', 'build', 'create'].map((word, i) => (
               <motion.div
                 key={word}
-                className="text-6xl font-bold text-white"
-                style={{ writingMode: 'vertical-rl' }}
+                className="text-5xl font-light text-cyan-300"
+                style={{ writingMode: 'vertical-rl', letterSpacing: '0.3em' }}
                 animate={{
-                  y: [0, -20, 0],
+                  y: [0, -15, 0],
+                  opacity: [0.3, 0.6, 0.3],
                 }}
                 transition={{
-                  duration: 3 + i,
+                  duration: 8 + i * 2,
                   repeat: Infinity,
-                  delay: i * 0.5,
+                  delay: i * 1.5,
+                  ease: "easeInOut",
                 }}
               >
                 {word}
@@ -102,63 +109,95 @@ export const Hero = () => {
             </motion.p>
           </div>
 
-          {/* Right Column - 3D Shapes */}
-          <div className="relative h-96 lg:h-[500px] hidden lg:block">
-            {/* Torus */}
-            <motion.div
-              className="absolute top-0 right-0 w-32 h-32 rounded-full border-4 border-white/20"
-              animate={{
-                rotate: [0, 360],
-                scale: [1, 1.1, 1],
-              }}
-              transition={{
-                rotate: { duration: 20, repeat: Infinity, ease: 'linear' },
-                scale: { duration: 4, repeat: Infinity, ease: 'easeInOut' },
-              }}
-            />
+          {/* Right Column - Profile Photo */}
+          <motion.div
+            className="relative flex items-center justify-center lg:justify-end"
+            variants={itemVariants}
+            transition={itemTransition}
+          >
+            <div className="relative w-72 h-72 sm:w-80 sm:h-80 lg:w-96 lg:h-96">
+              {/* Animated Glow Ring */}
+              <motion.div
+                className="absolute inset-0 rounded-full bg-gradient-to-r from-cyan-500 via-purple-500 to-blue-500 opacity-20 blur-2xl"
+                animate={{
+                  scale: [1, 1.1, 1],
+                  rotate: [0, 180, 360],
+                }}
+                transition={{
+                  duration: 8,
+                  repeat: Infinity,
+                  ease: "linear",
+                }}
+              />
 
-            {/* Rounded Rectangle */}
-            <motion.div
-              className="absolute top-20 left-10 w-24 h-32 rounded-2xl border-2 border-white/20 bg-white/5 backdrop-blur-sm"
-              animate={{
-                rotate: [0, 10, -10, 0],
-                y: [0, -20, 0],
-              }}
-              transition={{
-                duration: 6,
-                repeat: Infinity,
-                ease: 'easeInOut',
-              }}
-            />
+              {/* Photo Container */}
+              <div className="relative w-full h-full rounded-full overflow-hidden border-4 border-white/10 bg-slate-900 shadow-2xl hover:border-cyan-500/30 transition-all duration-500 group">
+                {/* 
+                  TO ADD YOUR PHOTO:
+                  1. Place your photo in the public folder (e.g., public/profile-hero.jpg)
+                  2. Update the src below to "/profile-hero.jpg"
+                  3. Recommended: Use a professional, approachable photo
+                  4. Image should be square (1:1 aspect ratio) for best results
+                */}
+                <img
+                  src="/profile-hero.jpeg"
+                  alt="Shashank Chakraborty - Full Stack Developer"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  style={{
+                    filter: 'brightness(1.1) contrast(1.15)',
+                  }}
+                  onLoad={() => setImageLoaded(true)}
+                  onError={() => setImageLoaded(false)}
+                />
 
-            {/* Sphere */}
-            <motion.div
-              className="absolute bottom-20 right-20 w-24 h-24 rounded-full border-2 border-white/20 bg-white/5 backdrop-blur-sm"
-              animate={{
-                scale: [1, 1.2, 1],
-                y: [0, -30, 0],
-              }}
-              transition={{
-                duration: 5,
-                repeat: Infinity,
-                ease: 'easeInOut',
-              }}
-            />
+                {/* Placeholder Gradient (only shows when image not loaded) */}
+                {!imageLoaded && (
+                  <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/20 via-purple-500/20 to-blue-500/20 flex items-center justify-center">
+                    <div className="text-center">
+                      <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-white/5 flex items-center justify-center">
+                        <span className="text-5xl">👤</span>
+                      </div>
+                      <p className="text-white/40 text-sm font-mono">Add your photo</p>
+                      <p className="text-white/20 text-xs font-mono mt-1">/profile-hero.jpg</p>
+                    </div>
+                  </div>
+                )}
 
-            {/* Small Pill */}
-            <motion.div
-              className="absolute top-10 right-32 w-16 h-8 rounded-full border border-white/20 bg-white/5 backdrop-blur-sm"
-              animate={{
-                rotate: [0, 180, 360],
-                x: [0, 20, 0],
-              }}
-              transition={{
-                duration: 8,
-                repeat: Infinity,
-                ease: 'easeInOut',
-              }}
-            />
-          </div>
+                {/* Inner shadow overlay for depth */}
+                <div className="absolute inset-0 shadow-[inset_0_0_40px_rgba(0,0,0,0.6)] pointer-events-none rounded-full" />
+
+                {/* Subtle border highlight on hover */}
+                <div className="absolute inset-0 rounded-full border-2 border-cyan-400/0 group-hover:border-cyan-400/20 transition-all duration-500" />
+              </div>
+
+              {/* Floating particles around photo */}
+              <motion.div
+                className="absolute -top-4 -right-4 w-3 h-3 rounded-full bg-cyan-400/60 blur-sm"
+                animate={{
+                  y: [0, -20, 0],
+                  opacity: [0.6, 1, 0.6],
+                }}
+                transition={{
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+              />
+              <motion.div
+                className="absolute -bottom-6 -left-6 w-2 h-2 rounded-full bg-purple-400/60 blur-sm"
+                animate={{
+                  y: [0, 15, 0],
+                  opacity: [0.6, 1, 0.6],
+                }}
+                transition={{
+                  duration: 4,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  delay: 1,
+                }}
+              />
+            </div>
+          </motion.div>
         </div>
       </motion.div>
 

@@ -15,12 +15,16 @@ const navIcons: Record<string, any> = {
 export const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
+  const [isScrolled, setIsScrolled] = useState(false);
   const { isVisible } = useScrollDirection();
 
   useEffect(() => {
     const handleScroll = () => {
       const sections = NAV_LINKS.map(link => link.href.substring(1));
       const scrollPosition = window.scrollY + 100;
+
+      // Track if user has scrolled past hero section (roughly 80vh)
+      setIsScrolled(window.scrollY > window.innerHeight * 0.8);
 
       for (const section of sections) {
         const element = document.getElementById(section);
@@ -40,7 +44,7 @@ export const Navbar = () => {
 
   const handleNavClick = (href: string) => {
     const id = href.substring(1);
-    
+
     if (id === 'home') {
       window.location.hash = '';
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -64,13 +68,18 @@ export const Navbar = () => {
           className="fixed top-6 left-1/2 -translate-x-1/2 z-50"
         >
           {/* Navigation Bar Container */}
-          <div className="bg-[#2a2a2a] rounded-full px-4 py-2 flex items-center gap-2 border border-white/10 shadow-lg">
+          <div
+            className={`rounded-full px-4 py-2 flex items-center gap-2 border shadow-lg transition-all duration-500 ${isScrolled
+                ? 'bg-[#2a2a2a] border-white/10'
+                : 'bg-white/5 backdrop-blur-md border-white/10'
+              }`}
+          >
             {/* Navigation Items */}
             {NAV_LINKS.map((link) => {
               const sectionId = link.href.substring(1);
               const isActive = activeSection === sectionId;
               const IconComponent = navIcons[sectionId] || Home;
-              
+
               return (
                 <motion.a
                   key={link.href}
@@ -79,24 +88,23 @@ export const Navbar = () => {
                     e.preventDefault();
                     handleNavClick(link.href);
                   }}
-                  className={`relative flex items-center gap-2 px-4 py-2 rounded-full transition-all ${
-                    isActive
-                      ? 'bg-[#1a1a1a]'
+                  className={`relative flex items-center gap-2 px-4 py-2 rounded-full transition-all ${isActive
+                      ? isScrolled
+                        ? 'bg-[#1a1a1a]'
+                        : 'bg-white/10'
                       : 'hover:bg-white/5'
-                  }`}
+                    }`}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  <IconComponent 
-                    size={18} 
-                    className={`${
-                      isActive ? 'text-white' : 'text-white/70'
-                    }`}
+                  <IconComponent
+                    size={18}
+                    className={`${isActive ? 'text-white' : 'text-white/70'
+                      }`}
                     strokeWidth={isActive ? 2 : 1.5}
                   />
-                  <span className={`text-sm font-normal ${
-                    isActive ? 'text-white' : 'text-white/90'
-                  }`}>
+                  <span className={`text-sm font-normal ${isActive ? 'text-white' : 'text-white/90'
+                    }`}>
                     {link.label}
                   </span>
                 </motion.a>
@@ -108,7 +116,8 @@ export const Navbar = () => {
 
             {/* Dark Mode Toggle */}
             <motion.button
-              className="p-2 rounded-full bg-[#2a2a2a] hover:bg-[#1a1a1a] transition-colors"
+              className={`p-2 rounded-full transition-colors ${isScrolled ? 'bg-[#2a2a2a] hover:bg-[#1a1a1a]' : 'bg-white/5 hover:bg-white/10'
+                }`}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               aria-label="Toggle dark mode"
@@ -158,7 +167,7 @@ export const Navbar = () => {
                     const sectionId = link.href.substring(1);
                     const isActive = activeSection === sectionId;
                     const IconComponent = navIcons[sectionId] || Home;
-                    
+
                     return (
                       <motion.a
                         key={link.href}
@@ -168,11 +177,10 @@ export const Navbar = () => {
                           handleNavClick(link.href);
                           setIsMobileMenuOpen(false);
                         }}
-                        className={`flex items-center gap-3 px-4 py-3 transition-colors ${
-                          isActive
+                        className={`flex items-center gap-3 px-4 py-3 transition-colors ${isActive
                             ? 'bg-[#1a1a1a] text-white'
                             : 'text-white/90 hover:bg-white/5'
-                        }`}
+                          }`}
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: index * 0.05 }}
