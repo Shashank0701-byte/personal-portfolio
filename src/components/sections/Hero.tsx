@@ -80,12 +80,22 @@ export const Hero = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left Column - Text Content */}
           <div className="space-y-6 relative z-30">
+            {/* Status Badge - What I'm Currently Doing */}
+            <motion.div
+              variants={itemVariants}
+              transition={itemTransition}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 backdrop-blur-sm border border-cyan-500/20"
+            >
+              <div className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+              <span className="text-sm text-cyan-300 font-mono">Currently building AI-powered tools</span>
+            </motion.div>
+
             <motion.div variants={itemVariants} transition={itemTransition}>
               <h2 className="text-4xl md:text-5xl font-bold text-white mb-2">
-                Hello
+                Hello, I'm
               </h2>
               <h3 className="text-3xl md:text-4xl font-bold text-white mb-8">
-                I'm <span className="text-cyan-400 drop-shadow-[0_0_10px_rgba(34,211,238,0.5)]">Shashank Chakraborty</span>
+                <span className="text-cyan-400 drop-shadow-[0_0_10px_rgba(34,211,238,0.5)]">Shashank Chakraborty</span>
               </h3>
             </motion.div>
 
@@ -99,14 +109,40 @@ export const Hero = () => {
               </h1>
             </motion.div>
 
-            <motion.p
+            {/* Updated Description - More Personal */}
+            <motion.div
               variants={itemVariants}
               transition={itemTransition}
-              className="text-lg md:text-xl text-gray-300 max-w-xl leading-relaxed"
+              className="space-y-4"
             >
-              I am a passionate and creative Full Stack Developer with experience in creating
-              highly polished Interfaces for the web & mobile.
-            </motion.p>
+              <p className="text-lg md:text-xl text-slate-300 max-w-xl leading-relaxed">
+                I build products that feel <span className="text-white font-semibold">fast</span>, look <span className="text-white font-semibold">polished</span>, and solve <span className="text-white font-semibold">real problems</span>.
+                Currently exploring how AI can make development more intuitive.
+              </p>
+
+              {/* Subtle Mindset Indicator */}
+              <p className="text-sm text-slate-400 italic max-w-xl">
+                "Ship early, iterate often, and always put users first."
+              </p>
+            </motion.div>
+
+            {/* Subtle CTA - Scroll Indicator */}
+            <motion.div
+              variants={itemVariants}
+              transition={itemTransition}
+              className="flex items-center gap-3 pt-4"
+            >
+              <motion.div
+                animate={{ y: [0, 8, 0] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                className="text-cyan-400/60"
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M12 5v14M19 12l-7 7-7-7" />
+                </svg>
+              </motion.div>
+              <span className="text-sm text-slate-500 font-mono">Scroll to see what I've built</span>
+            </motion.div>
           </div>
 
           {/* Right Column - Profile Photo */}
@@ -209,7 +245,7 @@ export const Hero = () => {
         transition={{ duration: 0.6, delay: 0.8 }}
       >
         <a
-          href="https://github.com"
+          href="https://github.com/Shashank0701-byte"
           target="_blank"
           rel="noopener noreferrer"
           className="text-white hover:text-cyan-400 transition-colors hover:scale-110 transform duration-200"
@@ -217,7 +253,7 @@ export const Hero = () => {
           <Github size={24} />
         </a>
         <a
-          href="https://linkedin.com"
+          href="https://www.linkedin.com/in/shashank-chakraborty/"
           target="_blank"
           rel="noopener noreferrer"
           className="text-white hover:text-cyan-400 transition-colors hover:scale-110 transform duration-200"
@@ -225,7 +261,7 @@ export const Hero = () => {
           <Linkedin size={24} />
         </a>
         <a
-          href="https://instagram.com"
+          href="https://www.instagram.com/shashank_0701/"
           target="_blank"
           rel="noopener noreferrer"
           className="text-white hover:text-cyan-400 transition-colors hover:scale-110 transform duration-200"
