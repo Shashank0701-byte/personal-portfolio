@@ -2,11 +2,11 @@ import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
 import { Hero } from './components/sections/Hero';
 import { About } from './components/sections/About';
-// import { TechStackGrid } from './components/sections/TechStackGrid';
+import { UltimateTechStack } from './components/sections/UltimateTechStack';
 import { HowIThink } from './components/sections/HowIThink';
 import { Projects } from './components/sections/Projects';
+import { OpenSource } from './components/sections/OpenSource';
 import { Contact } from './components/sections/Contact';
-import { UltimateTechStack } from './components/sections/UltimateTechStack';
 
 function App() {
   return (
@@ -16,9 +16,9 @@ function App() {
         <Hero />
         <About />
         <UltimateTechStack />
-        {/* <TechStackGrid /> */}
         <HowIThink />
         <Projects />
+        <OpenSource />
         <Contact />
 
       </main>
