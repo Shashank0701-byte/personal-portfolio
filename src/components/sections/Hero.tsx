@@ -31,22 +31,8 @@ export const Hero = () => {
       id="home"
       className="relative min-h-screen flex items-center justify-center overflow-hidden pt-32"
     >
-      {/* Background Portrait - Add your image here */}
-      {/* To add your photo: 
-          1. Place your image in the public folder (e.g., public/your-photo.jpg)
-          2. Update the src below to "/your-photo.jpg"
-      */}
-      <div className="absolute inset-0 flex items-center justify-center z-0 opacity-20">
-        <div className="w-96 h-96 rounded-full overflow-hidden bg-gradient-to-br from-gray-700 to-gray-900">
-          <img 
-            src="/your-photo.jpg" 
-            alt="Your Name"
-            className="w-full h-full object-cover"
-          />
-        </div>
-      </div>
-
       {/* Background Watermark Text Pattern */}
+
       <div className="absolute inset-0 z-0 opacity-5">
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="grid grid-cols-4 gap-32 rotate-12">
@@ -106,7 +92,7 @@ export const Hero = () => {
               transition={itemTransition}
               className="text-lg md:text-xl text-gray-300 max-w-xl leading-relaxed"
             >
-              I am a passionate and creative Full Stack Developer with experience in creating 
+              I am a passionate and creative Full Stack Developer with experience in creating
               highly polished Interfaces for the web & mobile.
             </motion.p>
           </div>

@@ -2,8 +2,8 @@ import { motion } from 'framer-motion';
 import { ScrollReveal } from '../animations/ScrollReveal';
 import { Card } from '../ui/Card';
 import { GlowEffect } from '../ui/GlowEffect';
-import { OrbitingKeywords } from '../ui/OrbitingKeywords';
 import { useState, useEffect } from 'react';
+
 
 const impactStatements = [
   {
@@ -97,11 +97,38 @@ export const About = () => {
         </ScrollReveal>
 
         {/* Main Content Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 mb-20">
-          {/* Left Column - Orbiting Keywords */}
-          <div className="flex items-center justify-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 mb-20 items-center">
+          {/* Left Column - Professional Photo */}
+          <div className="flex flex-col items-center lg:items-start">
             <ScrollReveal direction="left" delay={0.2}>
-              <OrbitingKeywords />
+              <div className="w-full max-w-[240px] sm:max-w-[280px] lg:max-w-[320px]">
+                {/* Photo Container - Static, No Effects */}
+                <div className="relative w-full aspect-[3/4] rounded-2xl overflow-hidden bg-gradient-to-br from-gray-800 to-gray-900">
+                  {/* 
+                    TO ADD YOUR PHOTO:
+                    1. Place your photo in the public folder (e.g., public/profile.jpg)
+                    2. Update the src below to "/profile.jpg"
+                    3. Ensure the photo is:
+                       - Chest-up or shoulders-up crop
+                       - Well-lit and clear
+                       - Neutral, clean background
+                       - Professional appearance
+                  */}
+                  <img
+                    src="/your-photo.jpg"
+                    alt="Shashank Chakraborty"
+                    className="w-full h-full object-cover"
+                    style={{
+                      filter: 'brightness(1.05) contrast(1.1)',
+                    }}
+                  />
+                </div>
+
+                {/* Subtle Caption */}
+                <p className="text-sm text-gray-500 mt-3 text-center lg:text-left">
+                  Engineering student · Full-stack developer
+                </p>
+              </div>
             </ScrollReveal>
           </div>
 
