@@ -66,24 +66,42 @@ export const Projects = () => {
                   className="h-full flex flex-col cursor-pointer group overflow-hidden bg-slate-900/40 backdrop-blur-md border border-white/10 hover:border-cyan-500/50 hover:shadow-[0_0_30px_rgba(6,182,212,0.15)] transition-all duration-300"
                   onClick={() => openModal(project)}
                 >
-                  {/* Project Image Placeholder */}
+                  {/* Project Image */}
                   <div className="relative h-48 mb-4 rounded-lg overflow-hidden bg-gradient-to-br from-slate-800 to-slate-900 border-b border-white/5">
 
-                    {/* Placeholder Icon/Text */}
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <motion.span
-                        className="text-6xl font-black text-white/5 group-hover:text-cyan-400/20 transition-colors duration-500"
-                        whileHover={{ scale: 1.2, rotate: 5 }}
-                      >
-                        {project.title.charAt(0)}
-                      </motion.span>
-                    </div>
+                    {project.imageUrl ? (
+                      <>
+                        {/* Actual Project Image */}
+                        <img
+                          src={project.imageUrl}
+                          alt={project.title}
+                          className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-110"
+                        />
+                        {/* Gradient Overlay on Hover */}
+                        <motion.div
+                          className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                          initial={false}
+                        />
+                      </>
+                    ) : (
+                      <>
+                        {/* Fallback: Placeholder Icon/Text */}
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <motion.span
+                            className="text-6xl font-black text-white/5 group-hover:text-cyan-400/20 transition-colors duration-500"
+                            whileHover={{ scale: 1.2, rotate: 5 }}
+                          >
+                            {project.title.charAt(0)}
+                          </motion.span>
+                        </div>
 
-                    {/* Gradient Overlay on Hover */}
-                    <motion.div
-                      className="absolute inset-0 bg-gradient-to-t from-cyan-900/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                      initial={false}
-                    />
+                        {/* Gradient Overlay on Hover */}
+                        <motion.div
+                          className="absolute inset-0 bg-gradient-to-t from-cyan-900/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                          initial={false}
+                        />
+                      </>
+                    )}
                   </div>
 
                   {/* Project Info */}

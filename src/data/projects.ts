@@ -28,6 +28,7 @@ export const projects: Project[] = [
     ],
     githubUrl: 'https://github.com/Shashank0701-byte/interview-prep',
     liveUrl: 'https://interview-prep-karo.netlify.app/',
+    imageUrl: '/interview-prep.png',
     category: 'Full-Stack',
   },
   {
@@ -46,6 +47,7 @@ export const projects: Project[] = [
     ],
     githubUrl: 'https://github.com/Shashank0701-byte/Hacktopus-Prime',
     liveUrl: 'https://cybershield.vercel.app',
+    imageUrl: '/cybershield.png',
     category: 'Full-Stack',
   },
   {
@@ -63,6 +65,7 @@ export const projects: Project[] = [
       'RESTful API integration',
     ],
     githubUrl: 'https://github.com/Shashank0701-byte/stock_dashboard',
+    imageUrl: '/stockerly.png',
     category: 'Full-Stack, Data Science',
   },
 ];
