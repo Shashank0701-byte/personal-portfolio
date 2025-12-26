@@ -50,6 +50,9 @@ export const SystemsProjects = () => {
             {/* Cosmic Background - Same as Projects section */}
             <CosmicBackground variant="projects" />
             <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                {/* Subtle Divider */}
+                <div className="w-full h-px bg-gradient-to-r from-transparent via-slate-700/50 to-transparent mb-8" />
+
                 {/* Section Header */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -64,6 +67,12 @@ export const SystemsProjects = () => {
                             Systems & Low-Level Projects
                         </h2>
                     </div>
+
+                    {/* Bridge Text */}
+                    <p className="text-slate-400 text-sm max-w-3xl mb-3 italic">
+                        Beyond full-stack applications, I enjoy exploring how software works at the operating system and hardware level.
+                    </p>
+
                     <p className="text-slate-300 text-sm max-w-3xl">
                         Foundational work exploring OS internals, process management, and Unix systems.
                         Built for learning and understanding how software interacts with hardware.
