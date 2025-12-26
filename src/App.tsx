@@ -3,8 +3,10 @@ import { Footer } from './components/layout/Footer';
 import { Hero } from './components/sections/Hero';
 import { About } from './components/sections/About';
 import { UltimateTechStack } from './components/sections/UltimateTechStack';
+// import { SkillEcosystem } from './components/sections/SkillEcosystem';
 import { HowIThink } from './components/sections/HowIThink';
 import { Projects } from './components/sections/Projects';
+import { SystemsProjects } from './components/sections/SystemsProjects';
 import { OpenSource } from './components/sections/OpenSource';
 import { Contact } from './components/sections/Contact';
 
@@ -16,8 +18,10 @@ function App() {
         <Hero />
         <About />
         <UltimateTechStack />
+        {/* <SkillEcosystem /> */}
         <HowIThink />
         <Projects />
+        <SystemsProjects />
         <OpenSource />
         <Contact />
 
