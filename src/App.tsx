@@ -7,6 +7,7 @@ import { UltimateTechStack } from './components/sections/UltimateTechStack';
 import { HowIThink } from './components/sections/HowIThink';
 import { Projects } from './components/sections/Projects';
 import { SystemsProjects } from './components/sections/SystemsProjects';
+import { DeveloperUtilities } from './components/sections/DeveloperUtilities';
 import { OpenSource } from './components/sections/OpenSource';
 import { Contact } from './components/sections/Contact';
 
@@ -22,6 +23,7 @@ function App() {
         <HowIThink />
         <Projects />
         <SystemsProjects />
+        <DeveloperUtilities />
         <OpenSource />
         <Contact />
 
