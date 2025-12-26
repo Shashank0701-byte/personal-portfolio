@@ -1,4 +1,3 @@
-import React from 'react';
 import { cn } from '../../utils/cn';
 // --- THEME PACK ---
 // I selected these 4 images to flow together perfectly.

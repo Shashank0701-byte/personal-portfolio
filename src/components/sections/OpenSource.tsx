@@ -16,7 +16,7 @@ export const OpenSource = () => {
 
     // Optional: Add GitHub token as environment variable for higher rate limits
     const githubToken = import.meta.env.VITE_GITHUB_TOKEN;
-    const { stats, loading, error, refresh, cacheAge } = useGitHubStats(githubUsername, githubToken);
+    const { stats, loading, error, refresh } = useGitHubStats(githubUsername, githubToken);
 
     // Format last updated time
     const lastUpdatedText = useMemo(() => {
