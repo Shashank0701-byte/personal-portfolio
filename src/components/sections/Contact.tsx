@@ -235,7 +235,7 @@ export const Contact = () => {
                       },
                     })}
                     className="w-full px-4 py-3 rounded-lg bg-slate-950/50 border border-white/10 focus:border-cyan-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 transition-all text-white placeholder-slate-500"
-                    placeholder="your.email@example.com"
+                    placeholder="shashankchakraborty712005@gmail.com"
                   />
                   {errors.email && (
                     <motion.p

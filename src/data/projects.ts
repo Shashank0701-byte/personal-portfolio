@@ -26,8 +26,8 @@ export const projects: Project[] = [
       'RESTful API architecture',
       'Dynamic content creation',
     ],
-    githubUrl: 'https://github.com/yourusername/interview-prep-ai',
-    liveUrl: 'https://interview-prep-ai.vercel.app',
+    githubUrl: 'https://github.com/Shashank0701-byte/interview-prep',
+    liveUrl: 'https://interview-prep-karo.netlify.app/',
     category: 'Full-Stack',
   },
   {
@@ -44,7 +44,7 @@ export const projects: Project[] = [
       'Content management system',
       'Responsive design with Tailwind CSS',
     ],
-    githubUrl: 'https://github.com/yourusername/cybershield',
+    githubUrl: 'https://github.com/Shashank0701-byte/Hacktopus-Prime',
     liveUrl: 'https://cybershield.vercel.app',
     category: 'Full-Stack',
   },
@@ -62,8 +62,8 @@ export const projects: Project[] = [
       'Persistent data storage',
       'RESTful API integration',
     ],
-    githubUrl: 'https://github.com/yourusername/stockerly',
-    category: 'Full-Stack',
+    githubUrl: 'https://github.com/Shashank0701-byte/stock_dashboard',
+    category: 'Full-Stack, Data Science',
   },
 ];
 
