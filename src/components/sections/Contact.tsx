@@ -83,9 +83,17 @@ export const Contact = () => {
           <h2 className="text-5xl font-bold mb-4 text-white">
             Get In <GlowEffect color="purple">Touch</GlowEffect>
           </h2>
-          <p className="text-lg text-slate-300 max-w-2xl mx-auto">
+          <p className="text-lg text-slate-300 max-w-2xl mx-auto mb-4">
             Have a project in mind? Let's work together to bring your ideas to life.
           </p>
+
+          {/* Availability Badge */}
+          <div className="flex items-center justify-center gap-2 mt-6">
+            <div className="flex items-center gap-2 px-4 py-2 bg-green-500/10 border border-green-500/20 rounded-full">
+              <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+              <span className="text-sm text-green-300 font-medium">Available for new opportunities</span>
+            </div>
+          </div>
         </ScrollReveal>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -94,10 +102,43 @@ export const Contact = () => {
             {/* Added glass effect to Card */}
             <Card className="h-full bg-slate-900/60 backdrop-blur-md border border-white/10">
               <h3 className="text-2xl font-bold mb-6 text-white">Let's Connect</h3>
-              <p className="text-slate-300 mb-8 leading-relaxed">
+              <p className="text-slate-300 mb-6 leading-relaxed">
                 I'm always open to discussing new projects, creative ideas, or
                 opportunities to be part of your visions.
               </p>
+
+              {/* What I'm Looking For */}
+              <div className="mb-8 p-4 bg-white/5 border border-white/10 rounded-lg">
+                <h4 className="text-sm font-semibold text-cyan-400 mb-3 uppercase tracking-wide">Open to:</h4>
+                <ul className="space-y-2 text-sm text-slate-300">
+                  <li className="flex items-start gap-2">
+                    <span className="text-cyan-400 mt-0.5">•</span>
+                    <span><strong className="text-white">Full-time roles</strong> in full-stack development</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-purple-400 mt-0.5">•</span>
+                    <span><strong className="text-white">Freelance projects</strong> (web apps, APIs, AI integration)</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-pink-400 mt-0.5">•</span>
+                    <span><strong className="text-white">Open-source collaboration</strong> on interesting problems</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-blue-400 mt-0.5">•</span>
+                    <span><strong className="text-white">Technical discussions</strong> and knowledge sharing</span>
+                  </li>
+                </ul>
+              </div>
+
+              {/* Response Time */}
+              <div className="mb-8 p-3 bg-blue-500/5 border border-blue-500/10 rounded-lg">
+                <p className="text-xs text-slate-400 flex items-center gap-2">
+                  <svg className="w-4 h-4 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <span><strong className="text-blue-300">Response time:</strong> Usually within 24-48 hours</span>
+                </p>
+              </div>
 
               {/* Social Links */}
               <div className="space-y-4">
@@ -136,6 +177,11 @@ export const Contact = () => {
           <ScrollReveal direction="left" delay={0.2}>
             {/* Added glass effect to Card */}
             <Card className="bg-slate-900/60 backdrop-blur-md border border-white/10">
+              <h3 className="text-xl font-bold mb-2 text-white">Send a Message</h3>
+              <p className="text-sm text-slate-400 mb-6">
+                Fill out the form below and I'll get back to you as soon as possible. Please be specific about your project or inquiry.
+              </p>
+
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                 {/* Name Field */}
                 <div>
