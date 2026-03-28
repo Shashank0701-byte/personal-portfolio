@@ -1,254 +1,229 @@
-import { motion, AnimatePresence } from 'framer-motion';
-import { useState } from 'react';
-import { ExternalLink, Github, X, ChevronRight } from 'lucide-react';
+import { ArrowUpRight, Github } from 'lucide-react';
 import { ScrollReveal } from '../animations/ScrollReveal';
-import { Card } from '../ui/Card';
-import { GlowEffect } from '../ui/GlowEffect';
 import { projects } from '../../data/projects';
 import type { Project } from '../../data/projects';
-import CosmicBackground from "../ui/CosmicBackground";
 
-export const Projects = () => {
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+const visualClasses: Record<Project['visualVariant'], string> = {
+  security: 'from-zinc-900 via-zinc-950 to-stone-900',
+  systems: 'from-zinc-950 via-slate-950 to-zinc-900',
+  documents: 'from-stone-950 via-zinc-950 to-neutral-900',
+};
 
-  const openModal = (project: Project) => {
-    setSelectedProject(project);
-    document.body.style.overflow = 'hidden';
-  };
+function ProjectVisual({ project }: { project: Project }) {
+  if (project.heroImage) {
+    return (
+      <img
+        src={project.heroImage}
+        alt={project.title}
+        className="h-full w-full object-cover object-center opacity-85 transition-transform duration-700 group-hover:scale-[1.03]"
+      />
+    );
+  }
 
-  const closeModal = () => {
-    setSelectedProject(null);
-    document.body.style.overflow = 'unset';
-  };
+  if (project.visualVariant === 'security') {
+    return (
+      <div className="relative flex h-full w-full items-center justify-center overflow-hidden">
+        <div className="absolute inset-6 grid grid-cols-5 gap-3 opacity-40">
+          {Array.from({ length: 15 }).map((_, index) => (
+            <div key={index} className="rounded-2xl border border-white/10 bg-white/[0.03]" />
+          ))}
+        </div>
+        <div className="absolute inset-x-10 top-1/2 h-px -translate-y-1/2 bg-gradient-to-r from-transparent via-amber-200/60 to-transparent" />
+        <div className="absolute left-[18%] top-[22%] h-5 w-5 rounded-full border border-amber-200/70 bg-amber-200/10 shadow-[0_0_24px_rgba(251,191,36,0.28)]" />
+        <div className="absolute left-[42%] top-[48%] h-6 w-6 rounded-full border border-stone-200/60 bg-stone-100/10" />
+        <div className="absolute right-[18%] top-[30%] h-4 w-4 rounded-full border border-amber-100/60 bg-amber-100/10" />
+        <div className="absolute bottom-[20%] left-[30%] h-4 w-4 rounded-full border border-white/40 bg-white/5" />
+        <div className="absolute bottom-[24%] right-[24%] h-5 w-5 rounded-full border border-amber-200/70 bg-amber-200/10 shadow-[0_0_20px_rgba(251,191,36,0.2)]" />
+        <svg className="absolute inset-0 h-full w-full opacity-35" viewBox="0 0 100 100" preserveAspectRatio="none">
+          <path d="M18 24 L42 50 L82 30" stroke="rgba(251,191,36,0.45)" strokeWidth="0.5" fill="none" />
+          <path d="M42 50 L30 80 L76 76" stroke="rgba(255,255,255,0.22)" strokeWidth="0.5" fill="none" />
+          <path d="M42 50 L82 30" stroke="rgba(255,255,255,0.16)" strokeWidth="0.5" fill="none" />
+        </svg>
+      </div>
+    );
+  }
+
+  if (project.visualVariant === 'systems') {
+    return (
+      <div className="relative h-full w-full overflow-hidden">
+        <div className="absolute inset-6 rounded-[28px] border border-white/8 bg-white/[0.02]" />
+        <div className="absolute left-10 right-10 top-10 h-10 rounded-full border border-white/10 bg-black/30" />
+        <div className="absolute left-14 top-14 h-2 w-20 rounded-full bg-cyan-100/20" />
+        <div className="absolute right-14 top-14 h-2 w-12 rounded-full bg-white/10" />
+        <div className="absolute inset-x-10 bottom-10 top-28 grid grid-cols-[1.1fr_0.9fr] gap-5">
+          <div className="rounded-[24px] border border-white/10 bg-black/25 p-4">
+            <div className="grid h-full grid-cols-3 gap-3">
+              {Array.from({ length: 9 }).map((_, index) => (
+                <div key={index} className="rounded-xl border border-white/7 bg-white/[0.03]" />
+              ))}
+            </div>
+          </div>
+          <div className="rounded-[24px] border border-white/10 bg-black/25 p-4">
+            <div className="space-y-3">
+              {Array.from({ length: 5 }).map((_, index) => (
+                <div key={index} className="h-8 rounded-lg border border-white/7 bg-white/[0.03]" />
+              ))}
+            </div>
+          </div>
+        </div>
+        <svg className="absolute inset-0 h-full w-full opacity-35" viewBox="0 0 100 100" preserveAspectRatio="none">
+          <path d="M28 46 H60 V68 H78" stroke="rgba(34,211,238,0.35)" strokeWidth="0.6" fill="none" />
+          <path d="M28 56 H40 V74 H72" stroke="rgba(255,255,255,0.15)" strokeWidth="0.6" fill="none" />
+        </svg>
+      </div>
+    );
+  }
 
   return (
-    <section
-      id="projects"
-      className="relative py-24 min-h-screen flex items-center"
-    >
-      {/* --- 1. COSMIC BACKGROUND --- 
-          Variant 'projects' uses a dark, abstract fluid texture perfect for grids.
-      */}
-      <CosmicBackground variant="projects" />
+    <div className="relative h-full w-full overflow-hidden">
+      <div className="absolute inset-6 rounded-[32px] border border-white/8 bg-white/[0.02]" />
+      <div className="absolute left-12 right-12 top-12 h-14 rounded-2xl border border-white/10 bg-black/25" />
+      <div className="absolute left-16 top-16 h-2 w-28 rounded-full bg-amber-100/20" />
+      <div className="absolute inset-x-12 bottom-12 top-32 grid grid-cols-2 gap-5">
+        <div className="space-y-4 rounded-[26px] border border-white/10 bg-black/25 p-5">
+          {Array.from({ length: 4 }).map((_, index) => (
+            <div key={index} className="h-10 rounded-xl border border-white/8 bg-white/[0.03]" />
+          ))}
+        </div>
+        <div className="rounded-[26px] border border-white/10 bg-black/25 p-5">
+          <div className="grid h-full grid-cols-2 gap-4">
+            {Array.from({ length: 6 }).map((_, index) => (
+              <div key={index} className="rounded-xl border border-white/8 bg-white/[0.03]" />
+            ))}
+          </div>
+        </div>
+      </div>
+      <div className="absolute left-[14%] right-[14%] top-[52%] h-px bg-gradient-to-r from-transparent via-amber-100/50 to-transparent" />
+    </div>
+  );
+}
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        {/* Subtle Divider */}
-        <div className="w-full h-px bg-gradient-to-r from-transparent via-cyan-500/30 to-transparent mb-12" />
+export const Projects = () => {
+  return (
+    <section id="projects" className="relative overflow-hidden bg-[#111111] py-24 sm:py-28">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.04),transparent_32%)]" />
+      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.03),transparent_22%,transparent_78%,rgba(255,255,255,0.03))]" />
+      <div
+        className="absolute inset-0 opacity-[0.08]"
+        style={{
+          backgroundImage:
+            'linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px)',
+          backgroundSize: '64px 64px',
+        }}
+      />
 
-        {/* Section Header */}
-        <ScrollReveal direction="up" className="text-center mb-16">
-          <h2 className="text-5xl font-bold mb-4 text-white">
-            Featured <GlowEffect color="accent">Projects</GlowEffect>
+      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <ScrollReveal direction="up" className="mb-16 text-center">
+          <p className="mb-4 text-xs font-semibold uppercase tracking-[0.35em] text-stone-400">
+            Selected Work
+          </p>
+          <h2 className="mx-auto mb-5 max-w-4xl text-4xl font-semibold tracking-tight text-stone-100 sm:text-5xl lg:text-6xl">
+            Featured projects with real engineering depth.
           </h2>
-          <p className="text-lg text-slate-300 max-w-2xl mx-auto leading-relaxed">
-            A collection of projects I've built with passion and attention to detail.
+          <p className="mx-auto max-w-2xl text-base leading-8 text-stone-400 sm:text-lg">
+            Three case-study style builds that best represent how I think about backend systems,
+            product architecture, and execution under real constraints.
           </p>
         </ScrollReveal>
 
-        {/* Projects Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {projects.map((project, index) => (
-            <ScrollReveal
-              key={project.id}
-              delay={index * 0.1}
-              direction="up"
-            >
-              <motion.div
-                whileHover={{ y: -10 }}
-                className="h-full"
-              >
-                {/* UPDATED CARD STYLE: 
-                   - Removed solid bg, added transparent bg-slate-900/40
-                   - Added backdrop-blur-md for the "Glass" effect
-                   - Added border-white/10 for subtlety
-                */}
-                <Card
-                  className="h-full flex flex-col cursor-pointer group overflow-hidden bg-slate-900/40 backdrop-blur-md border border-white/10 hover:border-cyan-500/50 hover:shadow-[0_0_30px_rgba(6,182,212,0.15)] transition-all duration-300"
-                  onClick={() => openModal(project)}
-                >
-                  {/* Project Image */}
-                  <div className="relative h-48 mb-4 rounded-lg overflow-hidden bg-gradient-to-br from-slate-800 to-slate-900 border-b border-white/5">
+        <div className="space-y-10 lg:space-y-14">
+          {projects.map((project, index) => {
+            const reverse = index % 2 === 1;
 
-                    {project.imageUrl ? (
-                      <>
-                        {/* Actual Project Image */}
-                        <img
-                          src={project.imageUrl}
-                          alt={project.title}
-                          className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-110"
-                        />
-                        {/* Gradient Overlay on Hover */}
-                        <motion.div
-                          className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                          initial={false}
-                        />
-                      </>
-                    ) : (
-                      <>
-                        {/* Fallback: Placeholder Icon/Text */}
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <motion.span
-                            className="text-6xl font-black text-white/5 group-hover:text-cyan-400/20 transition-colors duration-500"
-                            whileHover={{ scale: 1.2, rotate: 5 }}
+            return (
+              <ScrollReveal key={project.id} delay={index * 0.08} direction="up">
+                <article
+                  className={`group grid overflow-hidden rounded-[32px] border border-white/8 bg-[#171717] shadow-[0_30px_80px_rgba(0,0,0,0.35)] lg:min-h-[34rem] lg:grid-cols-2 ${
+                    reverse ? 'lg:[&>*:first-child]:order-2 lg:[&>*:last-child]:order-1' : ''
+                  }`}
+                >
+                  <div className={`relative min-h-[20rem] overflow-hidden bg-gradient-to-br lg:min-h-full ${visualClasses[project.visualVariant]}`}>
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.05),transparent_28%)]" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-black/25" />
+                    <ProjectVisual project={project} />
+                    <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/30 to-transparent lg:hidden" />
+                  </div>
+
+                  <div className="flex flex-col justify-between p-8 sm:p-10 lg:p-12">
+                    <div>
+                      <div className="mb-8 flex flex-wrap gap-2">
+                        {project.eyebrowTags.map((tag) => (
+                          <span
+                            key={tag}
+                            className="rounded-sm border border-white/10 bg-white/[0.04] px-3 py-1 text-[11px] font-medium uppercase tracking-[0.22em] text-stone-300"
                           >
-                            {project.title.charAt(0)}
-                          </motion.span>
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+
+                      <h3 className="max-w-xl text-3xl font-semibold tracking-tight text-stone-100 sm:text-4xl">
+                        {project.title}
+                      </h3>
+                      <p className="mt-6 max-w-xl text-lg leading-8 text-stone-400">
+                        {project.description}
+                      </p>
+                      <p className="mt-4 max-w-xl text-base leading-7 text-stone-500">
+                        {project.longDescription}
+                      </p>
+                    </div>
+
+                    <div className="mt-10 border-t border-white/7 pt-8">
+                      <div className="flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
+                        <div>
+                          <p className="text-4xl font-semibold tracking-tight text-stone-100">
+                            {project.highlightLabel}
+                          </p>
+                          <p className="mt-2 text-xs uppercase tracking-[0.28em] text-stone-500">
+                            {project.projectCategory}
+                          </p>
+                          <p className="mt-4 max-w-md text-sm leading-7 text-stone-400">
+                            {project.highlightValue}
+                          </p>
                         </div>
 
-                        {/* Gradient Overlay on Hover */}
-                        <motion.div
-                          className="absolute inset-0 bg-gradient-to-t from-cyan-900/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                          initial={false}
-                        />
-                      </>
-                    )}
-                  </div>
+                        <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+                          <a
+                            href={project.liveUrl ?? project.githubUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.18em] text-amber-300 transition-colors hover:text-amber-200"
+                          >
+                            {project.ctaLabel}
+                            <ArrowUpRight size={16} />
+                          </a>
+                          {project.liveUrl && (
+                            <a
+                              href={project.githubUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-2 text-sm font-medium text-stone-300 transition-colors hover:text-stone-100"
+                            >
+                              <Github size={16} />
+                              {project.secondaryCtaLabel ?? 'View Code'}
+                            </a>
+                          )}
+                        </div>
+                      </div>
 
-                  {/* Project Info */}
-                  <div className="flex-1 flex flex-col p-2">
-                    <h3 className="text-xl font-bold mb-2 text-white group-hover:text-cyan-400 transition-colors">
-                      {project.title}
-                    </h3>
-                    <p className="text-slate-400 text-sm mb-6 flex-1 leading-relaxed">
-                      {project.description}
-                    </p>
-
-                    {/* Tech Stack */}
-                    <div className="flex flex-wrap gap-2 mb-6">
-                      {project.technologies.slice(0, 3).map((tech) => (
-                        <span
-                          key={tech}
-                          className="px-2.5 py-1 text-xs font-medium rounded-md bg-cyan-950/30 text-cyan-300 border border-cyan-500/20 shadow-sm"
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                      {project.technologies.length > 3 && (
-                        <span className="px-2.5 py-1 text-xs font-medium rounded-md bg-slate-800/50 text-slate-400 border border-white/10">
-                          +{project.technologies.length - 3}
-                        </span>
-                      )}
-                    </div>
-
-                    {/* View More Link */}
-                    <div className="flex items-center text-cyan-400 text-sm font-semibold group-hover:gap-2 transition-all mt-auto">
-                      <span>View Details</span>
-                      <ChevronRight size={16} className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300" />
+                      <div className="mt-8 flex flex-wrap gap-2">
+                        {project.technologies.map((tech) => (
+                          <span
+                            key={tech}
+                            className="rounded-full border border-white/8 px-3 py-1.5 text-xs font-medium text-stone-300"
+                          >
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
                     </div>
                   </div>
-                </Card>
-              </motion.div>
-            </ScrollReveal>
-          ))}
+                </article>
+              </ScrollReveal>
+            );
+          })}
         </div>
       </div>
-
-      {/* Project Modal */}
-      <AnimatePresence>
-        {selectedProject && (
-          <>
-            {/* Backdrop */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={closeModal}
-              className="fixed inset-0 bg-black/80 backdrop-blur-md z-50"
-            />
-
-            {/* Modal */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9, y: 50 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: 50 }}
-              className="fixed inset-4 md:inset-auto md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:max-w-4xl md:max-h-[90vh] w-full z-50 overflow-y-auto"
-            >
-              {/* Modal Container: Solid Dark Glass */}
-              <div className="bg-slate-900 border border-white/10 rounded-2xl p-6 md:p-8 h-full shadow-2xl relative">
-
-                {/* Close Button */}
-                <button
-                  onClick={closeModal}
-                  className="absolute top-4 right-4 p-2 rounded-full bg-white/5 hover:bg-white/10 hover:text-cyan-400 transition-colors text-slate-400"
-                >
-                  <X size={20} />
-                </button>
-
-                {/* Modal Content */}
-                <div className="space-y-8">
-                  {/* Header */}
-                  <div>
-                    <h2 className="text-3xl font-bold mb-3 text-white">{selectedProject.title}</h2>
-                    <p className="text-slate-300 text-lg leading-relaxed">{selectedProject.longDescription}</p>
-                  </div>
-
-                  {/* Tech Stack */}
-                  <div>
-                    <h3 className="text-sm font-bold uppercase tracking-wider text-cyan-500 mb-3">Technologies</h3>
-                    <div className="flex flex-wrap gap-2">
-                      {selectedProject.technologies.map((tech) => (
-                        <span
-                          key={tech}
-                          className="px-3 py-1.5 rounded-md bg-slate-800 text-cyan-200 border border-white/10 text-sm"
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Features */}
-                  <div>
-                    <h3 className="text-sm font-bold uppercase tracking-wider text-purple-500 mb-3">Key Features</h3>
-                    <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                      {selectedProject.features.map((feature, index) => (
-                        <motion.li
-                          key={index}
-                          initial={{ opacity: 0, x: -20 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: index * 0.1 }}
-                          className="flex items-start gap-2 text-slate-300"
-                        >
-                          <ChevronRight size={18} className="text-cyan-500 mt-1 flex-shrink-0" />
-                          <span className="text-sm leading-relaxed">{feature}</span>
-                        </motion.li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  {/* Links */}
-                  <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t border-white/10">
-                    {selectedProject.liveUrl && (
-                      <motion.a
-                        href={selectedProject.liveUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white font-semibold transition-all shadow-lg shadow-cyan-900/20"
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                      >
-                        <ExternalLink size={20} />
-                        Live Demo
-                      </motion.a>
-                    )}
-                    <motion.a
-                      href={selectedProject.githubUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-semibold border border-white/10 transition-all"
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      <Github size={20} />
-                      View Code
-                    </motion.a>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
     </section>
   );
 };
