@@ -83,7 +83,9 @@ export function HeroSection() {
                 View Work
               </a>
               <a
-                href="/Shashank-Chakraborty-CV.pdf"
+                href="https://drive.google.com/drive/folders/1Cm6k_7_K8JnZInW3Gw79TOfCDJYrEYqw?usp=sharing"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="mono group inline-flex items-center gap-2 text-xs uppercase tracking-[0.14em] text-[var(--text-3)] transition-colors hover:text-[var(--text-1)]"
               >
                 <Download className="h-3.5 w-3.5" />
