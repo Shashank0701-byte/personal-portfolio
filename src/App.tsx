@@ -8,7 +8,6 @@ import { HowIThink } from './components/sections/HowIThink';
 import { Projects } from './components/sections/Projects';
 import { SystemsProjects } from './components/sections/SystemsProjects';
 import { DeveloperUtilities } from './components/sections/DeveloperUtilities';
-import { OpenSource } from './components/sections/OpenSource';
 import { Contact } from './components/sections/Contact';
 
 function App() {
@@ -24,7 +23,6 @@ function App() {
         <Projects />
         <SystemsProjects />
         <DeveloperUtilities />
-        <OpenSource />
         <Contact />
 
       </main>
