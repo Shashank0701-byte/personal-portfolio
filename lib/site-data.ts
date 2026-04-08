@@ -31,7 +31,8 @@ export const projects = [
     metric: 'Detects chains invisible to native AWS tooling',
     stack: ['FastAPI', 'Neo4j', 'React', 'boto3', 'Python'],
     links: [{ label: 'View Code', href: 'https://github.com/Shashank0701-byte', type: 'ghost' as const }],
-    visual: 'graph' as const,
+    visual: 'image' as const,
+    image: '/WhatsApp Image 2026-04-09 at 03.13.04.jpeg',
   },
   {
     id: 'systemcraft',
@@ -46,7 +47,24 @@ export const projects = [
       { label: 'Launch Platform', href: 'https://systemcraft.vercel.app', type: 'accent' as const },
       { label: 'View Code', href: 'https://github.com/Shashank0701-byte/System-Craft', type: 'ghost' as const },
     ],
-    visual: 'systemcraft' as const,
+    visual: 'image' as const,
+    image: '/System-Craft.png',
+  },
+  {
+    id: 'interview-prep-ai',
+    tags: ['REACT', 'NODE.JS', 'GEMINI AI'],
+    headline: 'Interview Prep AI',
+    subheadline: 'Intelligent learning platform for interview preparation',
+    body:
+      'Transforms interview preparation with dynamic, feedback-driven ecosystems. Features custom deck building from job descriptions, spaced repetition algorithms for long-term memory, and real-time voice practice with instant AI-powered critiques.',
+    metric: 'Voice practice with instant AI feedback',
+    stack: ['React', 'Node.js', 'Express', 'MongoDB', 'Gemini'],
+    links: [
+      { label: 'Launch Platform', href: 'https://interview-prep-karo.netlify.app/', type: 'accent' as const },
+      { label: 'View Code', href: 'https://github.com/Shashank0701-byte', type: 'ghost' as const },
+    ],
+    visual: 'image' as const,
+    image: '/interview-prep.png',
   },
   {
     id: 'docuflow',

@@ -15,7 +15,24 @@ const graphNodes: Array<[number, number, string]> = [
   [640, 470, '#f59e0b'],
 ];
 
-function ProjectVisual({ type }: { type: 'graph' | 'systemcraft' | 'pipeline' }) {
+function ProjectVisual({ type, image }: { type: 'graph' | 'systemcraft' | 'pipeline' | 'image', image?: string }) {
+  if (type === 'image' && image) {
+    return (
+      <div className="relative flex h-full min-h-[22rem] w-full items-center justify-center overflow-hidden bg-[var(--bg-1)]">
+        {/* Blurred backdrop to fill the tall container nicely */}
+        <div 
+          className="absolute inset-0 scale-110 bg-cover bg-center bg-no-repeat opacity-40 blur-[2rem]"
+          style={{ backgroundImage: `url('${image}')` }}
+        />
+        <img 
+          src={image} 
+          alt="Project preview" 
+          className="relative z-10 w-[90%] max-h-[90%] rounded-xl object-contain shadow-[0_0_40px_rgba(0,0,0,0.5)] opacity-95 transition-transform duration-700 hover:scale-[1.02]"
+        />
+      </div>
+    );
+  }
+
   if (type === 'graph') {
     return (
       <div className="relative h-full min-h-[22rem] overflow-hidden bg-[linear-gradient(180deg,#09090b,#111827)]">
@@ -110,7 +127,7 @@ export function ProjectsSection() {
             </div>
             <div className={`grid min-h-[70vh] grid-cols-1 lg:grid-cols-2 ${index % 2 === 1 ? 'lg:[&>*:first-child]:order-2' : ''}`}>
               <div className="overflow-hidden">
-                <ProjectVisual type={project.visual} />
+                <ProjectVisual type={project.visual as any} image={'image' in project ? project.image : undefined} />
               </div>
               <div className="flex flex-col justify-between px-7 py-8 lg:px-9 lg:py-10">
                 <div>
