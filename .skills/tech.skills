@@ -1,0 +1,26 @@
+[STACK]
+- Next.js (App Router)
+- React Three Fiber (for background / depth layer)
+- GSAP (ScrollTrigger + motion control)
+
+[RENDERING]
+- WebGL canvas as background layer
+- DOM layered on top
+
+[ANIMATION_RULES]
+- No CSS-only animations for core interactions
+- Use GSAP or requestAnimationFrame
+
+[PERFORMANCE]
+- Memoize heavy components
+- Lazy load 3D scene
+- Limit particle count
+
+[STRUCTURE]
+/components
+  /scene
+  /ui
+  /motion
+/hooks
+  useMouseParallax
+  useFloat

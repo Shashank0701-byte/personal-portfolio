@@ -130,6 +130,11 @@ button {
   transform: translateY(-2px);
 }
 
+/* Metric card top-border fill on counter completion */
+.metric-card-fill {
+  overflow: hidden;
+}
+
 .terminal-cursor {
   display: inline-block;
   width: 0.6ch;
@@ -176,11 +181,14 @@ button {
 }
 
 @keyframes blink {
-  0%, 49% {
+
+  0%,
+  49% {
     opacity: 1;
   }
 
-  50%, 100% {
+  50%,
+  100% {
     opacity: 0;
   }
 }
@@ -190,6 +198,20 @@ button {
     transform: translateX(100%);
   }
 }
+
+/* ─── Hero background ──────────────────────────────────────────────────────── */
+
+/* Fine dot grid */
+.hero-dot-grid {
+  background-image: radial-gradient(circle, rgba(167, 139, 250, 0.18) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: radial-gradient(ellipse 90% 80% at 50% 40%, black 30%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 90% 80% at 50% 40%, black 30%, transparent 100%);
+}
+
+/* Aurora blobs removed — rejected by vision.skills ("No gradient blobs") */
+
+/* ─────────────────────────────────────────────────────────────────────────── */
 
 @media (prefers-reduced-motion: reduce) {
   html {
@@ -204,4 +226,11 @@ button {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+
+  .hero-aurora-1,
+  .hero-aurora-2,
+  .hero-aurora-3 {
+    animation: none !important;
+  }
+
 }

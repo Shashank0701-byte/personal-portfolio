@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import { JetBrains_Mono, Syne } from 'next/font/google';
 import './globals.css';
+import { TerminalProvider } from '@/components/site/terminal-context';
+import { TerminalWidget } from '@/components/site/terminal-widget';
 
 const syne = Syne({
   subsets: ['latin'],
@@ -27,7 +29,12 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={`${syne.variable} ${mono.variable}`}>{children}</body>
+      <body className={`${syne.variable} ${mono.variable}`}>
+        <TerminalProvider>
+          {children}
+          <TerminalWidget />
+        </TerminalProvider>
+      </body>
     </html>
   );
 }

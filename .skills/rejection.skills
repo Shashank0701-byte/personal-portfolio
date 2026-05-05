@@ -1,0 +1,11 @@
+[REJECT_IF]
+- Layout becomes centered hero
+- Looks like a SaaS landing page
+- No depth or layering
+- No motion system
+- Could be built without WebGL
+
+[FLAG_IF]
+- Too much text
+- Bright colors dominate
+- Motion feels fast or jittery

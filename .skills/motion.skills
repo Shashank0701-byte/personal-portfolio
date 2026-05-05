@@ -1,0 +1,27 @@
+[MOTION_PHILOSOPHY]
+- Everything moves slightly, nothing is static
+- Motion is slow, intentional, weightless
+
+[BACKGROUND]
+- Grid: fixed
+- Particles: drift slowly (very low speed)
+- Connections: subtle fade in/out
+
+[HERO_TEXT]
+- Main heading: slight parallax on mouse move
+- Ghost text: ultra slow horizontal drift
+
+[3D_CURSOR]
+- Soft circular cursor follower
+- Lagged movement (lerp, not direct)
+
+[RIGHT_PANEL]
+- Float animation: sin(time) based (very subtle)
+- Slight tilt on mouse move
+
+[STATS_CARDS]
+- Hover = lift + glow
+- No aggressive scaling
+
+[SCROLL]
+- Camera illusion (depth shift), not just translateY

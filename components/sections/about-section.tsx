@@ -48,7 +48,7 @@ export function AboutSection() {
               </div>
             </div>
             <div className="mono mt-3 rounded-lg border border-[rgba(255,255,255,0.07)] bg-[rgba(255,255,255,0.03)] px-4 py-3 text-[10px] uppercase tracking-[0.08em] text-[var(--text-3)]">
-              Dayananda Sagar CE · CGPA 8.22 · Bengaluru, IN
+              Dayananda Sagar CE · CGPA 8.38 · Bengaluru, IN
             </div>
           </div>
         </motion.div>
