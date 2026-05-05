@@ -152,7 +152,7 @@ export function TerminalWidget() {
         break;
       case 'cat resume.pdf':
         output = (
-          <a href="/Shashank's CV.pdf" target="_blank" className="text-green-400 hover:underline inline-block border border-green-400 px-2 py-1 mt-1">
+          <a href="/Shashank%27s%20CV.pdf" target="_blank" rel="noopener noreferrer" className="text-green-400 hover:underline inline-block border border-green-400 px-2 py-1 mt-1">
             [📄 Download Shashank_CV.pdf]
           </a>
         );

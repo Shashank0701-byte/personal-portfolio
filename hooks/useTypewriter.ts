@@ -16,16 +16,20 @@ export function useTypewriter(text: string, speed = 30, startDelay = 0) {
     setDisplayed('');
     indexRef.current = 0;
 
+    let intervalId: ReturnType<typeof setInterval> | null = null;
+
     const delay = setTimeout(() => {
-      const interval = setInterval(() => {
+      intervalId = setInterval(() => {
         indexRef.current += 1;
         setDisplayed(text.slice(0, indexRef.current));
-        if (indexRef.current >= text.length) clearInterval(interval);
+        if (indexRef.current >= text.length && intervalId) clearInterval(intervalId);
       }, speed);
-      return () => clearInterval(interval);
     }, startDelay);
 
-    return () => clearTimeout(delay);
+    return () => {
+      clearTimeout(delay);
+      if (intervalId) clearInterval(intervalId);
+    };
   }, [text, speed, startDelay, shouldReduceMotion]);
 
   return displayed;

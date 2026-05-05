@@ -26,6 +26,7 @@ export function PipelineFlowVisual({ active }: { active: boolean }) {
   const [activeStage, setActiveStage] = useState<string | null>(null);
   const counterRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const packetRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const packetTimeoutsRef = useRef<number[]>([]);
   const idRef = useRef(0);
 
   useEffect(() => {
@@ -34,18 +35,22 @@ export function PipelineFlowVisual({ active }: { active: boolean }) {
       setActiveStage(null);
       if (counterRef.current) clearInterval(counterRef.current);
       if (packetRef.current) clearInterval(packetRef.current);
+      packetTimeoutsRef.current.forEach(id => clearTimeout(id));
+      packetTimeoutsRef.current = [];
       return;
     }
 
     // Spawn packets
     packetRef.current = setInterval(() => {
+      if (!active) return;
       const id = idRef.current++;
       setPackets(prev => [...prev, { id, startTime: Date.now() }]);
       // Remove after travel
-      setTimeout(() => {
+      const timeoutId = window.setTimeout(() => {
         setPackets(prev => prev.filter(p => p.id !== id));
         setDocCount(c => c + 1);
       }, PACKET_DURATION + 200);
+      packetTimeoutsRef.current.push(timeoutId);
     }, 1800);
 
     // Stage highlight cycling
@@ -58,6 +63,8 @@ export function PipelineFlowVisual({ active }: { active: boolean }) {
     return () => {
       if (packetRef.current) clearInterval(packetRef.current);
       clearInterval(stageInterval);
+      packetTimeoutsRef.current.forEach(id => clearTimeout(id));
+      packetTimeoutsRef.current = [];
     };
   }, [active]);
 

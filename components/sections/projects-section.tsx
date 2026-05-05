@@ -7,7 +7,6 @@ import {
   useTransform,
   useMotionValue,
   useSpring,
-  animate,
   useReducedMotion,
 } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
@@ -131,7 +130,7 @@ export function ProjectsSection() {
       </section>
 
       {/* Mobile fallback — vertical stacked */}
-      <section id="projects-mobile" className="section-shell px-6 lg:hidden">
+      <section id="projects" className="section-shell px-6 lg:hidden">
         <div className="section-number">04</div>
         <div className="mx-auto max-w-2xl space-y-10">
           {projects.map((project, index) => (

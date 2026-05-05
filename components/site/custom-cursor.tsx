@@ -23,6 +23,8 @@ export function CustomCursor() {
   useEffect(() => {
     if (shouldReduceMotion) return;
 
+    let previousMagnet: HTMLElement | null = null;
+
     const handleMove = (e: MouseEvent) => {
       x.set(e.clientX);
       y.set(e.clientY);
@@ -31,8 +33,15 @@ export function CustomCursor() {
       const target = (e.target as HTMLElement).closest('[data-cursor]') as HTMLElement | null;
       if (target) {
         const cursorType = target.dataset.cursor ?? '';
-        setLabel(CURSOR_LABELS[cursorType] ?? null);
-        ringScale.set(label ? 1.8 : 1.6);
+        const newLabel = CURSOR_LABELS[cursorType] ?? null;
+        setLabel(newLabel);
+        ringScale.set(newLabel ? 1.8 : 1.6);
+
+        // Clear previous magnet if different
+        if (previousMagnet && previousMagnet !== target) {
+          previousMagnet.style.transform = '';
+        }
+        previousMagnet = target;
 
         // Magnetic pull — shift element toward cursor
         const rect = target.getBoundingClientRect();
@@ -47,16 +56,22 @@ export function CustomCursor() {
       } else {
         setLabel(null);
         ringScale.set(1);
-        // Reset any magnetic elements
-        document.querySelectorAll('[data-cursor]').forEach(el => {
-          (el as HTMLElement).style.transform = '';
-        });
+        // Reset previous magnetic element
+        if (previousMagnet) {
+          previousMagnet.style.transform = '';
+          previousMagnet = null;
+        }
       }
     };
 
     window.addEventListener('mousemove', handleMove);
-    return () => window.removeEventListener('mousemove', handleMove);
-  }, [shouldReduceMotion, x, y, ringScale, label]);
+    return () => {
+      window.removeEventListener('mousemove', handleMove);
+      if (previousMagnet) {
+        previousMagnet.style.transform = '';
+      }
+    };
+  }, [shouldReduceMotion, x, y, ringScale]);
 
   if (shouldReduceMotion) return null;
 

@@ -45,24 +45,31 @@ function getNode(id: string) {
 export function IamGraphVisual({ active }: { active: boolean }) {
   const [lit, setLit] = useState<Set<string>>(new Set());
   const [showAlert, setShowAlert] = useState(false);
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const timerRef = useRef<Array<ReturnType<typeof setTimeout>>>([]);
 
   useEffect(() => {
     if (!active) {
       setLit(new Set());
       setShowAlert(false);
+      timerRef.current.forEach(id => clearTimeout(id));
+      timerRef.current = [];
       return;
     }
     // BFS step-by-step
     TRAVERSAL_ORDER.forEach((id, i) => {
-      timerRef.current = setTimeout(() => {
+      const timeoutId = setTimeout(() => {
         setLit(prev => new Set([...prev, id]));
         if (i === TRAVERSAL_ORDER.length - 1) {
-          setTimeout(() => setShowAlert(true), 300);
+          const alertTimeoutId = setTimeout(() => setShowAlert(true), 300);
+          timerRef.current.push(alertTimeoutId);
         }
       }, 600 + i * 700);
+      timerRef.current.push(timeoutId);
     });
-    return () => { if (timerRef.current) clearTimeout(timerRef.current); };
+    return () => {
+      timerRef.current.forEach(id => clearTimeout(id));
+      timerRef.current = [];
+    };
   }, [active]);
 
   return (
