@@ -16,6 +16,7 @@ import { SessionDashboardVisual } from '@/components/projects/session-dashboard-
 import { CardDeckVisual } from '@/components/projects/card-deck-visual';
 import { PipelineFlowVisual } from '@/components/projects/pipeline-flow-visual';
 import { ScrollProgressDots } from '@/components/projects/scroll-progress-dots';
+import { useMediaQuery } from '@/hooks/useMediaQuery';
 
 const ACCENT_COLORS = projects.map(p => p.accentColor);
 
@@ -49,6 +50,7 @@ function CountUp({ target, accent, suffix = '' }: { target: number; accent: stri
 
 export function ProjectsSection() {
   const shouldReduceMotion = useReducedMotion();
+  const isMobile = useMediaQuery('(max-width: 767px)');
   const sectionRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -89,48 +91,10 @@ export function ProjectsSection() {
     window.scrollTo({ top: target, behavior: 'smooth' });
   }, []);
 
-  return (
-    <>
-      {/* Sticky scroll container — desktop only */}
-      <section
-        ref={sectionRef}
-        id="projects"
-        className="relative hidden lg:block"
-        style={{ height: `${projects.length * 100}vh` }}
-      >
-        <div className="section-number" style={{ top: '1rem', left: '1.5rem' }}>04</div>
-
-        <div className="sticky top-0 h-screen overflow-hidden">
-          <motion.div
-            ref={trackRef}
-            className="flex h-full"
-            style={shouldReduceMotion ? undefined : { x }}
-          >
-            {projects.map((project, index) => (
-              <ProjectSlide
-                key={project.id}
-                project={project}
-                index={index}
-                active={activeIndex === index}
-                countActive={countActive[index]}
-                scrollYProgress={scrollYProgress}
-                total={projects.length}
-                shouldReduceMotion={!!shouldReduceMotion}
-              />
-            ))}
-          </motion.div>
-        </div>
-
-        <ScrollProgressDots
-          count={projects.length}
-          active={activeIndex}
-          accentColors={ACCENT_COLORS}
-          onDotClick={handleDotClick}
-        />
-      </section>
-
-      {/* Mobile fallback — vertical stacked */}
-      <section id="projects" className="section-shell px-6 lg:hidden">
+  // Render mobile or desktop layout based on media query
+  if (isMobile) {
+    return (
+      <section id="projects" className="section-shell px-6">
         <div className="section-number">04</div>
         <div className="mx-auto max-w-2xl space-y-10">
           {projects.map((project, index) => (
@@ -138,7 +102,46 @@ export function ProjectsSection() {
           ))}
         </div>
       </section>
-    </>
+    );
+  }
+
+  return (
+    <section
+      ref={sectionRef}
+      id="projects"
+      className="relative"
+      style={{ height: `${projects.length * 100}vh` }}
+    >
+      <div className="section-number" style={{ top: '1rem', left: '1.5rem' }}>04</div>
+
+      <div className="sticky top-0 h-screen overflow-hidden">
+        <motion.div
+          ref={trackRef}
+          className="flex h-full"
+          style={shouldReduceMotion ? undefined : { x }}
+        >
+          {projects.map((project, index) => (
+            <ProjectSlide
+              key={project.id}
+              project={project}
+              index={index}
+              active={activeIndex === index}
+              countActive={countActive[index]}
+              scrollYProgress={scrollYProgress}
+              total={projects.length}
+              shouldReduceMotion={!!shouldReduceMotion}
+            />
+          ))}
+        </motion.div>
+      </div>
+
+      <ScrollProgressDots
+        count={projects.length}
+        active={activeIndex}
+        accentColors={ACCENT_COLORS}
+        onDotClick={handleDotClick}
+      />
+    </section>
   );
 }
 
