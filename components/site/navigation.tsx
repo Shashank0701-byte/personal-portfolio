@@ -1,14 +1,16 @@
 'use client';
 
 import { AnimatePresence, motion } from 'framer-motion';
-import { Menu, X } from 'lucide-react';
+import { Menu, Terminal, X } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { navLinks } from '@/lib/site-data';
+import { useTerminal } from './terminal-context';
 
 export function Navigation() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState('#home');
+  const { toggleTerminal } = useTerminal();
 
   const sectionIds = useMemo(() => navLinks.map((link) => link.href.slice(1)), []);
 
@@ -50,9 +52,8 @@ export function Navigation() {
   return (
     <>
       <header
-        className={`fixed inset-x-0 top-0 z-50 transition-all duration-200 ${
-          scrolled ? 'bg-[rgba(8,8,8,0.7)] backdrop-blur-md' : 'bg-transparent'
-        }`}
+        className={`fixed inset-x-0 top-0 z-50 transition-all duration-200 ${scrolled ? 'bg-[rgba(8,8,8,0.7)] backdrop-blur-md' : 'bg-transparent'
+          }`}
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 lg:px-12">
           <button onClick={() => handleNavigate('#home')} className="font-[var(--font-syne)] text-2xl font-bold text-white">
@@ -64,9 +65,8 @@ export function Navigation() {
               <button
                 key={link.href}
                 onClick={() => handleNavigate(link.href)}
-                className={`mono relative text-[11px] uppercase tracking-[0.18em] transition-colors ${
-                  active === link.href ? 'text-white' : 'text-[var(--text-3)] hover:text-[var(--text-2)]'
-                }`}
+                className={`mono relative text-[11px] uppercase tracking-[0.18em] transition-colors ${active === link.href ? 'text-white' : 'text-[var(--text-3)] hover:text-[var(--text-2)]'
+                  }`}
               >
                 {link.label}
                 {active === link.href && (
@@ -76,7 +76,15 @@ export function Navigation() {
             ))}
           </nav>
 
-          <div className="hidden md:block">
+          <div className="hidden md:flex items-center gap-4">
+            <button
+              onClick={toggleTerminal}
+              className="text-[var(--text-3)] hover:text-white transition-colors"
+              aria-label="Toggle Terminal (Ctrl+`)"
+              title="Terminal (Ctrl+`)"
+            >
+              <Terminal className="w-5 h-5" />
+            </button>
             <button
               onClick={() => handleNavigate('#contact')}
               className="rounded-sm bg-white px-4 py-2 text-[11px] font-bold uppercase tracking-[0.18em] text-[#080808]"

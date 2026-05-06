@@ -17,6 +17,9 @@ dist-ssr
 .env.local
 .env.production
 
+# TypeScript build cache
+tsconfig.tsbuildinfo
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

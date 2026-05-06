@@ -1,0 +1,31 @@
+[IDENTITY]
+Role: Backend Engineer / Systems Builder
+Tone: Technical, minimal, confident
+Vibe: Terminal + sci-fi dashboard + cinematic depth
+
+[VISUAL_LANGUAGE]
+- Dark grid-based background (subtle, not dominant)
+- Floating particle network (low opacity)
+- Large bold typography (impact > decoration)
+- Secondary ghost text in background (e.g. FULL DEV)
+
+[LAYOUT_RULES]
+- Left = identity (name + role)
+- Right = system panel (config-style card)
+- Bottom = stats grid (metrics, not fluff)
+
+[UI_ELEMENTS]
+- Terminal-style card (rounded, glassy, dark)
+- Tag pills (stack: FastAPI, Neo4j, Docker)
+- Metrics blocks (latency, users, accuracy)
+
+[DO_NOT]
+- No centered hero
+- No gradient blobs
+- No SaaS-style layout
+- No “Welcome to my portfolio” energy
+
+[GOAL]
+Feels like:
+→ a developer control panel
+→ not a marketing website

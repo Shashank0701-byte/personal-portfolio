@@ -29,10 +29,13 @@ export const projects = [
     body:
       'Leverages BFS and DFS algorithms to identify hidden IAM permission chains that could lead to admin takeover. Extracts IAM data via boto3 and risk-scores each path by privilege level, chain depth, and escalation count.',
     metric: 'Detects chains invisible to native AWS tooling',
+    metricValue: null,
+    keyDecision: 'Chose Neo4j over a relational model because privilege escalation is fundamentally a graph traversal problem — SQL JOINs across self-referential tables would have been unreadable and slow.',
     stack: ['FastAPI', 'Neo4j', 'React', 'boto3', 'Python'],
-    links: [{ label: 'View Code', href: 'https://github.com/Shashank0701-byte', type: 'ghost' as const }],
-    visual: 'image' as const,
-    image: '/WhatsApp Image 2026-04-09 at 03.13.04.jpeg',
+    links: [{ label: 'View Code', href: 'https://github.com/Shashank0701-byte/Shadow-permission-analyser', type: 'ghost' as const }],
+    architectureVariant: 'iam-graph' as const,
+    accentColor: 'var(--accent-a)',
+    bgGradient: 'linear-gradient(160deg,#0d0d14,#0a0a10)',
   },
   {
     id: 'systemcraft',
@@ -42,13 +45,16 @@ export const projects = [
     body:
       'Stateful interview sessions with live AI evaluation powered by Gemini 2.0 Flash. Containerized with Docker, Nginx reverse proxy, and GitHub Actions CI/CD. MongoDB-backed persistent sessions with auto-save.',
     metric: 'Sub-2s structured response latency',
+    metricValue: 2,
+    keyDecision: 'Streamed Gemini responses token-by-token rather than waiting for the full payload — this cut perceived latency from ~4s to under 2s without changing the model or infrastructure.',
     stack: ['Next.js', 'Python', 'MongoDB', 'Docker', 'Gemini 2.0'],
     links: [
       { label: 'Launch Platform', href: 'https://systemcraft.vercel.app', type: 'accent' as const },
       { label: 'View Code', href: 'https://github.com/Shashank0701-byte/System-Craft', type: 'ghost' as const },
     ],
-    visual: 'image' as const,
-    image: '/System-Craft.png',
+    architectureVariant: 'session-dashboard' as const,
+    accentColor: 'var(--accent-c)',
+    bgGradient: 'linear-gradient(160deg,#080c18,#090910)',
   },
   {
     id: 'interview-prep-ai',
@@ -58,13 +64,16 @@ export const projects = [
     body:
       'Transforms interview preparation with dynamic, feedback-driven ecosystems. Features custom deck building from job descriptions, spaced repetition algorithms for long-term memory, and real-time voice practice with instant AI-powered critiques.',
     metric: 'Voice practice with instant AI feedback',
+    metricValue: null,
+    keyDecision: 'Implemented SM-2 spaced repetition algorithm server-side so review schedules persist across devices and sessions — not just a client-side timer.',
     stack: ['React', 'Node.js', 'Express', 'MongoDB', 'Gemini'],
     links: [
       { label: 'Launch Platform', href: 'https://interview-prep-karo.netlify.app/', type: 'accent' as const },
-      { label: 'View Code', href: 'https://github.com/Shashank0701-byte', type: 'ghost' as const },
+      { label: 'View Code', href: 'https://github.com/Shashank0701-byte/interview-prep', type: 'ghost' as const },
     ],
-    visual: 'image' as const,
-    image: '/interview-prep.png',
+    architectureVariant: 'card-deck' as const,
+    accentColor: 'var(--accent-g)',
+    bgGradient: 'linear-gradient(160deg,#080e10,#090910)',
   },
   {
     id: 'docuflow',
@@ -74,12 +83,16 @@ export const projects = [
     body:
       'Event-driven containerized pipeline with Celery workers, Redis queues, and PostgreSQL. Clean separation between OCR parsing and structured data extraction. Reduces document turnaround by 40% via async orchestration.',
     metric: '40% faster document processing',
+    metricValue: 40,
+    keyDecision: 'Separated OCR parsing from structured extraction into two distinct Celery task queues — this let us scale the OCR workers independently during peak ingestion without touching the extraction layer.',
     stack: ['Docker', 'Celery', 'Redis', 'PostgreSQL', 'Python'],
     links: [
-      { label: 'View Architecture', href: 'https://github.com/Shashank0701-byte', type: 'accent' as const },
-      { label: 'GitHub', href: 'https://github.com/Shashank0701-byte', type: 'ghost' as const },
+      { label: 'View Architecture', href: 'https://github.com/Shashank0701-byte/docuflow', type: 'accent' as const },
+      { label: 'GitHub', href: 'https://github.com/Shashank0701-byte/docuflow', type: 'ghost' as const },
     ],
-    visual: 'pipeline' as const,
+    architectureVariant: 'pipeline-flow' as const,
+    accentColor: 'var(--accent-a)',
+    bgGradient: 'linear-gradient(160deg,#0a0a0e,#0d0d10)',
   },
 ] as const;
 
