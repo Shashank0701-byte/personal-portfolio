@@ -3,9 +3,9 @@
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 
-const PARTICLE_COUNT = 110;
-const CONNECTION_DIST = 2.4;
-const SPEED = 0.0038;
+const PARTICLE_COUNT = 55;
+const CONNECTION_DIST = 1.8;
+const SPEED = 0.003;
 
 export function HeroParticleField() {
   const mountRef = useRef<HTMLDivElement>(null);
@@ -39,7 +39,7 @@ export function HeroParticleField() {
 
     const dotGeo = new THREE.BufferGeometry();
     dotGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    const dotMat = new THREE.PointsMaterial({ size: 0.05, color: 0xa78bfa, transparent: true, opacity: 0.6, sizeAttenuation: true });
+    const dotMat = new THREE.PointsMaterial({ size: 0.04, color: 0xa78bfa, transparent: true, opacity: 0.25, sizeAttenuation: true });
     const dots   = new THREE.Points(dotGeo, dotMat);
     scene.add(dots);
 
@@ -50,7 +50,7 @@ export function HeroParticleField() {
     const lineGeo     = new THREE.BufferGeometry();
     lineGeo.setAttribute('position', new THREE.BufferAttribute(linePos, 3).setUsage(THREE.DynamicDrawUsage));
     lineGeo.setAttribute('color',    new THREE.BufferAttribute(lineCol, 3).setUsage(THREE.DynamicDrawUsage));
-    const lineMat = new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, opacity: 0.7 });
+    const lineMat = new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, opacity: 0.35 });
     const lines   = new THREE.LineSegments(lineGeo, lineMat);
     scene.add(lines);
 
@@ -99,14 +99,14 @@ export function HeroParticleField() {
           const dist = Math.sqrt(dx * dx + dy * dy);
           if (dist > CONNECTION_DIST) continue;
 
-          const a = (1 - dist / CONNECTION_DIST) * 0.25 + boost;
+          const a = (1 - dist / CONNECTION_DIST) * 0.18 + boost * 0.5;
           // Violet #a78bfa = rgb(0.655, 0.545, 0.980)
           linePos[li * 6]     = ax; linePos[li * 6 + 1] = ay; linePos[li * 6 + 2] = 0;
           linePos[li * 6 + 3] = bx; linePos[li * 6 + 4] = by; linePos[li * 6 + 5] = 0;
           for (let k = 0; k < 2; k++) {
-            lineCol[(li * 6) + k * 3]     = 0.655 * a * 3.2;
-            lineCol[(li * 6) + k * 3 + 1] = 0.545 * a * 3.2;
-            lineCol[(li * 6) + k * 3 + 2] = 0.980 * a * 3.2;
+            lineCol[(li * 6) + k * 3]     = 0.655 * a * 2.2;
+            lineCol[(li * 6) + k * 3 + 1] = 0.545 * a * 2.2;
+            lineCol[(li * 6) + k * 3 + 2] = 0.980 * a * 2.2;
           }
           li++;
         }

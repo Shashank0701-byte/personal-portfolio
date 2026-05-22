@@ -9,9 +9,7 @@ import { useMouseParallax } from '@/hooks/useMouseParallax';
 import { useFloat } from '@/hooks/useFloat';
 import { GhostText } from '@/components/scene/GhostText';
 
-const HeroParticleField = lazy(() =>
-  import('@/components/scene/HeroParticleField').then(m => ({ default: m.HeroParticleField }))
-);
+
 
 const METRICS = [
   { value: 40,  suffix: '%', label: 'Latency Reduced', color: 'var(--accent-a)' },
@@ -172,16 +170,17 @@ export function HeroSection() {
 
       {/* Layer 0 — WebGL + grid + ghost text + vignette */}
       <motion.div className="absolute inset-0 z-0" style={{ opacity: bgOpacity }} aria-hidden="true">
-        {!shouldReduceMotion && (
-          <Suspense fallback={null}>
-            <HeroParticleField />
-          </Suspense>
-        )}
         <div className="hero-dot-grid absolute inset-0" />
         {!shouldReduceMotion && <GhostText />}
+        {/* Edge vignette */}
         <div
           className="absolute inset-0"
-          style={{ background: 'radial-gradient(ellipse 85% 70% at 50% 50%, transparent 35%, rgba(8,8,8,0.78) 100%)' }}
+          style={{ background: 'radial-gradient(ellipse 85% 70% at 50% 50%, transparent 35%, rgba(8,8,8,0.82) 100%)' }}
+        />
+        {/* Left content shield — keeps text readable regardless of particle density */}
+        <div
+          className="absolute inset-0"
+          style={{ background: 'linear-gradient(90deg, rgba(8,8,8,0.72) 0%, rgba(8,8,8,0.45) 40%, transparent 65%)' }}
         />
       </motion.div>
 
@@ -201,7 +200,7 @@ export function HeroSection() {
             }}
           >
 
-            <motion.div
+            {/* <motion.div
               className="mono inline-flex items-center gap-2 rounded-full border border-[rgba(74,222,128,0.2)] bg-[rgba(74,222,128,0.05)] px-3 py-2 text-[10px] uppercase tracking-[0.18em] text-[var(--accent-g)]"
               initial={{ opacity: 0, y: 12 }}
               animate={revealed ? { opacity: 1, y: 0 } : {}}
@@ -209,7 +208,7 @@ export function HeroSection() {
             >
               <span className="h-2 w-2 animate-pulse rounded-full bg-[var(--accent-g)]" />
               AVAILABLE · BACKEND DEVELOPER @ VERTEX CLUB
-            </motion.div>
+            </motion.div> */}
 
             <div className="space-y-4">
               <p className="mono text-[11px] uppercase tracking-[0.2em] text-[var(--text-3)]">
@@ -287,7 +286,7 @@ export function HeroSection() {
                 View Work
               </a>
               <a
-                href="/Shashank's CV.pdf"
+                href="/Shashank's Resume (5).pdf"
                 download="Shashank_Chakraborty_Resume.pdf"
                 data-cursor="download"
                 className="mono group inline-flex items-center gap-2 text-xs uppercase tracking-[0.14em] text-[var(--text-3)] transition-colors hover:text-[var(--text-1)]"
