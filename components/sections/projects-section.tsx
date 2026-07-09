@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useState, useEffect, useCallback } from 'react';
+import Image from 'next/image';
 import {
   motion,
   useScroll,
@@ -11,6 +12,7 @@ import {
 } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import { projects } from '@/lib/site-data';
+import type { Project } from '@/lib/site-data';
 import { IamGraphVisual } from '@/components/projects/iam-graph-visual';
 import { SessionDashboardVisual } from '@/components/projects/session-dashboard-visual';
 import { CardDeckVisual } from '@/components/projects/card-deck-visual';
@@ -153,7 +155,7 @@ function ProjectSlide({
   total,
   shouldReduceMotion,
 }: {
-  project: (typeof projects)[number];
+  project: Project;
   index: number;
   active: boolean;
   countActive: boolean;
@@ -223,7 +225,7 @@ function ProjectSlide({
               style={{ borderColor: project.accentColor, background: `${project.accentColor}08` }}
             >
               <span className="mono mb-1 block text-[9px] uppercase tracking-widest" style={{ color: project.accentColor }}>
-                Key Decision
+                Engineering Decision
               </span>
               {project.keyDecision}
             </div>
@@ -277,9 +279,26 @@ function ProjectSlide({
           </div>
         </div>
 
-        {/* RIGHT — architecture visual */}
-        <div className="relative overflow-hidden" style={{ background: project.bgGradient }}>
-          <ArchVisual variant={project.architectureVariant} active={active} />
+        {/* RIGHT — architecture visual + evidence */}
+        <div className="relative flex flex-col overflow-hidden" style={{ background: project.bgGradient }}>
+          <div className={project.evidence ? 'flex-1 overflow-hidden' : 'h-full'}>
+            <ArchVisual variant={project.architectureVariant} active={active} />
+          </div>
+          {project.evidence && (
+            <div className="shrink-0 border-t border-[rgba(255,255,255,0.06)] px-5 pb-4 pt-3">
+              <p className="mono mb-2.5 text-[8px] uppercase tracking-[0.2em] text-white/20">Evidence</p>
+              <div className="grid grid-cols-3 gap-2.5">
+                {project.evidence.map(e => (
+                  <div key={e.label} className="group overflow-hidden rounded-lg border border-[rgba(255,255,255,0.08)] transition-colors hover:border-[rgba(255,255,255,0.2)]">
+                    <div className="relative h-20 w-full overflow-hidden">
+                      <Image src={e.src} alt={e.label} fill className="object-cover object-top transition-transform duration-300 group-hover:scale-105" sizes="200px" />
+                    </div>
+                    <p className="mono px-2 py-1.5 text-[7px] uppercase tracking-[0.16em] text-white/25">{e.label}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </motion.article>
@@ -292,7 +311,7 @@ function MobileProjectCard({
   project,
   index,
 }: {
-  project: (typeof projects)[number];
+  project: Project;
   index: number;
 }) {
   return (
@@ -307,6 +326,20 @@ function MobileProjectCard({
       <div className="h-56 overflow-hidden" style={{ background: project.bgGradient }}>
         <ArchVisual variant={project.architectureVariant} active={true} />
       </div>
+
+      {/* Evidence */}
+      {project.evidence && (
+        <div className="grid grid-cols-3 gap-2 border-t border-[rgba(255,255,255,0.06)] p-3" style={{ background: project.bgGradient }}>
+          {project.evidence.map(e => (
+            <div key={e.label} className="overflow-hidden rounded-md border border-[rgba(255,255,255,0.08)]">
+              <div className="relative h-14 w-full overflow-hidden">
+                <Image src={e.src} alt={e.label} fill className="object-cover object-top" sizes="120px" />
+              </div>
+              <p className="mono px-1.5 py-1 text-[7px] uppercase tracking-[0.14em] text-white/25">{e.label}</p>
+            </div>
+          ))}
+        </div>
+      )}
 
       {/* Text */}
       <div className="space-y-5 p-6">

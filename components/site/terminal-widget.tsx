@@ -102,15 +102,15 @@ export function TerminalWidget() {
         );
         break;
       case 'whoami':
-        output = 'Shashank Chakraborty - Backend Developer building systems that scale. Specialized in Python, Node.js, and Graph Databases (Neo4j). I focus on security, observability, and high-performance backend architectures.';
+        output = 'Shashank Chakraborty - Backend Engineer focused on distributed systems, AI tooling, and production infrastructure. I build software, validate it under load, and measure how it behaves.';
         break;
       case 'projects':
         output = (
           <div className="flex flex-col gap-2">
-            <span>🚀 <strong>Shadow Permission Analyzer</strong>: Graph-based AWS IAM privilege escalation detector using Neo4j and boto3.</span>
-            <span>🚀 <strong>SystemCraft</strong>: Real-time system design simulation platform with Gemini 2.0 AI evaluation.</span>
-            <span>🚀 <strong>Interview Prep AI</strong>: Intelligent learning platform with voice practice and spaced repetition.</span>
-            <span>🚀 <strong>DocuFlow</strong>: Event-driven invoice ingestion pipeline with Celery and Redis.</span>
+            <span>★ <strong>SystemCraft</strong>: Real-time system design simulation platform with Gemini 2.0 AI evaluation. Validated under 500 VUs.</span>
+            <span>🚀 <strong>Shadow Permission Analyzer</strong>: Graph-based AWS IAM privilege escalation detector using Neo4j and BFS/DFS.</span>
+            <span>🚀 <strong>Interview Prep AI</strong>: Unified learning platform — spaced repetition, voice practice, and AI feedback in one loop.</span>
+            <span>🚀 <strong>DocuFlow</strong>: Async invoice ingestion pipeline with decoupled Celery task queues and Redis.</span>
             <a href="#projects" className="text-blue-400 hover:underline mt-2 inline-block">View all on main site &rarr;</a>
           </div>
         );
