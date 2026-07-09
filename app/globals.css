@@ -213,6 +213,15 @@ button {
 
 /* ─────────────────────────────────────────────────────────────────────────── */
 
+/* Hide scrollbar utility */
+.custom-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.custom-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

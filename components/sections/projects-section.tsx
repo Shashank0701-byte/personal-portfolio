@@ -185,7 +185,7 @@ function ProjectSlide({
 
       <div className="grid h-full w-full grid-cols-[42%_58%] gap-0 overflow-hidden rounded-[2rem] border border-[var(--border)]">
         {/* LEFT — text panel */}
-        <div className="relative flex flex-col justify-between overflow-hidden bg-[var(--bg-2)] px-10 py-12">
+        <div className="relative flex flex-col justify-between overflow-y-auto bg-[var(--bg-2)] px-10 py-12 custom-scrollbar">
           {/* Ghost project number */}
           <div
             className="pointer-events-none absolute -left-4 -top-4 select-none font-extrabold leading-none"
@@ -216,18 +216,22 @@ function ProjectSlide({
               <p className="mt-3 text-base text-[var(--text-2)]">{project.subheadline}</p>
             </div>
 
-            {/* Body */}
-            <p className="text-sm leading-8 text-[var(--text-2)]">{project.body}</p>
+            {/* Problem → Decision → Tradeoff */}
+            <div className="space-y-5">
+              <div>
+                <span className="mono text-[8px] uppercase tracking-widest text-[var(--text-3)] block mb-1">01 / Problem</span>
+                <p className="text-xs leading-6 text-[var(--text-2)]">{project.problem}</p>
+              </div>
 
-            {/* Key engineering decision */}
-            <div
-              className="rounded-lg border-l-2 py-3 pl-4 pr-3 text-xs leading-6 text-[var(--text-2)]"
-              style={{ borderColor: project.accentColor, background: `${project.accentColor}08` }}
-            >
-              <span className="mono mb-1 block text-[9px] uppercase tracking-widest" style={{ color: project.accentColor }}>
-                Engineering Decision
-              </span>
-              {project.keyDecision}
+              <div>
+                <span className="mono text-[8px] uppercase tracking-widest text-[var(--text-3)] block mb-1" style={{ color: project.accentColor }}>02 / Engineering Decision</span>
+                <p className="text-xs leading-6 text-[var(--text-1)] font-medium">{project.decision}</p>
+              </div>
+
+              <div>
+                <span className="mono text-[8px] uppercase tracking-widest text-[var(--text-3)] block mb-1">03 / Tradeoff</span>
+                <p className="text-xs leading-6 text-[var(--text-2)] italic">{project.tradeoff}</p>
+              </div>
             </div>
           </div>
 
@@ -346,9 +350,28 @@ function MobileProjectCard({
         <div className="flex flex-wrap gap-2">
           {project.tags.map(tag => <span key={tag} className="tag">{tag}</span>)}
         </div>
-        <h3 className="text-2xl font-bold text-[var(--text-1)]">{project.headline}</h3>
-        <p className="text-sm leading-7 text-[var(--text-2)]">{project.body}</p>
+        <div>
+          <h3 className="text-2xl font-bold text-[var(--text-1)]">{project.headline}</h3>
+          <p className="mt-1 text-xs text-[var(--text-3)]">{project.subheadline}</p>
+        </div>
 
+        {/* Problem → Decision → Tradeoff */}
+        <div className="space-y-4 border-t border-[var(--border)] pt-4">
+          <div>
+            <span className="mono text-[8px] uppercase tracking-widest text-[var(--text-3)] block mb-1">01 / Problem</span>
+            <p className="text-xs leading-6 text-[var(--text-2)]">{project.problem}</p>
+          </div>
+
+          <div>
+            <span className="mono text-[8px] uppercase tracking-widest text-[var(--text-3)] block mb-1" style={{ color: project.accentColor }}>02 / Engineering Decision</span>
+            <p className="text-xs leading-6 text-[var(--text-1)] font-medium">{project.decision}</p>
+          </div>
+
+          <div>
+            <span className="mono text-[8px] uppercase tracking-widest text-[var(--text-3)] block mb-1">03 / Tradeoff</span>
+            <p className="text-xs leading-6 text-[var(--text-2)] italic">{project.tradeoff}</p>
+          </div>
+        </div>
         <div className="border-t border-[var(--border)] pt-4">
           <div className="text-2xl font-bold" style={{ color: project.accentColor }}>
             {project.metric.split(' ')[0]}
