@@ -91,17 +91,18 @@ export function AboutSection() {
 
             <div className="space-y-5 text-[15px] leading-8 text-[var(--text-2)]">
               <p>
-                I am a backend-focused developer who likes building systems with clear architecture,
-                predictable performance, and production intent. My current work at Vertex Club
-                anchors that mindset in a live platform.
+                I enjoy building backend systems where architecture matters —
+                clear structure, predictable performance, and production intent.
+                My current work at Vertex Club anchors that mindset in a live platform.
               </p>
               <p>
-                I am especially drawn to AI tooling, graph databases, async workflows, and
-                infrastructure that turns complexity into something operable.
+                Recently I&apos;ve been exploring AI evaluation pipelines,
+                graph databases, distributed systems,
+                and infrastructure that makes software observable.
               </p>
               <p>
-                I am looking for full-time backend or full-stack roles where I can own meaningful
-                systems, ship fast, and keep improving the platform after launch.
+                What interests me most isn&apos;t adding features —
+                it&apos;s understanding why a system behaves the way it does.
               </p>
             </div>
 

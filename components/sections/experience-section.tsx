@@ -11,7 +11,7 @@ export function ExperienceSection() {
 
         <div className="relative z-10">
           <div className="mono text-[11px] uppercase tracking-[0.2em] text-[var(--text-3)]">
-            EXPERIENCE
+            ENGINEERING EXPERIENCE
           </div>
 
           <div className="mt-12 grid grid-cols-1 gap-8 lg:grid-cols-[auto_1fr]">
@@ -29,9 +29,9 @@ export function ExperienceSection() {
             >
               <div className="flex flex-col gap-2 lg:flex-row lg:items-end lg:justify-between">
                 <div>
-                  <h2 className="text-2xl font-semibold text-[var(--text-1)]">Backend Developer</h2>
+                  <h2 className="text-2xl font-semibold text-[var(--text-1)]">Backend Engineer</h2>
                   <p className="mt-2 text-sm text-[var(--text-2)]">
-                    Vertex Club — Dayananda Sagar College of Engineering
+                    Vertex Club · Student Engineering Organization
                   </p>
                 </div>
                 <div className="text-left lg:text-right">
@@ -49,7 +49,12 @@ export function ExperienceSection() {
                 </div>
               </div>
 
-              <div className="mt-8 space-y-4">
+              <p className="mt-6 text-sm leading-7 text-[var(--text-2)]">
+                Designed and shipped the production backend supporting registrations
+                and administration for a student-led engineering platform.
+              </p>
+
+              <div className="mt-6 space-y-4">
                 {experienceBullets.map((bullet) => (
                   <div key={bullet} className="text-sm leading-7 text-[var(--text-2)]">
                     {bullet}
