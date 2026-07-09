@@ -1,0 +1,105 @@
+Phase 4 — Projects
+
+This is where the biggest improvement happens.
+Not visually.
+Structurally.
+
+Every project becomes
+Problem
+↓
+Decision
+↓
+Tradeoff
+↓
+Evidence
+↓
+Result
+
+Instead of
+Description
+↓
+Tech Stack
+↓
+Buttons
+
+Example
+SystemCraft
+
+Current
+Platform
+↓
+Key Decision
+↓
+Metric
+
+New
+Problem
+Traditional interview preparation
+rarely evaluates system design reasoning.
+Engineering Decision
+Combined deterministic architecture validation
+with Gemini-based qualitative evaluation
+instead of relying entirely on LLM responses.
+Infrastructure
+Containerized with Docker
+
+Reverse proxied with Nginx
+Load tested using k6
+Observed using Prometheus + Grafana
+Scaled with Kubernetes HPA
+Validation
+Instead of saying
+Supports X users
+
+Say
+Validated under synthetic load
+using k6 spike tests.
+Observed throughput improvements
+after horizontal pod autoscaling.
+No fake claims.
+Evidence
+Show
+Grafana screenshot
+Throughput comparison
+Latency comparison
+Real screenshots.
+No illustrations.
+
+DocuFlow
+Same structure.
+Problem
+↓
+Architecture
+↓
+Decision
+↓
+Pipeline
+↓
+Evidence
+↓
+Lessons
+
+Instead of saying
+40% faster
+Explain
+how the async architecture reduced waiting.
+Shadow Analyzer
+Don't focus on AWS.
+Focus on graph thinking.
+Example
+Problem
+IAM privilege escalation
+is fundamentally a graph traversal problem.
+Decision
+Used Neo4j instead of relational joins.
+Tradeoff
+Additional infrastructure complexity
+for dramatically simpler traversals.
+Now you're talking like an engineer.
+
+Interview Prep AI
+Explain
+why
+voice processing,
+SM-2,
+and AI feedback exist together.

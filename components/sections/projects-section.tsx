@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useState, useEffect, useCallback } from 'react';
+import Image from 'next/image';
 import {
   motion,
   useScroll,
@@ -11,6 +12,7 @@ import {
 } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import { projects } from '@/lib/site-data';
+import type { Project } from '@/lib/site-data';
 import { IamGraphVisual } from '@/components/projects/iam-graph-visual';
 import { SessionDashboardVisual } from '@/components/projects/session-dashboard-visual';
 import { CardDeckVisual } from '@/components/projects/card-deck-visual';
@@ -153,7 +155,7 @@ function ProjectSlide({
   total,
   shouldReduceMotion,
 }: {
-  project: (typeof projects)[number];
+  project: Project;
   index: number;
   active: boolean;
   countActive: boolean;
@@ -183,7 +185,7 @@ function ProjectSlide({
 
       <div className="grid h-full w-full grid-cols-[42%_58%] gap-0 overflow-hidden rounded-[2rem] border border-[var(--border)]">
         {/* LEFT — text panel */}
-        <div className="relative flex flex-col justify-between overflow-hidden bg-[var(--bg-2)] px-10 py-12">
+        <div className="relative flex flex-col justify-between overflow-y-auto bg-[var(--bg-2)] px-10 py-12 custom-scrollbar">
           {/* Ghost project number */}
           <div
             className="pointer-events-none absolute -left-4 -top-4 select-none font-extrabold leading-none"
@@ -214,18 +216,22 @@ function ProjectSlide({
               <p className="mt-3 text-base text-[var(--text-2)]">{project.subheadline}</p>
             </div>
 
-            {/* Body */}
-            <p className="text-sm leading-8 text-[var(--text-2)]">{project.body}</p>
+            {/* Problem → Decision → Tradeoff */}
+            <div className="space-y-5">
+              <div>
+                <span className="mono text-[8px] uppercase tracking-widest text-[var(--text-3)] block mb-1">01 / Problem</span>
+                <p className="text-xs leading-6 text-[var(--text-2)]">{project.problem}</p>
+              </div>
 
-            {/* Key engineering decision */}
-            <div
-              className="rounded-lg border-l-2 py-3 pl-4 pr-3 text-xs leading-6 text-[var(--text-2)]"
-              style={{ borderColor: project.accentColor, background: `${project.accentColor}08` }}
-            >
-              <span className="mono mb-1 block text-[9px] uppercase tracking-widest" style={{ color: project.accentColor }}>
-                Key Decision
-              </span>
-              {project.keyDecision}
+              <div>
+                <span className="mono text-[8px] uppercase tracking-widest text-[var(--text-3)] block mb-1" style={{ color: project.accentColor }}>02 / Engineering Decision</span>
+                <p className="text-xs leading-6 text-[var(--text-1)] font-medium">{project.decision}</p>
+              </div>
+
+              <div>
+                <span className="mono text-[8px] uppercase tracking-widest text-[var(--text-3)] block mb-1">03 / Tradeoff</span>
+                <p className="text-xs leading-6 text-[var(--text-2)] italic">{project.tradeoff}</p>
+              </div>
             </div>
           </div>
 
@@ -277,9 +283,26 @@ function ProjectSlide({
           </div>
         </div>
 
-        {/* RIGHT — architecture visual */}
-        <div className="relative overflow-hidden" style={{ background: project.bgGradient }}>
-          <ArchVisual variant={project.architectureVariant} active={active} />
+        {/* RIGHT — architecture visual + evidence */}
+        <div className="relative flex flex-col overflow-hidden" style={{ background: project.bgGradient }}>
+          <div className={project.evidence ? 'flex-1 overflow-hidden' : 'h-full'}>
+            <ArchVisual variant={project.architectureVariant} active={active} />
+          </div>
+          {project.evidence && (
+            <div className="shrink-0 border-t border-[rgba(255,255,255,0.06)] px-5 pb-4 pt-3">
+              <p className="mono mb-2.5 text-[8px] uppercase tracking-[0.2em] text-white/20">Evidence</p>
+              <div className="grid grid-cols-3 gap-2.5">
+                {project.evidence.map(e => (
+                  <div key={e.label} className="group overflow-hidden rounded-lg border border-[rgba(255,255,255,0.08)] transition-colors hover:border-[rgba(255,255,255,0.2)]">
+                    <div className="relative h-20 w-full overflow-hidden">
+                      <Image src={e.src} alt={e.label} fill className="object-cover object-top transition-transform duration-300 group-hover:scale-105" sizes="200px" />
+                    </div>
+                    <p className="mono px-2 py-1.5 text-[7px] uppercase tracking-[0.16em] text-white/25">{e.label}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </motion.article>
@@ -292,7 +315,7 @@ function MobileProjectCard({
   project,
   index,
 }: {
-  project: (typeof projects)[number];
+  project: Project;
   index: number;
 }) {
   return (
@@ -308,14 +331,47 @@ function MobileProjectCard({
         <ArchVisual variant={project.architectureVariant} active={true} />
       </div>
 
+      {/* Evidence */}
+      {project.evidence && (
+        <div className="grid grid-cols-3 gap-2 border-t border-[rgba(255,255,255,0.06)] p-3" style={{ background: project.bgGradient }}>
+          {project.evidence.map(e => (
+            <div key={e.label} className="overflow-hidden rounded-md border border-[rgba(255,255,255,0.08)]">
+              <div className="relative h-14 w-full overflow-hidden">
+                <Image src={e.src} alt={e.label} fill className="object-cover object-top" sizes="120px" />
+              </div>
+              <p className="mono px-1.5 py-1 text-[7px] uppercase tracking-[0.14em] text-white/25">{e.label}</p>
+            </div>
+          ))}
+        </div>
+      )}
+
       {/* Text */}
       <div className="space-y-5 p-6">
         <div className="flex flex-wrap gap-2">
           {project.tags.map(tag => <span key={tag} className="tag">{tag}</span>)}
         </div>
-        <h3 className="text-2xl font-bold text-[var(--text-1)]">{project.headline}</h3>
-        <p className="text-sm leading-7 text-[var(--text-2)]">{project.body}</p>
+        <div>
+          <h3 className="text-2xl font-bold text-[var(--text-1)]">{project.headline}</h3>
+          <p className="mt-1 text-xs text-[var(--text-3)]">{project.subheadline}</p>
+        </div>
 
+        {/* Problem → Decision → Tradeoff */}
+        <div className="space-y-4 border-t border-[var(--border)] pt-4">
+          <div>
+            <span className="mono text-[8px] uppercase tracking-widest text-[var(--text-3)] block mb-1">01 / Problem</span>
+            <p className="text-xs leading-6 text-[var(--text-2)]">{project.problem}</p>
+          </div>
+
+          <div>
+            <span className="mono text-[8px] uppercase tracking-widest text-[var(--text-3)] block mb-1" style={{ color: project.accentColor }}>02 / Engineering Decision</span>
+            <p className="text-xs leading-6 text-[var(--text-1)] font-medium">{project.decision}</p>
+          </div>
+
+          <div>
+            <span className="mono text-[8px] uppercase tracking-widest text-[var(--text-3)] block mb-1">03 / Tradeoff</span>
+            <p className="text-xs leading-6 text-[var(--text-2)] italic">{project.tradeoff}</p>
+          </div>
+        </div>
         <div className="border-t border-[var(--border)] pt-4">
           <div className="text-2xl font-bold" style={{ color: project.accentColor }}>
             {project.metric.split(' ')[0]}
