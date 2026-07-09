@@ -11,28 +11,29 @@ import { GhostText } from '@/components/scene/GhostText';
 
 
 
-const METRICS = [
-  { value: 40,  suffix: '%', label: 'Latency Reduced', color: 'var(--accent-a)' },
-  { value: 200, suffix: '+', label: 'Users in Prod',   color: 'var(--accent-c)' },
-  { value: 3,   suffix: '',  label: 'Apps Shipped',    color: 'var(--text-1)'   },
-  { value: 92,  suffix: '%', label: 'RAG Accuracy',    color: 'var(--accent-v)' },
-] as const;
+const METRICS: { value: number | null; text?: string; suffix: string; label: string; color: string }[] = [
+  { value: 350, suffix: ' req/s', label: 'Peak throughput · k6 load test', color: 'var(--accent-c)' },
+  { value: 74,  suffix: '%',      label: 'Lower P95 latency · K8s HPA',   color: 'var(--accent-a)' },
+  { value: 500, suffix: ' VUs',   label: 'Load test validation',           color: 'var(--text-1)'   },
+  { value: null, text: 'Prometheus', suffix: '', label: 'Observability stack', color: 'var(--accent-v)' },
+];
 
 const CONFIG_CYCLE = ['Backend Dev', 'Systems Engineer', 'API Architect'];
 const TAGS = ['FastAPI', 'Neo4j', 'Docker', 'AWS', 'PostgreSQL', 'Redis', 'Celery', 'React'];
 const WORDS = ['FULL', 'BACKEND', 'DEV'] as const;
 
 function MetricCard({
-  value, suffix, label, color, inView, delay,
+  value, suffix, label, color, inView, delay, text,
 }: {
-  value: number; suffix: string; label: string;
-  color: string; inView: boolean; delay: number;
+  value: number | null; suffix: string; label: string;
+  color: string; inView: boolean; delay: number; text?: string;
 }) {
-  const count = useCountUp(value, inView);
+  const count = useCountUp(value ?? 0, inView && value != null);
   const [displayVal, setDisplayVal] = useState(0);
-  const [filled, setFilled] = useState(false);
+  const [filled, setFilled] = useState(value == null);
 
   useEffect(() => {
+    if (value == null) { setFilled(true); return; }
     const unsub = count.on('change', v => {
       setDisplayVal(Math.round(v));
       if (Math.round(v) >= value) setFilled(true);
@@ -41,8 +42,8 @@ function MetricCard({
   }, [count, value]);
 
   useEffect(() => {
-    if (!inView) { setFilled(false); setDisplayVal(0); }
-  }, [inView]);
+    if (!inView) { setFilled(value == null); setDisplayVal(0); }
+  }, [inView, value]);
 
   return (
     <motion.div
@@ -56,7 +57,9 @@ function MetricCard({
         className="absolute left-0 top-0 h-px rounded-t-xl transition-all duration-[1400ms] ease-out"
         style={{ width: filled ? '100%' : '0%', background: color }}
       />
-      <div className="text-2xl font-bold" style={{ color }}>{displayVal}{suffix}</div>
+      <div className="text-2xl font-bold" style={{ color }}>
+        {value != null ? <>{displayVal}{suffix}</> : text}
+      </div>
       <div className="mono mt-2 text-[9px] uppercase tracking-[0.18em] text-[var(--text-3)]">{label}</div>
     </motion.div>
   );
@@ -254,8 +257,9 @@ export function HeroSection() {
               animate={revealed ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 1.15 }}
             >
-              I build systems that scale — graph-based security tools, real-time AI platforms,
-              event-driven pipelines. Backend-first. Production-obsessed.
+              Backend engineer focused on distributed systems, AI tooling, and production
+              infrastructure. I build software, validate it under load, and measure how it
+              behaves in production-like environments.
             </motion.p>
 
             <motion.div
@@ -334,6 +338,7 @@ export function HeroSection() {
                   suffix={m.suffix}
                   label={m.label}
                   color={m.color}
+                  text={m.text}
                   inView={metricsInView}
                   delay={i * 0.08}
                 />
