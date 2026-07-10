@@ -138,25 +138,45 @@ export const projects: Project[] = [
   },
 ];
 
-export const skillGroups = [
+export const capabilities = [
   {
-    title: 'BACKEND SYSTEMS',
+    title: 'Backend Engineering',
+    description: 'APIs, services, and data layers that hold up under real traffic.',
     accent: 'var(--accent-v)',
-    skills: ['FastAPI', 'Node.js', 'Express', 'Python', 'REST APIs', 'WebSockets'],
   },
   {
-    title: 'DATABASES & STORAGE',
+    title: 'Distributed Systems',
+    description: 'Async pipelines, message queues, and worker pools that scale independently.',
     accent: 'var(--accent-c)',
-    skills: ['PostgreSQL', 'MongoDB', 'Redis', 'Neo4j', 'MySQL', 'Celery'],
   },
   {
-    title: 'INFRASTRUCTURE & DEVOPS',
+    title: 'API Design',
+    description: 'RESTful contracts, versioning strategies, and auth flows that make integration painless.',
     accent: 'var(--accent-a)',
-    skills: ['Docker', 'AWS', 'GitHub Actions', 'Nginx', 'Linux', 'CI/CD'],
   },
   {
-    title: 'FRONTEND (WHEN NEEDED)',
+    title: 'Authentication',
+    description: 'OAuth, RBAC, and session management across multi-tenant platforms.',
     accent: 'var(--accent-g)',
-    skills: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'Framer Motion'],
+  },
+  {
+    title: 'Infrastructure',
+    description: 'Docker, Nginx, CI/CD pipelines, and cloud deployments that ship reliably.',
+    accent: 'var(--accent-c)',
+  },
+  {
+    title: 'Observability',
+    description: 'Prometheus, Grafana, structured logging — knowing why a system behaves the way it does.',
+    accent: 'var(--accent-v)',
+  },
+  {
+    title: 'AI Applications',
+    description: 'LLM evaluation pipelines, prompt engineering, and hybrid deterministic + AI architectures.',
+    accent: 'var(--accent-a)',
+  },
+  {
+    title: 'Performance Engineering',
+    description: 'Load testing with k6, P95 latency optimization, and Kubernetes HPA scaling.',
+    accent: 'var(--accent-g)',
   },
 ] as const;
