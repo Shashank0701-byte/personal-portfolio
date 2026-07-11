@@ -118,10 +118,14 @@ export function TerminalWidget() {
       case 'skills':
         output = (
           <div className="flex flex-col gap-1">
-            <span>• <strong>Backend</strong>: FastAPI, Node.js, Express, Python, REST APIs, WebSockets</span>
-            <span>• <strong>Databases</strong>: PostgreSQL, MongoDB, Redis, Neo4j, MySQL, Celery</span>
-            <span>• <strong>Infrastructure</strong>: Docker, AWS, GitHub Actions, Nginx, Linux, CI/CD</span>
-            <span>• <strong>Frontend</strong>: React, Next.js, TypeScript, Tailwind CSS, Framer Motion</span>
+            <span>• <strong>Backend Engineering</strong> — APIs, services, data layers</span>
+            <span>• <strong>Distributed Systems</strong> — Async pipelines, message queues</span>
+            <span>• <strong>API Design</strong> — RESTful contracts, auth flows</span>
+            <span>• <strong>Authentication</strong> — OAuth, RBAC, session management</span>
+            <span>• <strong>Infrastructure</strong> — Docker, Nginx, CI/CD</span>
+            <span>• <strong>Observability</strong> — Prometheus, Grafana, structured logging</span>
+            <span>• <strong>AI Applications</strong> — LLM pipelines, hybrid architectures</span>
+            <span>• <strong>Performance Engineering</strong> — k6, P95 latency, HPA scaling</span>
           </div>
         );
         break;

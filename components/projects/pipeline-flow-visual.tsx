@@ -69,7 +69,7 @@ export function PipelineFlowVisual({ active }: { active: boolean }) {
   }, [active]);
 
   return (
-    <div className="relative flex h-full w-full flex-col justify-center overflow-hidden bg-[linear-gradient(160deg,#0a0a0e,#0d0d10)] px-6 py-8">
+    <div className="relative flex h-full w-full flex-col justify-center overflow-hidden bg-[linear-gradient(160deg,#0a0a0e,#0d0d10)] px-6 py-5">
       {/* Grid bg */}
       <svg className="absolute inset-0 h-full w-full opacity-10" aria-hidden="true">
         <defs>
@@ -85,8 +85,8 @@ export function PipelineFlowVisual({ active }: { active: boolean }) {
       </p>
 
       {/* Pipeline SVG */}
-      <div className="relative z-10 w-full overflow-x-auto">
-        <svg viewBox="0 0 720 180" className="w-full min-w-[500px]" aria-hidden="false">
+      <div className="relative z-10 flex-1 flex items-center justify-center min-h-0 w-full my-2">
+        <svg viewBox="0 0 720 180" className="max-h-full max-w-full h-auto w-auto" aria-hidden="false">
           {/* Connecting line */}
           <line x1="60" y1={PATH_Y} x2="660" y2={PATH_Y} stroke="rgba(255,255,255,0.08)" strokeWidth="2" strokeDasharray="6 4" />
 
