@@ -168,6 +168,7 @@ export const capabilities = [
     focus: ['API Design', 'Clean service boundaries', 'Authentication', 'Database modeling', 'Performance'],
     examples: ['Vertex Backend', 'SystemCraft APIs', 'Interview Prep AI'],
     values: ['predictable latency', 'observability', 'scalability', 'maintainability'],
+    thingsILearned: 'Keeping service boundaries small makes scaling and testing much easier than a large monolith.',
   },
   {
     title: 'Distributed Systems',
@@ -176,6 +177,7 @@ export const capabilities = [
     focus: ['Async task execution', 'Message serialization', 'Queue management', 'Worker pool scaling'],
     examples: ['DocuFlow Celery Pipeline', 'Redis Ingest Queue', 'SystemCraft Load Simulator'],
     values: ['fault tolerance', 'eventual consistency', 'backpressure handling', 'loose coupling'],
+    thingsILearned: 'Idempotency is critical. When message queues retry failed tasks, services must handle duplicate events gracefully without data corruption.',
   },
   {
     title: 'API Design',
@@ -184,6 +186,7 @@ export const capabilities = [
     focus: ['RESTful contracts', 'API versioning', 'Request validation', 'Error handling schemas'],
     examples: ['SystemCraft Qualitative APIs', 'Vertex Registration Endpoints', 'Shadow Analyzer Graph Cypher APIs'],
     values: ['developer experience', 'strict contract adherence', 'semantic status codes', 'idempotency'],
+    thingsILearned: 'Versioning from day one saves massive headaches later. Always namespace APIs (e.g., /v1/) even for early prototypes.',
   },
   {
     title: 'Authentication',
@@ -192,6 +195,7 @@ export const capabilities = [
     focus: ['OAuth 2.0 flows', 'Role-Based Access Control (RBAC)', 'JWT session state management', 'Token signing/verification'],
     examples: ['Vertex OAuth Integration', 'SystemCraft Session Validation', 'Shadow Policy Escalation Logic'],
     values: ['least privilege security', 'secure token storage', 'stateless session scaling', 'audit trails'],
+    thingsILearned: 'Relying on established providers and decoupling auth logic from business logic simplifies security compliance and reduces risk.',
   },
   {
     title: 'Infrastructure',
@@ -200,6 +204,7 @@ export const capabilities = [
     focus: ['Docker containerization', 'CI/CD pipeline construction', 'Reverse proxy configuration', 'Cloud platform deployment'],
     examples: ['Vertex Vercel Deployment', 'SystemCraft Multi-container Compose', 'DocuFlow Celery/Redis Stack'],
     values: ['reproducible environments', 'immutable deployments', 'automated rollbacks', 'minimal container sizing'],
+    thingsILearned: 'Containerization eliminates "works on my machine" issues, enabling reproducible deployments across environments.',
   },
   {
     title: 'Observability',
@@ -208,6 +213,7 @@ export const capabilities = [
     focus: ['Metrics collection', 'Structured JSON logging', 'P95/P99 latency tracking', 'Alert threshold configuration'],
     examples: ['SystemCraft Prometheus Exporter', 'Grafana Ingestion Dashboards', 'DocuFlow Worker Metrics'],
     values: ['real-time system visibility', 'context-rich logging', 'proactive alerting', 'zero-overhead instrumentation'],
+    thingsILearned: 'Logs without context are useless during incidents. Injecting request IDs and structured JSON logging makes tracing errors exponentially faster.',
   },
   {
     title: 'AI Applications',
@@ -216,6 +222,7 @@ export const capabilities = [
     focus: ['LLM API orchestration', 'System prompt engineering', 'Response parsing & validation', 'Hybrid deterministic pipelines'],
     examples: ['SystemCraft Gemini qualitative rater', 'Interview Prep AI feedback agent'],
     values: ['hallucination prevention', 'cost-optimal token usage', 'structured schema output', 'fallback strategies'],
+    thingsILearned: 'LLMs are inherently non-deterministic. Always parse, validate, and gracefully handle schema violations when piping AI output into traditional systems.',
   },
   {
     title: 'Performance Engineering',
@@ -224,5 +231,6 @@ export const capabilities = [
     focus: ['Load testing script design', 'Concurrency bottleneck analysis', 'Latency profiling', 'HPA scaling policies'],
     examples: ['SystemCraft k6 load benchmarks', 'Redis caching integrations', 'Celery worker optimization'],
     values: ['low P95/P99 latencies', 'high throughput ceilings', 'efficient memory bounds', 'resource efficiency'],
+    thingsILearned: 'Failing to index your database for common query paths is the fastest way to experience downtime under load.',
   },
-] as const;
+];

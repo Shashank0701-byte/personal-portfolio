@@ -92,11 +92,10 @@ export function ProjectsSection() {
   }, []);
 
   return (
-    <>
+    <div id="projects">
       {/* Sticky scroll container — desktop only */}
       <section
         ref={sectionRef}
-        id="projects"
         className="relative hidden lg:block"
         style={{ height: `${projects.length * 100}vh` }}
       >
@@ -132,7 +131,7 @@ export function ProjectsSection() {
       </section>
 
       {/* Mobile fallback — vertical stacked */}
-      <section id="projects" className="section-shell px-6 lg:hidden">
+      <section className="section-shell px-6 lg:hidden">
         <div className="section-number">04</div>
         <div className="mx-auto max-w-2xl space-y-10">
           {projects.map((project, index) => (
@@ -140,7 +139,7 @@ export function ProjectsSection() {
           ))}
         </div>
       </section>
-    </>
+    </div>
   );
 }
 
