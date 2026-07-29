@@ -2,7 +2,7 @@
 
 import { useRef, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { Github, Instagram, Linkedin, Mail } from 'lucide-react';
+import { Github, Linkedin, Mail, X } from 'lucide-react';
 import { MagicCard } from '@/components/site/magic-card';
 
 const encodedEmail = 'c2hhc2hhbmtrY2hha3JhYm9ydHk3MTIwMDVAZ21haWwuY29t';
@@ -24,7 +24,7 @@ export function ContactSection() {
     { label: 'Email', icon: Mail, href: `mailto:${revealedEmail ?? ''}`, onClick: decodeEmail },
     { label: 'LinkedIn', icon: Linkedin, href: 'https://www.linkedin.com/in/shashank-chakraborty/' },
     { label: 'GitHub', icon: Github, href: 'https://github.com/Shashank0701-byte' },
-    { label: 'Instagram', icon: Instagram, href: 'https://www.instagram.com/shashank_0701/' },
+    { label: 'X', icon: X, href: 'https://x.com/Shanks0701' },
   ];
 
   return (

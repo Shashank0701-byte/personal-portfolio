@@ -89,6 +89,17 @@ export function AboutSection() {
               <h2 className="mt-3 text-4xl font-bold text-[var(--text-1)]">Engineer who ships.</h2>
             </div>
 
+            <div className="space-y-4">
+              {aboutProofs.map((proof) => (
+                <div
+                  key={proof}
+                  className="border-l-[2px] border-l-[var(--accent-v)] pl-4 text-sm leading-7 text-[var(--text-2)]"
+                >
+                  {proof}
+                </div>
+              ))}
+            </div>
+
             <div className="space-y-5 text-[15px] leading-8 text-[var(--text-2)]">
               <p>
                 I enjoy building backend systems where architecture matters —
@@ -104,17 +115,6 @@ export function AboutSection() {
                 What interests me most isn&apos;t adding features —
                 it&apos;s understanding why a system behaves the way it does.
               </p>
-            </div>
-
-            <div className="space-y-4">
-              {aboutProofs.map((proof) => (
-                <div
-                  key={proof}
-                  className="border-l-[2px] border-l-[var(--accent-v)] pl-4 text-sm leading-7 text-[var(--text-2)]"
-                >
-                  {proof}
-                </div>
-              ))}
             </div>
           </div>
         </motion.div>

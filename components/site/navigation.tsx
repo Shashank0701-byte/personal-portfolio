@@ -1,22 +1,39 @@
 'use client';
 
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion';
 import { Menu, Terminal, X } from 'lucide-react';
 import { useEffect, useMemo, useState, useRef } from 'react';
 import { navLinks } from '@/lib/site-data';
 import { useTerminal } from './terminal-context';
+import { useOverlay } from './overlay-context';
 import { Magnetic } from '@/components/ui/magnetic';
 
 export function Navigation() {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState('#home');
+  const [scrolled, setScrolled] = useState(false);
   const { toggleTerminal } = useTerminal();
+  const { isOverlayOpen } = useOverlay();
   const navRef = useRef<HTMLElement>(null);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const [isHovered, setIsHovered] = useState(false);
+
+  const { scrollYProgress } = useScroll();
+  const progressScaleX = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
   const sectionIds = useMemo(() => navLinks.map((link) => link.href.slice(1)), []);
-  const isLight = active === '#home' || active === '#about' || active === '#experience' || active === '#skills';
+  const isLight =
+    active === '#home' ||
+    active === '#about' ||
+    active === '#experience' ||
+    active === '#projects' ||
+    active === '#quest-log';
+
+  // Recede at the very top of Hero, arrive as a glass pill once the page scrolls
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   useEffect(() => {
     const observers = sectionIds.map((id) => {
@@ -47,35 +64,30 @@ export function Navigation() {
     setOpen(false);
   };
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    setMousePos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
-  };
-
   return (
     <>
-      {/* Elite Navbar (Desktop) */}
-      <motion.div 
+      {/* Elite Navbar (Desktop) — quiet wordmark at the top of Hero, resolves into a glass pill on scroll */}
+      <motion.div
         initial={{ y: -100, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
+        animate={{ y: 0, opacity: isOverlayOpen ? 0 : 1 }}
         transition={{ type: 'spring', stiffness: 200, damping: 20 }}
+        aria-hidden={isOverlayOpen}
         className="fixed inset-x-0 top-6 z-50 hidden justify-center px-6 pointer-events-none md:flex"
       >
         <div
-          className={`pointer-events-auto relative flex w-full max-w-5xl items-center justify-between rounded-full border px-5 py-2.5 shadow-2xl backdrop-blur-3xl transition-colors duration-300 ${
-            isLight ? 'border-black/10 bg-[rgba(217,205,187,0.75)]' : 'border-white/10 bg-[rgba(10,10,12,0.6)]'
+          className={`relative flex w-full max-w-5xl items-center justify-between rounded-full border px-5 py-2.5 transition-[background-color,border-color,box-shadow,backdrop-filter] duration-500 ease-out ${
+            isOverlayOpen ? 'pointer-events-none' : 'pointer-events-auto'
+          } ${
+            scrolled
+              ? `shadow-2xl backdrop-blur-3xl ${isLight ? 'border-black/10 bg-[rgba(217,205,187,0.75)]' : 'border-white/10 bg-[rgba(10,10,12,0.6)]'}`
+              : 'border-transparent bg-transparent shadow-none'
           }`}
-          onMouseMove={handleMouseMove}
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
         >
-          {/* Spotlight Gradient */}
-          <div
-            className="pointer-events-none absolute -inset-px rounded-full opacity-0 transition-opacity duration-300 z-0"
-            style={{
-              opacity: isHovered ? 1 : 0,
-              background: `radial-gradient(400px circle at ${mousePos.x}px ${mousePos.y}px, ${isLight ? 'rgba(32,26,20,0.06)' : 'rgba(255,255,255,0.08)'}, transparent 40%)`
-            }}
+          {/* Scroll-progress hairline */}
+          <motion.div
+            className="pointer-events-none absolute inset-x-6 bottom-[3px] h-[2px] origin-left rounded-full bg-gradient-to-r from-[var(--accent-v)] to-[var(--accent-c)] transition-opacity duration-500"
+            style={{ scaleX: progressScaleX, opacity: scrolled ? 0.7 : 0 }}
+            aria-hidden="true"
           />
 
           {/* Logo */}
@@ -139,9 +151,9 @@ export function Navigation() {
             <Magnetic intensity={0.15}>
               <button
                 onClick={() => handleNavigate('#contact')}
-                className="relative inline-flex h-9 overflow-hidden rounded-full p-[1px] transition-transform hover:scale-[1.02]"
+                className="group relative inline-flex h-9 overflow-hidden rounded-full p-[1px] transition-transform hover:scale-[1.02]"
               >
-                <span className="absolute inset-[-1000%] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#393BB2_0%,var(--accent-v)_50%,#393BB2_100%)] opacity-80" />
+                <span className="absolute inset-[-1000%] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#393BB2_0%,var(--accent-v)_50%,#393BB2_100%)] opacity-80 [animation-play-state:paused] group-hover:[animation-play-state:running] group-focus-visible:[animation-play-state:running]" />
                 <span className="inline-flex h-full w-full items-center justify-center rounded-full bg-[rgba(10,10,12,0.95)] px-5 py-1 text-[13px] font-semibold text-white backdrop-blur-3xl transition-colors hover:bg-[rgba(15,15,18,0.9)]">
                   Contact
                 </span>
@@ -152,15 +164,20 @@ export function Navigation() {
       </motion.div>
 
       {/* Mobile Header */}
-      <motion.div 
+      <motion.div
         initial={{ y: -100, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
+        animate={{ y: 0, opacity: isOverlayOpen ? 0 : 1 }}
         transition={{ type: 'spring', stiffness: 200, damping: 20 }}
+        aria-hidden={isOverlayOpen}
         className="fixed inset-x-0 top-4 z-50 flex justify-center px-4 pointer-events-none md:hidden"
       >
         <div
-          className={`pointer-events-auto flex w-full items-center justify-between rounded-full border px-4 py-2.5 shadow-2xl backdrop-blur-3xl transition-colors duration-300 ${
-            isLight ? 'border-black/10 bg-[rgba(217,205,187,0.75)]' : 'border-white/10 bg-[rgba(10,10,12,0.6)]'
+          className={`flex w-full items-center justify-between rounded-full border px-4 py-2.5 transition-[background-color,border-color,box-shadow,backdrop-filter] duration-500 ease-out ${
+            isOverlayOpen ? 'pointer-events-none' : 'pointer-events-auto'
+          } ${
+            scrolled
+              ? `shadow-2xl backdrop-blur-3xl ${isLight ? 'border-black/10 bg-[rgba(217,205,187,0.75)]' : 'border-white/10 bg-[rgba(10,10,12,0.6)]'}`
+              : 'border-transparent bg-transparent shadow-none'
           }`}
         >
           <button onClick={() => handleNavigate('#home')} className={`font-[var(--font-syne)] text-lg font-bold pl-2 ${isLight ? 'text-[#201a14]' : 'text-white'}`}>
@@ -169,9 +186,9 @@ export function Navigation() {
           <div className="flex items-center gap-2">
             <button
               onClick={() => handleNavigate('#contact')}
-              className="relative inline-flex h-8 overflow-hidden rounded-full p-[1px]"
+              className="group relative inline-flex h-8 overflow-hidden rounded-full p-[1px]"
             >
-              <span className="absolute inset-[-1000%] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#393BB2_0%,var(--accent-v)_50%,#393BB2_100%)] opacity-80" />
+              <span className="absolute inset-[-1000%] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#393BB2_0%,var(--accent-v)_50%,#393BB2_100%)] opacity-80 [animation-play-state:paused] group-hover:[animation-play-state:running] group-focus-visible:[animation-play-state:running]" />
               <span className="inline-flex h-full w-full items-center justify-center rounded-full bg-[rgba(10,10,12,0.95)] px-4 py-1 text-[12px] font-semibold text-white backdrop-blur-3xl">
                 Contact
               </span>

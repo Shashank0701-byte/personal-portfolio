@@ -9,7 +9,7 @@ import { GhostText } from '@/components/scene/GhostText';
 const HEADLINE = "Hello there, I'm a backend engineer and AI systems builder.";
 const HEADLINE_WORDS = HEADLINE.split(' ');
 const DESC_WORDS = 'Backend engineer focused on distributed systems, AI tooling, and production infrastructure. I build software, validate it under load, and measure how it behaves in production-like environments.'.split(' ');
-const TAGS = ['FastAPI', 'Neo4j', 'Docker', 'AWS', 'PostgreSQL', 'Redis', 'Celery', 'React'];
+const TAGS = ['FastAPI', 'Neo4j', 'Docker', 'AWS', 'React'];
 
 /* ─── Image preload ─────────────────────────────────────────────────────────── */
 function useImagePreload(srcs: string[]) {
@@ -108,7 +108,7 @@ export function HeroSection() {
   }, []);
 
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end start'] });
-  const bgOpacity = useTransform(scrollYProgress, [0, 0.25], [1, 0]);
+  const bgOpacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
   const contentY = useTransform(scrollYProgress, [0, 0.4], ['0px', '-40px']);
 
   return (
@@ -148,6 +148,12 @@ export function HeroSection() {
         <div
           className="absolute inset-0"
           style={{ background: 'linear-gradient(90deg, rgba(var(--hero-bg-rgb),0.97) 0%, rgba(var(--hero-bg-rgb),0.88) 38%, rgba(var(--hero-bg-rgb),0.25) 58%, transparent 74%)' }}
+        />
+
+        {/* Tones down the bright flat wash behind the text column, and lifts text contrast */}
+        <div
+          className="absolute inset-0"
+          style={{ background: 'linear-gradient(90deg, rgba(32,26,20,0.12) 0%, rgba(32,26,20,0.06) 34%, transparent 62%)' }}
         />
       </motion.div>
 
@@ -242,7 +248,7 @@ export function HeroSection() {
               <a
                 href="/Shashank's Resume (5).pdf"
                 download="Shashank_Chakraborty_Resume.pdf"
-                className="mono group inline-flex items-center gap-2 text-xs uppercase tracking-[0.14em] text-[var(--text-3)] transition-colors hover:text-[var(--text-1)]"
+                className="mono group inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.14em] text-[var(--text-2)] transition-colors hover:text-[var(--text-1)]"
               >
                 <Download className="h-3.5 w-3.5" />
                 Download CV

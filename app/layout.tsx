@@ -3,6 +3,7 @@ import { JetBrains_Mono, Pixelify_Sans, Press_Start_2P, Syne } from 'next/font/g
 import './globals.css';
 import { TerminalProvider } from '@/components/site/terminal-context';
 import { TerminalWidget } from '@/components/site/terminal-widget';
+import { OverlayProvider } from '@/components/site/overlay-context';
 
 const syne = Syne({
   subsets: ['latin'],
@@ -42,10 +43,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className={`${syne.variable} ${mono.variable} ${pixelDisplay.variable} ${pixelBody.variable}`}>
-        <TerminalProvider>
-          {children}
-          <TerminalWidget />
-        </TerminalProvider>
+        <OverlayProvider>
+          <TerminalProvider>
+            {children}
+            <TerminalWidget />
+          </TerminalProvider>
+        </OverlayProvider>
       </body>
     </html>
   );

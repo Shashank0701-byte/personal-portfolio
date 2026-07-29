@@ -24,18 +24,19 @@ export function Marquee({ direction = 'left' }: { direction?: 'left' | 'right' }
 
   return (
     <section
-      className={`relative overflow-hidden bg-black py-14${reversed ? ' is--reversed-marquee' : ''}`}
+      className={`relative overflow-hidden bg-[#d9cdbb] py-20 sm:py-24 lg:py-28${reversed ? ' is--reversed-marquee' : ''}`}
       aria-hidden="true"
     >
+      {/* Frame variant with the portal opening cut out, so the text shows through it */}
       <img
-        src="/nether-portal-nobg.png"
+        src="/nether-portal-frame.png"
         alt=""
-        className="pointer-events-none absolute left-2 top-1/2 z-10 h-28 w-auto -translate-y-1/2 sm:left-4 sm:h-36 lg:h-44"
+        className="pointer-events-none absolute left-2 top-1/2 z-10 h-40 w-auto -translate-y-1/2 sm:left-4 sm:h-52 lg:h-64"
       />
       <img
-        src="/nether-portal-nobg.png"
+        src="/nether-portal-frame.png"
         alt=""
-        className="pointer-events-none absolute right-2 top-1/2 z-10 h-28 w-auto -translate-y-1/2 sm:right-4 sm:h-36 lg:h-44"
+        className="pointer-events-none absolute right-2 top-1/2 z-10 h-40 w-auto -translate-y-1/2 sm:right-4 sm:h-52 lg:h-64"
       />
 
       {/* Text band tilted to echo the portal's angled perspective */}

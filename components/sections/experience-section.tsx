@@ -14,12 +14,7 @@ export function ExperienceSection() {
             ENGINEERING EXPERIENCE
           </div>
 
-          <div className="mt-12 grid grid-cols-1 gap-8 lg:grid-cols-[auto_1fr]">
-            <div className="relative hidden lg:block">
-              <div className="absolute left-3 top-0 h-full border-l border-dashed border-[var(--border-h)]" />
-              <div className="absolute left-[9px] top-3 h-2 w-2 rounded-full bg-[var(--accent-v)]" />
-            </div>
-
+          <div className="mt-12">
             <motion.div
               className="relative border-l-[3px] border-l-[var(--accent-v)] bg-transparent pl-7"
               initial={{ opacity: 0, y: 40 }}

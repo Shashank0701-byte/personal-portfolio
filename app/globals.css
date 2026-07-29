@@ -65,7 +65,7 @@ button {
   top: 0.5rem;
   left: 0;
   font-family: var(--font-syne), sans-serif;
-  font-size: clamp(4.5rem, 12vw, 7.5rem);
+  font-size: clamp(3rem, 12vw, 7.5rem);
   font-weight: 800;
   line-height: 1;
   color: var(--ghost);
@@ -88,20 +88,20 @@ button {
 }
 
 .tag {
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-h);
   border-radius: 0.125rem;
   padding: 0.35rem 0.625rem;
   font-family: var(--font-mono), monospace;
   font-size: 0.625rem;
   letter-spacing: 0.14em;
-  color: var(--text-3);
+  color: var(--text-2);
   text-transform: uppercase;
   transition: border-color 200ms var(--ease-out), color 200ms var(--ease-out);
 }
 
 .tag:hover {
   border-color: var(--border-h);
-  color: var(--text-2);
+  color: var(--text-1);
 }
 
 .skill-chip {
@@ -201,11 +201,12 @@ button {
   }
 }
 
-/* ─── Light theme (scoped — Marquee/Projects/CTA stay dark as contrast bands) ─ */
+/* ─── Light theme (site-wide; only Contact stays dark as the closing band) ──── */
 #home,
 #about,
 #experience,
-#skills {
+#projects,
+#quest-log {
   --hero-bg: #d9cdbb;
   --hero-bg-rgb: 217, 205, 187;
   --text-1: #201a14;
@@ -219,7 +220,8 @@ button {
 
 #about,
 #experience,
-#skills {
+#projects,
+#quest-log {
   background: var(--hero-bg);
 }
 
@@ -276,13 +278,15 @@ button {
 .marquee--textwrapper-hold.reverse {
   animation-name: marquee-right;
 }
+/* Kept small and light so the band reads as threading through the portal opening
+   rather than sweeping past behind the frame. */
 .marquee-text {
-  padding-inline: 1.5rem;
+  padding-inline: 1rem;
   font-family: var(--font-syne), sans-serif;
-  font-size: clamp(1.5rem, 4vw, 3rem);
-  font-weight: 800;
-  letter-spacing: -0.01em;
-  color: #ffffff;
+  font-size: clamp(0.8rem, 1.25vw, 1.05rem);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: #201a14;
   white-space: nowrap;
 }
 

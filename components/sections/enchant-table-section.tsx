@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { projects } from '@/lib/site-data';
+import { useOverlay } from '@/components/site/overlay-context';
 import styles from './enchant-table.module.css';
 
 const PROJECT_ICONS: Record<string, string> = {
@@ -93,7 +94,10 @@ export function EnchantTableSection() {
   }, []);
 
   // Lock body scroll and wire Escape while the GUI is open
+  const { setOverlayOpen } = useOverlay();
+
   useEffect(() => {
+    setOverlayOpen(open);
     if (!open) return;
 
     document.body.style.overflow = 'hidden';
@@ -108,6 +112,7 @@ export function EnchantTableSection() {
       document.body.style.overflow = '';
       window.removeEventListener('keydown', onKeyDown);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
   const closeModal = () => {
@@ -194,6 +199,13 @@ export function EnchantTableSection() {
         </div>
 
         <p className={`${styles.ctaHint} mt-7`}>[ CLICK TO ENCHANT ]</p>
+        <button
+          type="button"
+          onClick={() => setOpen(true)}
+          className="link-underline mono mt-3 text-[11px] uppercase tracking-[0.14em] text-[var(--text-3)] transition-colors hover:text-[var(--text-1)]"
+        >
+          or browse projects as a list
+        </button>
 
         <div className="mt-12 flex flex-wrap justify-center gap-4">
           {stats.map((stat) => (
