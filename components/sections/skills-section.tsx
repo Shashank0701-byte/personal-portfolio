@@ -29,7 +29,7 @@ export function SkillsSection() {
       <div
         className="pointer-events-none absolute inset-0 opacity-60"
         style={{
-          backgroundImage: 'radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px)',
+          backgroundImage: 'radial-gradient(var(--ghost) 1px, transparent 1px)',
           backgroundSize: '28px 28px',
         }}
       />
@@ -52,7 +52,7 @@ export function SkillsSection() {
           {capabilities.map((cap, index) => (
             <motion.div
               key={cap.title}
-              className="group relative bg-[var(--bg-2)] p-6 transition-colors duration-300 hover:bg-[rgba(255,255,255,0.03)] cursor-pointer"
+              className="group relative bg-[var(--surface)] p-6 transition-colors duration-300 hover:bg-[var(--border-h)] cursor-pointer"
               onClick={() => setSelectedCap(cap)}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -96,7 +96,7 @@ export function SkillsSection() {
       {/* Floating Inspector Modal */}
       <AnimatePresence>
         {selectedCap && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center px-4 sm:px-6">
+          <div className="dark-scope fixed inset-0 z-50 flex items-center justify-center px-4 sm:px-6">
             {/* Backdrop */}
             <motion.div
               className="absolute inset-0 bg-black/60 backdrop-blur-sm"
@@ -108,7 +108,7 @@ export function SkillsSection() {
 
             {/* Modal Panel */}
             <motion.div
-              className="relative w-full max-w-xl overflow-hidden rounded-[2rem] border border-[rgba(255,255,255,0.1)] bg-[var(--bg-1)] shadow-2xl"
+              className="relative w-full max-w-xl overflow-hidden rounded-[2rem] border border-[var(--border-h)] bg-[var(--surface)] shadow-2xl"
               initial={{ opacity: 0, scale: 0.95, y: 10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 10 }}

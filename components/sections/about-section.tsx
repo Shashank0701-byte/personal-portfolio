@@ -47,7 +47,7 @@ export function AboutSection() {
                 <Image src="/your-photo.jpg" alt="Shashank Chakraborty" fill className="object-cover" />
               </div>
             </div>
-            <div className="mono mt-3 rounded-lg border border-[rgba(255,255,255,0.07)] bg-[rgba(255,255,255,0.03)] px-4 py-3 text-[10px] uppercase tracking-[0.08em] text-[var(--text-3)]">
+            <div className="mono mt-3 rounded-lg border border-[var(--border)] bg-[var(--surface)] px-4 py-3 text-[10px] uppercase tracking-[0.08em] text-[var(--text-3)]">
               Dayananda Sagar CE · CGPA 8.38 · Bengaluru, IN
             </div>
           </div>
