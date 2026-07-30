@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
-import { JetBrains_Mono, Syne } from 'next/font/google';
+import { JetBrains_Mono, Pixelify_Sans, Press_Start_2P, Syne } from 'next/font/google';
 import './globals.css';
 import { TerminalProvider } from '@/components/site/terminal-context';
 import { TerminalWidget } from '@/components/site/terminal-widget';
+import { OverlayProvider } from '@/components/site/overlay-context';
 
 const syne = Syne({
   subsets: ['latin'],
@@ -14,6 +15,18 @@ const mono = JetBrains_Mono({
   subsets: ['latin'],
   weight: ['400', '500'],
   variable: '--font-mono',
+});
+
+// Pixel faces — used only by the enchanting-table projects section
+const pixelDisplay = Press_Start_2P({
+  subsets: ['latin'],
+  weight: '400',
+  variable: '--font-pixel-display',
+});
+
+const pixelBody = Pixelify_Sans({
+  subsets: ['latin'],
+  variable: '--font-pixel-body',
 });
 
 export const metadata: Metadata = {
@@ -29,11 +42,13 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={`${syne.variable} ${mono.variable}`}>
-        <TerminalProvider>
-          {children}
-          <TerminalWidget />
-        </TerminalProvider>
+      <body className={`${syne.variable} ${mono.variable} ${pixelDisplay.variable} ${pixelBody.variable}`}>
+        <OverlayProvider>
+          <TerminalProvider>
+            {children}
+            <TerminalWidget />
+          </TerminalProvider>
+        </OverlayProvider>
       </body>
     </html>
   );

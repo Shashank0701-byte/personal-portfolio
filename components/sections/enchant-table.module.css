@@ -1,0 +1,503 @@
+/* Enchanting-table projects section — ported from photos/projects.md.
+   Two visual worlds: the section wrapper blends with the site's tan theme,
+   the modal keeps the mockup's Minecraft GUI chrome. */
+
+.section {
+  --panel: #c6c6c6;
+  --panel-hi: #ffffff;
+  --panel-lo: #545454;
+  --panel-shadow: #2b2b2b;
+  --slot-bg: #8b8b8b;
+  --purple-1: #5a3a94;
+  --purple-2: #3d2568;
+  --purple-3: #2a1a4a;
+  --gold: #f6d43c;
+  --gold-dark: #93690a;
+  --gold-hi: #fff4b0;
+  --ink: #1b1b1b;
+  --font-display: var(--font-pixel-display), monospace;
+  --font-body: var(--font-pixel-body), sans-serif;
+}
+
+/* ── Section wrapper (sits on the site's tan background) ─────────────────── */
+
+.runeField {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.rune {
+  position: absolute;
+  font-family: var(--font-body);
+  color: rgba(90, 58, 148, 0.22);
+  font-size: 15px;
+  letter-spacing: 2px;
+  user-select: none;
+  animation: drift 9s ease-in-out infinite;
+}
+
+@keyframes drift {
+  0%, 100% { transform: translateY(0); opacity: 0.35; }
+  50% { transform: translateY(-10px); opacity: 0.7; }
+}
+
+/* `isolation` + a real tan background make this the blend group for .tableImg.
+   Without them the image's multiply resolves against the transparent backdrop
+   of the `relative z-10` wrapper further up and does nothing at all.
+   The padding keeps tan under the image when :hover nudges and scales it, so
+   no white corner can peek out past the blended area. */
+.tableWrap {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  border: 0;
+  background: var(--hero-bg);
+  padding: 20px;
+  isolation: isolate;
+}
+
+.tableGlow {
+  position: absolute;
+  inset: -30px;
+  background: radial-gradient(circle, rgba(122, 82, 196, 0.3), transparent 70%);
+  filter: blur(6px);
+  border-radius: 50%;
+  animation: pulse 3.2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.5; transform: scale(0.96); }
+  50% { opacity: 0.9; transform: scale(1.05); }
+}
+
+/* The source render sits on a flat light-grey studio backdrop. Lifting it to
+   near-white and compositing with multiply lets that backdrop take on the
+   section's tan exactly (white x anything = anything), so the image stops
+   reading as a pasted-in rectangle. A drop-shadow here would redraw that
+   rectangle, so depth comes from .tableGlow behind it instead. */
+.tableImg {
+  position: relative;
+  width: min(340px, 70vw);
+  image-rendering: -webkit-optimize-contrast;
+  mix-blend-mode: multiply;
+  filter: brightness(1.07);
+  transition: transform 0.25s ease, filter 0.25s ease;
+}
+
+.tableWrap:hover .tableImg,
+.tableWrap:focus-visible .tableImg {
+  transform: translateY(-6px) scale(1.02);
+  filter: brightness(1.13);
+}
+
+.tableWrap:focus-visible {
+  outline: 3px solid var(--purple-1);
+  outline-offset: 10px;
+  border-radius: 14px;
+}
+
+.sparkle {
+  position: absolute;
+  color: var(--gold-dark);
+  font-size: 14px;
+  pointer-events: none;
+  animation: twinkle 1.8s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0; transform: scale(0.5) rotate(0deg); }
+  50% { opacity: 1; transform: scale(1.1) rotate(20deg); }
+}
+
+.ctaHint {
+  font-family: var(--font-display);
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--purple-1);
+  animation: blinkHint 1.6s steps(2) infinite;
+}
+
+@keyframes blinkHint {
+  50% { opacity: 0.35; }
+}
+
+/* ── Modal ───────────────────────────────────────────────────────────────── */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: rgba(6, 4, 14, 0.78);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.gui {
+  width: min(1040px, 100%);
+  max-height: 88vh;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-body);
+  background: var(--panel);
+  background-image: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.035) 0 2px, transparent 2px 4px);
+  color: var(--ink);
+  border: 4px solid var(--panel-shadow);
+  box-shadow:
+    inset 3px 3px 0 var(--panel-hi),
+    inset -3px -3px 0 var(--panel-lo),
+    0 20px 50px rgba(0, 0, 0, 0.55);
+}
+
+.guiHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  border-bottom: 3px solid var(--panel-lo);
+  background: linear-gradient(180deg, #d6d6d6, #bcbcbc);
+}
+
+.guiHeader .book {
+  font-size: 20px;
+}
+
+.guiTitle {
+  font-family: var(--font-display);
+  font-size: 15px;
+  margin: 0;
+  letter-spacing: 2px;
+  flex: 1;
+}
+
+.closeBtn {
+  width: 34px;
+  height: 34px;
+  background: var(--slot-bg);
+  border: 2px solid var(--panel-shadow);
+  box-shadow: inset 2px 2px 0 var(--panel-hi), inset -2px -2px 0 var(--panel-lo);
+  font-family: var(--font-display);
+  font-size: 12px;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.closeBtn:hover { filter: brightness(1.08); }
+.closeBtn:active { box-shadow: inset -2px -2px 0 var(--panel-hi), inset 2px 2px 0 var(--panel-lo); }
+
+.guiBody {
+  display: grid;
+  grid-template-columns: minmax(240px, 0.85fr) minmax(320px, 1.15fr);
+  overflow: hidden;
+  flex: 1;
+  min-height: 0;
+}
+
+@media (max-width: 820px) {
+  .guiBody { grid-template-columns: 1fr; overflow-y: auto; }
+}
+
+.listPane {
+  padding: 16px 14px 10px;
+  border-right: 3px solid var(--panel-lo);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+@media (max-width: 820px) {
+  .listPane { border-right: none; border-bottom: 3px solid var(--panel-lo); }
+}
+
+.rows {
+  overflow-y: auto;
+  flex: 1;
+  padding-right: 4px;
+  scrollbar-width: thin;
+}
+
+.row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 12px;
+  margin-bottom: 6px;
+  background: linear-gradient(180deg, var(--purple-1), var(--purple-2));
+  border: 2px solid var(--purple-3);
+  box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.15), inset -2px -2px 0 rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  color: #efe6ff;
+  text-align: left;
+  width: 100%;
+  font-family: var(--font-body);
+}
+
+.row:hover { filter: brightness(1.12); }
+.row:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+.rowSelected {
+  background: linear-gradient(180deg, #7a52c4, #4c2f8a);
+  box-shadow:
+    inset 1px 1px 0 rgba(255, 255, 255, 0.3),
+    inset -2px -2px 0 rgba(0, 0, 0, 0.35),
+    0 0 0 2px var(--gold);
+}
+
+.rowHidden { display: none; }
+
+.lvl {
+  font-family: var(--font-display);
+  font-size: 11px;
+  width: 16px;
+  flex-shrink: 0;
+}
+
+.rowIcon { font-size: 18px; flex-shrink: 0; }
+.names { flex: 1; min-width: 0; }
+
+.glyphName {
+  display: block;
+  font-size: 14px;
+  letter-spacing: 1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.realName { display: none; font-size: 14px; font-weight: 600; }
+.realSub { display: none; font-size: 11px; color: #cbb8f5; margin-top: 2px; }
+
+.rowSelected .glyphName { display: none; }
+.rowSelected .realName { display: block; }
+.rowSelected .realSub { display: block; }
+
+.cost {
+  font-family: var(--font-display);
+  font-size: 11px;
+  padding: 4px 8px;
+  background: #0d0a18;
+  border: 1px solid #000;
+  flex-shrink: 0;
+}
+
+.tip {
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-left: 10px;
+  background: linear-gradient(180deg, #2a1a4a, #180d30);
+  border: 2px solid #6b3fa0;
+  padding: 6px 10px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 5;
+  display: none;
+  color: #f2ebff;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.5);
+}
+
+.row:hover .tip,
+.row:focus-visible .tip { display: block; }
+
+@media (max-width: 820px) {
+  .tip { display: none !important; }
+}
+
+/* ── Detail pane ─────────────────────────────────────────────────────────── */
+
+.detailPane {
+  padding: 18px 20px;
+  overflow-y: auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.dHead {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #9d9d9d;
+  margin-bottom: 14px;
+}
+
+.dIcon { font-size: 26px; }
+
+.dName {
+  font-family: var(--font-display);
+  font-size: 15px;
+  margin: 0 0 6px;
+  line-height: 1.4;
+}
+
+.dSub { font-size: 12px; color: #4a4a4a; }
+
+.sectionLabel {
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: #5a5a5a;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.dBlock {
+  background: #9d9d9d;
+  background-image: repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.05) 0 2px, transparent 2px 4px);
+  border: 2px solid var(--panel-shadow);
+  box-shadow: inset 2px 2px 0 rgba(0, 0, 0, 0.15);
+  padding: 12px 14px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: #161616;
+  margin-bottom: 16px;
+}
+
+.impact {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  border: 2px solid #111;
+  background: #2b2b2b;
+  box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.1);
+  padding: 12px 14px;
+  margin-bottom: 16px;
+}
+
+.impactValue {
+  font-family: var(--font-display);
+  font-size: 22px;
+  color: var(--gold);
+  line-height: 1;
+}
+
+.impactLabel {
+  font-size: 12px;
+  color: #d8d0ea;
+  line-height: 1.4;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.chip {
+  background: #e6e6e6;
+  border: 2px solid var(--panel-shadow);
+  box-shadow: inset 1px 1px 0 var(--panel-hi), inset -1px -1px 0 var(--panel-lo);
+  font-size: 12px;
+  padding: 5px 10px;
+  color: #2a2a2a;
+  font-weight: 600;
+}
+
+.dRune {
+  text-align: center;
+  color: #9d9d9d;
+  letter-spacing: 3px;
+  font-size: 13px;
+  margin: 4px 0 18px;
+}
+
+.dLinks {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.viewBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-size: 12px;
+  color: #3a2900;
+  background: linear-gradient(180deg, var(--gold-hi), var(--gold) 55%, var(--gold-dark));
+  border: 2px solid #4a3200;
+  box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.6), inset -2px -2px 0 rgba(0, 0, 0, 0.25);
+  padding: 14px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.viewBtn:hover { filter: brightness(1.05); }
+.viewBtn:active { box-shadow: inset -1px -1px 0 rgba(255, 255, 255, 0.4), inset 2px 2px 0 rgba(0, 0, 0, 0.25); }
+
+.ghostBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-size: 11px;
+  color: #efe6ff;
+  background: linear-gradient(180deg, var(--purple-1), var(--purple-2));
+  border: 2px solid var(--purple-3);
+  box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.15), inset -2px -2px 0 rgba(0, 0, 0, 0.3);
+  padding: 12px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.ghostBtn:hover { filter: brightness(1.12); }
+
+/* ── Tech inventory ──────────────────────────────────────────────────────── */
+
+.inventory {
+  border-top: 3px solid var(--panel-lo);
+  padding: 14px 18px 18px;
+  background: linear-gradient(180deg, #bcbcbc, #c6c6c6);
+}
+
+.slots {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  max-height: 132px;
+  overflow-y: auto;
+}
+
+.slot {
+  width: 72px;
+  background: var(--slot-bg);
+  border: 2px solid var(--panel-shadow);
+  box-shadow: inset 2px 2px 0 rgba(0, 0, 0, 0.35), inset -1px -1px 0 rgba(255, 255, 255, 0.15);
+  padding: 8px 4px 6px;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+  color: #eee;
+  font-size: 10px;
+  font-family: var(--font-body);
+  line-height: 1.2;
+}
+
+.slotIcon { font-size: 16px; display: block; margin-bottom: 4px; }
+
+.slotCount {
+  position: absolute;
+  bottom: 2px;
+  right: 4px;
+  font-family: var(--font-display);
+  font-size: 9px;
+  color: #fff;
+  text-shadow: 1px 1px 0 #000;
+}
+
+.slotActive {
+  background: var(--purple-1);
+  box-shadow: inset 2px 2px 0 rgba(0, 0, 0, 0.4), 0 0 0 2px var(--gold);
+}
+
+.slot:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }

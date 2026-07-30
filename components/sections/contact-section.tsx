@@ -1,13 +1,19 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { Github, Linkedin, Mail } from 'lucide-react';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { Github, Linkedin, Mail, X } from 'lucide-react';
+import { MagicCard } from '@/components/site/magic-card';
+import { WordReveal } from '@/components/ui/word-reveal';
 
 const encodedEmail = 'c2hhc2hhbmtrY2hha3JhYm9ydHk3MTIwMDVAZ21haWwuY29t';
 
 export function ContactSection() {
+  const sectionRef = useRef<HTMLElement>(null);
   const [revealedEmail, setRevealedEmail] = useState<string | null>(null);
+
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start end', 'end start'] });
+  const bgY = useTransform(scrollYProgress, [0, 1], ['-6%', '6%']);
 
   const decodeEmail = () => {
     const email = window.atob(encodedEmail);
@@ -15,72 +21,102 @@ export function ContactSection() {
     window.location.href = `mailto:${email}`;
   };
 
+  const links = [
+    { label: 'Email', icon: Mail, href: `mailto:${revealedEmail ?? ''}`, onClick: decodeEmail },
+    { label: 'LinkedIn', icon: Linkedin, href: 'https://www.linkedin.com/in/shashank-chakraborty/' },
+    { label: 'GitHub', icon: Github, href: 'https://github.com/Shashank0701-byte' },
+    { label: 'X', icon: X, href: 'https://x.com/Shanks0701' },
+  ];
+
   return (
-    <section id="contact" className="section-shell px-6 pb-16 pt-28 lg:px-12">
-      <div className="mx-auto max-w-4xl text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.15 }}
-          transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
-        >
-          <h2 className="text-5xl font-bold text-[var(--text-1)]">Let&apos;s build something.</h2>
-          <p className="mt-4 text-sm text-[var(--text-2)]">
-            Open to full-time backend and full-stack roles.
-          </p>
-          <div className="mono mt-7 inline-flex items-center gap-2 rounded-full border border-[rgba(74,222,128,0.2)] bg-[rgba(74,222,128,0.05)] px-3 py-2 text-[10px] uppercase tracking-[0.18em] text-[var(--accent-g)]">
-            <span className="h-2 w-2 rounded-full bg-[var(--accent-g)] animate-pulse" />
-            Available for new opportunities
-          </div>
-        </motion.div>
+    <section
+      id="contact"
+      ref={sectionRef}
+      className="relative flex min-h-screen items-center justify-center overflow-hidden bg-black px-6 py-32"
+    >
+      {/* Parallax night-sky background, oversized and offset upward */}
+      <motion.div
+        className="absolute inset-x-0 -top-[35%] h-[180%] bg-cover bg-center"
+        style={{ backgroundImage: "url('/night-sky.png')", y: bgY }}
+        aria-hidden="true"
+      />
 
-        <motion.div
-          className="mt-14 space-y-6"
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.15 }}
-          transition={{ duration: 0.7, delay: 0.08, ease: [0.25, 0.46, 0.45, 0.94] }}
-        >
-          <a
-            href="https://github.com/Shashank0701-byte"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="link-underline mx-auto flex max-w-xl items-center justify-between text-left text-lg text-[var(--text-2)] hover:text-[var(--text-1)]"
-          >
-            <span className="flex items-center gap-3">
-              <Github className="h-5 w-5" />
-              GitHub
-            </span>
-            <span className="mono text-xs uppercase tracking-[0.16em] text-[var(--text-3)]">github.com/Shashank0701-byte</span>
-          </a>
-          <a
-            href="https://www.linkedin.com/in/shashank-chakraborty/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="link-underline mx-auto flex max-w-xl items-center justify-between text-left text-lg text-[var(--text-2)] hover:text-[var(--text-1)]"
-          >
-            <span className="flex items-center gap-3">
-              <Linkedin className="h-5 w-5" />
-              LinkedIn
-            </span>
-            <span className="mono text-xs uppercase tracking-[0.16em] text-[var(--text-3)]">linkedin.com/in/shashank-chakraborty</span>
-          </a>
-          <button
-            onClick={decodeEmail}
-            onMouseEnter={() => setRevealedEmail(window.atob(encodedEmail))}
-            className="link-underline mx-auto flex w-full max-w-xl items-center justify-between text-left text-lg text-[var(--text-2)] hover:text-[var(--text-1)]"
-          >
-            <span className="flex items-center gap-3">
-              <Mail className="h-5 w-5" />
-              Email
-            </span>
-            <span className="mono text-xs uppercase tracking-[0.16em] text-[var(--text-3)]">
-              {revealedEmail ?? 'click to reveal'}
-            </span>
-          </button>
-        </motion.div>
+      {/* Fade the image edge smoothly into the section above */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-1/3 bg-gradient-to-b from-black via-black/70 to-transparent" />
 
-        <div className="mono mt-16 text-[10px] uppercase tracking-[0.18em] text-[var(--text-3)]">
+      <div className="relative z-10 mx-auto w-full max-w-xl">
+        <div className="relative">
+          <img
+            src="/llama-nobg.png"
+            alt=""
+            className="pointer-events-none absolute -top-16 left-1/2 h-28 w-auto -translate-x-1/2 drop-shadow-[0_18px_22px_rgba(0,0,0,0.55)] sm:h-32"
+          />
+
+          <MagicCard className="rounded-[2rem] border border-white/10 bg-white/[0.04] px-8 pb-12 pt-20 text-center backdrop-blur-xl sm:px-12">
+            <div>
+              <motion.p
+                className="mono text-[11px] uppercase tracking-[0.2em] text-white/40"
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.6 }}
+                transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+              >
+                Get in touch
+              </motion.p>
+              <WordReveal
+                as="h2"
+                text="Let's build something."
+                className="mt-3 text-4xl font-bold text-white sm:text-5xl"
+                delay={0.1}
+              />
+              <motion.p
+                className="mt-4 text-sm leading-6 text-white/60"
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.6, delay: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
+              >
+                Open to full-time backend and full-stack roles.
+              </motion.p>
+
+              <motion.div
+                className="mt-9 flex flex-wrap items-center justify-center gap-x-4 gap-y-3"
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.6, delay: 0.42, ease: [0.25, 0.46, 0.45, 0.94] }}
+              >
+                {links.map((link, i) => (
+                  <span key={link.label} className={i === links.length - 1 ? 'flex w-full justify-center sm:w-auto' : 'flex items-center gap-4'}>
+                    {link.onClick ? (
+                      <button
+                        onClick={link.onClick}
+                        onMouseEnter={() => setRevealedEmail(window.atob(encodedEmail))}
+                        className="inline-flex items-center gap-2 text-sm text-white/70 transition-colors hover:text-white"
+                      >
+                        <link.icon className="h-4 w-4" />
+                        {link.label}
+                      </button>
+                    ) : (
+                      <a
+                        href={link.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 text-sm text-white/70 transition-colors hover:text-white"
+                      >
+                        <link.icon className="h-4 w-4" />
+                        {link.label}
+                      </a>
+                    )}
+                    {i < links.length - 1 && <span className="hidden text-white/20 sm:inline">•</span>}
+                  </span>
+                ))}
+              </motion.div>
+            </div>
+          </MagicCard>
+        </div>
+
+        <div className="mono mt-10 text-center text-[10px] uppercase tracking-[0.18em] text-white/30">
           © 2026 Shashank Chakraborty · Built with Next.js + Framer Motion
         </div>
       </div>

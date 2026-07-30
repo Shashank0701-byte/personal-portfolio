@@ -2,12 +2,12 @@ export const navLinks = [
   { label: 'Home', href: '#home' },
   { label: 'About', href: '#about' },
   { label: 'Work', href: '#projects' },
-  { label: 'Skills', href: '#skills' },
+  { label: 'Systems', href: '#workbench' },
+  { label: 'Quest Log', href: '#quest-log' },
   { label: 'Contact', href: '#contact' },
 ] as const;
 
 export const aboutProofs = [
-  'Built production backend serving 200+ student members',
   'Reduced API latency 40% via Redis caching + query optimization',
   'Shipped 3 full-stack apps with RAG, graph traversal, and async pipelines',
 ];
@@ -160,77 +160,163 @@ export const projects: Project[] = [
   },
 ];
 
-export const capabilities = [
+export interface QuestLogCallout {
+  label: string;
+  text: string;
+  tone: 'wrong' | 'miss' | 'result' | 'placeholder';
+}
+
+export interface QuestLogMedia {
+  kind: 'photo' | 'video';
+  src?: string;
+  caption?: string;
+  placeholderLabel: string;
+}
+
+export interface QuestLogEntry {
+  id: string;
+  event: string;
+  duration: string;
+  placement?: string;
+  headline: string;
+  media: QuestLogMedia;
+  description: string;
+  callouts: [QuestLogCallout, QuestLogCallout];
+  tags: { label: string; category?: boolean }[];
+}
+
+export const questLog: QuestLogEntry[] = [
   {
-    title: 'Backend Engineering',
-    description: 'APIs, services, and data layers that hold up under real traffic.',
-    accent: 'var(--accent-v)',
-    focus: ['API Design', 'Clean service boundaries', 'Authentication', 'Database modeling', 'Performance'],
-    examples: ['Vertex Backend', 'SystemCraft APIs', 'Interview Prep AI'],
-    values: ['predictable latency', 'observability', 'scalability', 'maintainability'],
-    thingsILearned: 'Keeping service boundaries small makes scaling and testing much easier than a large monolith.',
+    id: 'food-rescue-marketplace',
+    event: 'Bruteforce',
+    duration: '12 HOURS',
+    headline: 'Food Rescue Marketplace',
+    media: { kind: 'photo', placeholderLabel: 'PHOTO GOES HERE' },
+    description:
+      'Built a marketplace where hotels and restaurants could list unsold food at 50% off before it went to waste. Users could choose free delivery, no-charge pickup, or walk in to collect — built as a React + Node web app with the Maps API handling location and delivery logistics, plus a companion Flutter mobile app.',
+    callouts: [
+      { label: 'What Went Wrong', text: 'add your note here', tone: 'placeholder' },
+      { label: 'Judge Feedback', text: 'add the remark here', tone: 'placeholder' },
+    ],
+    tags: [
+      { label: 'Food Waste', category: true },
+      { label: 'Marketplace', category: true },
+      { label: 'React' },
+      { label: 'Node.js' },
+      { label: 'Maps API' },
+      { label: 'Flutter' },
+    ],
   },
   {
-    title: 'Distributed Systems',
-    description: 'Async pipelines, message queues, and worker pools that scale independently.',
-    accent: 'var(--accent-c)',
-    focus: ['Async task execution', 'Message serialization', 'Queue management', 'Worker pool scaling'],
-    examples: ['DocuFlow Celery Pipeline', 'Redis Ingest Queue', 'SystemCraft Load Simulator'],
-    values: ['fault tolerance', 'eventual consistency', 'backpressure handling', 'loose coupling'],
-    thingsILearned: 'Idempotency is critical. When message queues retry failed tasks, services must handle duplicate events gracefully without data corruption.',
+    id: 'veriseal',
+    event: 'Hackman',
+    duration: '24 HOURS',
+    placement: 'TOP 9',
+    headline: 'Veriseal — Tamper-Evident Delivery Tracker',
+    media: { kind: 'video', placeholderLabel: 'VIDEO: SOLDERING & PCB BUILD' },
+    description:
+      "An accelerometer detected sudden jerks or unauthorized box openings and streamed the data to our platform in real time. Every transit handoff was logged via QR scan, and the final scan at delivery surfaced the full chain of custody — every checkpoint, plus any impact or tamper events along the way. I built the software side: the React/Node platform, the QR scan-and-log pipeline, role-based access control separating what customers vs. the shipping company could see, and a blockchain layer for log integrity.",
+    callouts: [
+      {
+        label: 'What Went Wrong',
+        text: 'One of our main hardware components burned out mid-build, weakening our final demo.',
+        tone: 'wrong',
+      },
+      {
+        label: 'What We Missed',
+        text: "A judge pointed out we hadn't considered that the hardware itself could be tampered with or hacked — a real gap in a system built to catch tampering.",
+        tone: 'miss',
+      },
+    ],
+    tags: [
+      { label: 'Hardware', category: true },
+      { label: 'IoT', category: true },
+      { label: 'React' },
+      { label: 'Node.js' },
+      { label: 'Blockchain' },
+      { label: 'RBAC' },
+    ],
   },
   {
-    title: 'API Design',
-    description: 'RESTful contracts, versioning strategies, and auth flows that make integration painless.',
-    accent: 'var(--accent-a)',
-    focus: ['RESTful contracts', 'API versioning', 'Request validation', 'Error handling schemas'],
-    examples: ['SystemCraft Qualitative APIs', 'Vertex Registration Endpoints', 'Shadow Analyzer Graph Cypher APIs'],
-    values: ['developer experience', 'strict contract adherence', 'semantic status codes', 'idempotency'],
-    thingsILearned: 'Versioning from day one saves massive headaches later. Always namespace APIs (e.g., /v1/) even for early prototypes.',
+    id: 'shadow-permission-analyzer-hackathon',
+    event: 'Sandbox',
+    duration: '24 HOURS',
+    headline: 'Shadow Permission Analyzer',
+    media: { kind: 'photo', placeholderLabel: 'PHOTO GOES HERE' },
+    description:
+      "Write your own account here — what the tool does, what you built in the 24 hours, and how the AWS IAM mocking came together with Neo4j's graph traversal.",
+    callouts: [
+      { label: 'What Went Wrong / What We Missed', text: 'add your note here', tone: 'placeholder' },
+      { label: 'Result', text: 'add placement if any', tone: 'placeholder' },
+    ],
+    tags: [
+      { label: 'Security', category: true },
+      { label: 'AWS IAM Mocking', category: true },
+      { label: 'React' },
+      { label: 'FastAPI' },
+      { label: 'Neo4j' },
+      { label: 'boto3' },
+    ],
+  },
+];
+
+export interface WorkbenchItem {
+  id: string;
+  /** Display name of the crafted result. */
+  title: string;
+  /** The "ingredients" — core languages/tech, rendered as inventory slots. Keep to 2-3. */
+  materials: string[];
+  /** Single emoji for the crafted output slot. */
+  output: string;
+  description: string;
+  /** The transferable-insight line. This is what reframes the project as backend/systems depth. */
+  whyItMatters: string;
+  href: string;
+}
+
+export const workbench: WorkbenchItem[] = [
+  {
+    id: 'os-32bit',
+    title: '32-Bit Operating System',
+    materials: ['C', 'x86 Assembly'],
+    output: '💿',
+    description:
+      'Two-stage x86 bootloader into 32-bit protected mode, bitmap page-frame allocation with 4KB paging, a 32-exception / 16-IRQ interrupt table, and a preemptive multitasking scheduler — with VGA, PS/2 keyboard, and timer drivers on top.',
+    whyItMatters:
+      'Writing the page allocator and the scheduler yourself is the difference between using a container and knowing what one actually is.',
+    href: 'https://github.com/Shashank0701-byte/CoreX',
   },
   {
-    title: 'Authentication',
-    description: 'OAuth, RBAC, and session management across multi-tenant platforms.',
-    accent: 'var(--accent-g)',
-    focus: ['OAuth 2.0 flows', 'Role-Based Access Control (RBAC)', 'JWT session state management', 'Token signing/verification'],
-    examples: ['Vertex OAuth Integration', 'SystemCraft Session Validation', 'Shadow Policy Escalation Logic'],
-    values: ['least privilege security', 'secure token storage', 'stateless session scaling', 'audit trails'],
-    thingsILearned: 'Relying on established providers and decoupling auth logic from business logic simplifies security compliance and reduces risk.',
+    id: 'unix-shell',
+    title: 'Unix Shell',
+    materials: ['C'],
+    output: '⌨️',
+    description:
+      'A REPL shell with unlimited-depth piping, I/O redirection, background jobs, and POSIX job control — plus SIGINT handling, tab completion, history, and $VAR expansion.',
+    whyItMatters:
+      'fork/exec, file descriptors, and pipes are the primitives every container runtime and process supervisor wraps.',
+    href: 'https://github.com/Shashank0701-byte/myshell',
   },
   {
-    title: 'Infrastructure',
-    description: 'Docker, Nginx, CI/CD pipelines, and cloud deployments that ship reliably.',
-    accent: 'var(--accent-c)',
-    focus: ['Docker containerization', 'CI/CD pipeline construction', 'Reverse proxy configuration', 'Cloud platform deployment'],
-    examples: ['Vertex Vercel Deployment', 'SystemCraft Multi-container Compose', 'DocuFlow Celery/Redis Stack'],
-    values: ['reproducible environments', 'immutable deployments', 'automated rollbacks', 'minimal container sizing'],
-    thingsILearned: 'Containerization eliminates "works on my machine" issues, enabling reproducible deployments across environments.',
+    id: 'git-heat',
+    title: 'git-heat',
+    materials: ['Go'],
+    output: '🔥',
+    description:
+      'A CLI tool that reads git history offline to render colour-coded heatmaps of code ownership and churn — file, directory, and per-author views.',
+    whyItMatters:
+      "Reading a repository's history is how you find risk — single-owner files, churn hotspots, and knowledge silos.",
+    href: 'https://github.com/Shashank0701-byte/git-heat',
   },
   {
-    title: 'Observability',
-    description: 'Prometheus, Grafana, structured logging — knowing why a system behaves the way it does.',
-    accent: 'var(--accent-v)',
-    focus: ['Metrics collection', 'Structured JSON logging', 'P95/P99 latency tracking', 'Alert threshold configuration'],
-    examples: ['SystemCraft Prometheus Exporter', 'Grafana Ingestion Dashboards', 'DocuFlow Worker Metrics'],
-    values: ['real-time system visibility', 'context-rich logging', 'proactive alerting', 'zero-overhead instrumentation'],
-    thingsILearned: 'Logs without context are useless during incidents. Injecting request IDs and structured JSON logging makes tracing errors exponentially faster.',
-  },
-  {
-    title: 'AI Applications',
-    description: 'LLM evaluation pipelines, prompt engineering, and hybrid deterministic + AI architectures.',
-    accent: 'var(--accent-a)',
-    focus: ['LLM API orchestration', 'System prompt engineering', 'Response parsing & validation', 'Hybrid deterministic pipelines'],
-    examples: ['SystemCraft Gemini qualitative rater', 'Interview Prep AI feedback agent'],
-    values: ['hallucination prevention', 'cost-optimal token usage', 'structured schema output', 'fallback strategies'],
-    thingsILearned: 'LLMs are inherently non-deterministic. Always parse, validate, and gracefully handle schema violations when piping AI output into traditional systems.',
-  },
-  {
-    title: 'Performance Engineering',
-    description: 'Load testing with k6, P95 latency optimization, and Kubernetes HPA scaling.',
-    accent: 'var(--accent-g)',
-    focus: ['Load testing script design', 'Concurrency bottleneck analysis', 'Latency profiling', 'HPA scaling policies'],
-    examples: ['SystemCraft k6 load benchmarks', 'Redis caching integrations', 'Celery worker optimization'],
-    values: ['low P95/P99 latencies', 'high throughput ceilings', 'efficient memory bounds', 'resource efficiency'],
-    thingsILearned: 'Failing to index your database for common query paths is the fastest way to experience downtime under load.',
+    id: 'clip-faiss',
+    title: 'Reverse Product Search',
+    materials: ['Python', 'CLIP', 'FAISS'],
+    output: '🔎',
+    description:
+      'Text and image queries encoded into one shared CLIP embedding space, with FAISS nearest-neighbour retrieval across an indexed fashion catalogue and filtering by type, colour, and season.',
+    whyItMatters:
+      'Cross-modal retrieval over a vector index is the same machinery that backs semantic search and RAG pipelines.',
+    href: 'https://github.com/Shashank0701-byte/AI-Product-Intelligence-System',
   },
 ];

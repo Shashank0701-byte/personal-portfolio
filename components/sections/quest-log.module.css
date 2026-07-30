@@ -1,0 +1,327 @@
+/* Quest Log timeline — ported from Blog.md, restyled onto the site's own tan theme
+   and fonts (Syne/JetBrains Mono) instead of the mockup's separate palette/fonts. */
+
+.section {
+  --accent: var(--accent-v);
+  --accent-dark: #5d4bb0;
+  --warn: #b3492f;
+  --note: #9c7a2e;
+  --live: #3f7a3a;
+  --gold: #e8b64c;
+  --gold-dark: #96731f;
+  --gold-hi: #ffe9ab;
+  --placeholder-border: rgba(32, 26, 20, 0.28);
+}
+
+.timeline {
+  position: relative;
+}
+
+.rail {
+  position: absolute;
+  left: 11px;
+  top: 10px;
+  bottom: 10px;
+  width: 2px;
+  transform-origin: top;
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--border-h) 0 6px,
+    transparent 6px 12px
+  );
+}
+
+/* Traveling glow at the fill-edge of the rail — reads like an XP bar's lit head. */
+.railHead {
+  position: absolute;
+  left: 11px;
+  width: 14px;
+  height: 14px;
+  transform: translate(-6px, -6px);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(232, 182, 76, 0.9), transparent 72%);
+  filter: blur(3px);
+  pointer-events: none;
+}
+
+.entry {
+  position: relative;
+  padding-left: 46px;
+  margin-bottom: 64px;
+}
+
+.entry:last-child {
+  margin-bottom: 0;
+}
+
+/* Enchanted-item marker: beveled frame + idle glow, pops with a sparkle burst on reveal. */
+.marker {
+  position: absolute;
+  left: 0;
+  top: 4px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 7px;
+  background: linear-gradient(160deg, var(--gold-hi), var(--gold) 55%, var(--gold-dark));
+  border: 1.5px solid rgba(32, 26, 20, 0.45);
+  box-shadow:
+    inset 1px 1px 0 rgba(255, 255, 255, 0.55),
+    inset -1px -1px 0 rgba(0, 0, 0, 0.2),
+    0 0 0 5px var(--hero-bg),
+    0 0 14px 2px rgba(232, 182, 76, 0.35);
+  color: #3a2900;
+}
+
+.markerIcon {
+  width: 13px;
+  height: 13px;
+  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.4));
+}
+
+.markerPulse {
+  position: absolute;
+  inset: -6px;
+  border-radius: 10px;
+  box-shadow: 0 0 0 0 rgba(232, 182, 76, 0.45);
+  animation: markerPulse 2.8s ease-out infinite;
+  pointer-events: none;
+}
+
+@keyframes markerPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(232, 182, 76, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(232, 182, 76, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(232, 182, 76, 0);
+  }
+}
+
+.sparkle {
+  position: absolute;
+  color: var(--gold-dark);
+  font-size: 11px;
+  pointer-events: none;
+}
+
+.metaRow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.eventBadge {
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  color: var(--accent-dark);
+  background: rgba(143, 127, 214, 0.12);
+  border: 1px solid rgba(143, 127, 214, 0.35);
+  padding: 4px 10px;
+  text-transform: uppercase;
+}
+
+.durationBadge {
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  color: var(--text-3);
+  letter-spacing: 1px;
+}
+
+.placementBadge {
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: #fff;
+  background: var(--live);
+  padding: 4px 10px;
+}
+
+.bodyGrid {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 24px;
+  margin-bottom: 18px;
+}
+
+@media (max-width: 640px) {
+  .bodyGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.mediaSlot {
+  border-radius: 8px;
+  overflow: hidden;
+  background: rgba(32, 26, 20, 0.05);
+  border: 1.5px dashed var(--placeholder-border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 150px;
+  color: var(--text-3);
+  text-align: center;
+  padding: 14px;
+  gap: 8px;
+}
+
+.mediaIcon {
+  font-size: 26px;
+}
+
+.mediaLabel {
+  font-size: 11px;
+  font-family: var(--font-mono), monospace;
+  letter-spacing: 0.5px;
+}
+
+.desc {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text-2);
+}
+
+.callouts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 16px 0 18px;
+}
+
+@media (max-width: 640px) {
+  .callouts {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Journal margin-notes: a quiet left rule + icon, not a colored block — reads
+   like handwritten annotations in a quest log rather than a status callout. */
+.callout {
+  display: flex;
+  gap: 10px;
+  padding: 2px 0 2px 14px;
+  border-left: 2px solid var(--border-h);
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--text-2);
+}
+
+.calloutIcon {
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  margin-top: 2px;
+  opacity: 0.75;
+}
+
+.calloutLabel {
+  font-family: var(--font-mono), monospace;
+  font-size: 10.5px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+
+.calloutWrong {
+  border-left-color: var(--warn);
+}
+.calloutWrong .calloutLabel {
+  color: var(--warn);
+}
+.calloutWrong .calloutIcon {
+  color: var(--warn);
+  opacity: 0.9;
+}
+
+.calloutMiss {
+  border-left-color: var(--note);
+}
+.calloutMiss .calloutLabel {
+  color: var(--note);
+}
+.calloutMiss .calloutIcon {
+  color: var(--note);
+  opacity: 0.9;
+}
+
+.calloutResult {
+  border-left-color: var(--live);
+}
+.calloutResult .calloutLabel {
+  color: var(--live);
+}
+.calloutResult .calloutIcon {
+  color: var(--live);
+  opacity: 0.9;
+}
+
+.calloutPlaceholder {
+  border-left-style: dashed;
+  border-left-color: var(--placeholder-border);
+  color: var(--text-3);
+  font-style: italic;
+}
+.calloutPlaceholder .calloutLabel {
+  color: var(--text-3);
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tagChip {
+  position: relative;
+  overflow: hidden;
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  padding: 5px 10px;
+  border: 1px solid var(--border-h);
+  border-radius: 4px;
+  color: var(--text-2);
+  background: var(--surface);
+}
+
+.tagCategory {
+  border-color: var(--gold-dark);
+  color: #7a5c14;
+  background: rgba(232, 182, 76, 0.1);
+}
+
+/* Enchant-glint sweep on hover — a quick diagonal sheen, like light catching an item. */
+.tagCategory::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(115deg, transparent, rgba(255, 233, 171, 0.55), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.55s ease;
+}
+
+.tagCategory:hover::after {
+  left: 130%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .markerPulse {
+    animation: none;
+  }
+  .tagCategory::after {
+    transition: none;
+  }
+}

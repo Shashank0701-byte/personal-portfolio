@@ -13,6 +13,8 @@
   --accent-a: #f59e0b;
   --border: rgba(255, 255, 255, 0.07);
   --border-h: rgba(255, 255, 255, 0.14);
+  --ghost: rgba(255, 255, 255, 0.04);
+  --surface: rgba(15, 15, 18, 0.88);
   --ease-out: cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
@@ -63,16 +65,16 @@ button {
   top: 0.5rem;
   left: 0;
   font-family: var(--font-syne), sans-serif;
-  font-size: clamp(4.5rem, 12vw, 7.5rem);
+  font-size: clamp(3rem, 12vw, 7.5rem);
   font-weight: 800;
   line-height: 1;
-  color: rgba(255, 255, 255, 0.04);
+  color: var(--ghost);
   pointer-events: none;
 }
 
 .surface-card {
   border: 1px solid var(--border);
-  background: rgba(15, 15, 18, 0.88);
+  background: var(--surface);
   backdrop-filter: blur(18px);
   transition:
     border-color 200ms var(--ease-out),
@@ -86,20 +88,20 @@ button {
 }
 
 .tag {
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-h);
   border-radius: 0.125rem;
   padding: 0.35rem 0.625rem;
   font-family: var(--font-mono), monospace;
   font-size: 0.625rem;
   letter-spacing: 0.14em;
-  color: var(--text-3);
+  color: var(--text-2);
   text-transform: uppercase;
   transition: border-color 200ms var(--ease-out), color 200ms var(--ease-out);
 }
 
 .tag:hover {
   border-color: var(--border-h);
-  color: var(--text-2);
+  color: var(--text-1);
 }
 
 .skill-chip {
@@ -199,7 +201,57 @@ button {
   }
 }
 
+/* ─── Light theme (site-wide; only Contact stays dark as the closing band) ──── */
+#home,
+#about,
+#experience,
+#projects,
+#workbench,
+#quest-log {
+  --hero-bg: #d9cdbb;
+  --hero-bg-rgb: 217, 205, 187;
+  --text-1: #201a14;
+  --text-2: rgba(32, 26, 20, 0.62);
+  --text-3: rgba(32, 26, 20, 0.4);
+  --border: rgba(32, 26, 20, 0.16);
+  --border-h: rgba(32, 26, 20, 0.28);
+  --ghost: rgba(32, 26, 20, 0.05);
+  --surface: rgba(32, 26, 20, 0.035);
+}
+
+#about,
+#experience,
+#projects,
+#workbench,
+#quest-log {
+  background: var(--hero-bg);
+}
+
+/* Escape hatch for floating dark UI (e.g. modals) inside a light-scoped section */
+.dark-scope {
+  --text-1: #ffffff;
+  --text-2: rgba(255, 255, 255, 0.55);
+  --text-3: rgba(255, 255, 255, 0.25);
+  --border: rgba(255, 255, 255, 0.07);
+  --border-h: rgba(255, 255, 255, 0.14);
+  --ghost: rgba(255, 255, 255, 0.04);
+  --surface: rgba(15, 15, 18, 0.88);
+}
+
 /* ─── Hero background ──────────────────────────────────────────────────────── */
+
+/* Spotlight reveal layer — mask driven by --x / --y CSS vars */
+.hero-reveal-img {
+  -webkit-mask-image: radial-gradient(
+    circle 220px at var(--x, 50%) var(--y, 50%),
+    black 0%, black 55%, transparent 100%
+  );
+  mask-image: radial-gradient(
+    circle 220px at var(--x, 50%) var(--y, 50%),
+    black 0%, black 55%, transparent 100%
+  );
+  transition: mask-position 0.05s linear;
+}
 
 /* Fine dot grid */
 .hero-dot-grid {
@@ -210,6 +262,60 @@ button {
 }
 
 /* Aurora blobs removed — rejected by vision.skills ("No gradient blobs") */
+
+/* ─── Marquee (see photos/guide.md, Section 9) ─────────────────────────────── */
+@keyframes marquee-left {
+  from { transform: translateX(0%); }
+  to { transform: translateX(-50%); }
+}
+@keyframes marquee-right {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0%); }
+}
+.marquee--textwrapper-hold {
+  display: flex;
+  width: max-content;
+  animation: marquee-left 22s linear infinite;
+}
+.marquee--textwrapper-hold.reverse {
+  animation-name: marquee-right;
+}
+/* Kept small and light so the band reads as threading through the portal opening
+   rather than sweeping past behind the frame. */
+.marquee-text {
+  padding-inline: 1rem;
+  font-family: var(--font-syne), sans-serif;
+  font-size: clamp(0.8rem, 1.25vw, 1.05rem);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: #201a14;
+  white-space: nowrap;
+}
+
+/* Hero headline — word-by-word reveal (see update.md) */
+.word-reveal {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(100%);
+  filter: blur(10px);
+  animation: wordReveal 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+@keyframes wordReveal {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .word-reveal {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    animation: none;
+  }
+}
 
 /* ─────────────────────────────────────────────────────────────────────────── */
 

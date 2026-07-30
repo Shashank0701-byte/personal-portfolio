@@ -2,8 +2,9 @@ import { AboutSection } from '@/components/sections/about-section';
 import { ContactSection } from '@/components/sections/contact-section';
 import { ExperienceSection } from '@/components/sections/experience-section';
 import { HeroSection } from '@/components/sections/hero-section';
-import { ProjectsSection } from '@/components/sections/projects-section';
-import { SkillsSection } from '@/components/sections/skills-section';
+import { EnchantTableSection } from '@/components/sections/enchant-table-section';
+import { QuestLogSection } from '@/components/sections/quest-log-section';
+import { WorkbenchSection } from '@/components/sections/workbench-section';
 import { Navigation } from '@/components/site/navigation';
 import { CustomCursor } from '@/components/site/custom-cursor';
 
@@ -16,8 +17,9 @@ export default function HomePage() {
         <HeroSection />
         <AboutSection />
         <ExperienceSection />
-        <ProjectsSection />
-        <SkillsSection />
+        <EnchantTableSection />
+        <WorkbenchSection />
+        <QuestLogSection />
         <ContactSection />
       </main>
     </>

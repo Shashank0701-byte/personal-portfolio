@@ -6,7 +6,7 @@ import { useEffect, useRef } from 'react';
  * Ultra-slow horizontal drift of ghost background text via rAF.
  * Renders two copies side-by-side so the loop is seamless.
  */
-export function GhostText({ text = 'FULL BACKEND DEV' }: { text?: string }) {
+export function GhostText({ text = 'FULL BACKEND DEV', strokeColor = 'rgba(255,255,255,0.04)' }: { text?: string; strokeColor?: string }) {
   const trackRef = useRef<HTMLDivElement>(null);
   const posRef   = useRef(0);
   const rafRef   = useRef<number>(0);
@@ -31,7 +31,7 @@ export function GhostText({ text = 'FULL BACKEND DEV' }: { text?: string }) {
     fontWeight: 800,
     lineHeight: 1,
     color: 'transparent',
-    WebkitTextStroke: '1px rgba(255,255,255,0.04)',
+    WebkitTextStroke: `1px ${strokeColor}`,
     whiteSpace: 'nowrap',
     userSelect: 'none',
     pointerEvents: 'none',
