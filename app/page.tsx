@@ -4,7 +4,6 @@ import { ExperienceSection } from '@/components/sections/experience-section';
 import { HeroSection } from '@/components/sections/hero-section';
 import { EnchantTableSection } from '@/components/sections/enchant-table-section';
 import { QuestLogSection } from '@/components/sections/quest-log-section';
-import { Marquee } from '@/components/site/marquee';
 import { Navigation } from '@/components/site/navigation';
 import { CustomCursor } from '@/components/site/custom-cursor';
 
@@ -17,9 +16,7 @@ export default function HomePage() {
         <HeroSection />
         <AboutSection />
         <ExperienceSection />
-        <Marquee direction="left" />
         <EnchantTableSection />
-        <Marquee direction="right" />
         <QuestLogSection />
         <ContactSection />
       </main>

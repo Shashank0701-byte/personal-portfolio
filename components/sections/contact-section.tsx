@@ -4,6 +4,7 @@ import { useRef, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Github, Linkedin, Mail, X } from 'lucide-react';
 import { MagicCard } from '@/components/site/magic-card';
+import { WordReveal } from '@/components/ui/word-reveal';
 
 const encodedEmail = 'c2hhc2hhbmtrY2hha3JhYm9ydHk3MTIwMDVAZ21haWwuY29t';
 
@@ -52,19 +53,39 @@ export function ContactSection() {
           />
 
           <MagicCard className="rounded-[2rem] border border-white/10 bg-white/[0.04] px-8 pb-12 pt-20 text-center backdrop-blur-xl sm:px-12">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
-            >
-              <p className="mono text-[11px] uppercase tracking-[0.2em] text-white/40">Get in touch</p>
-              <h2 className="mt-3 text-4xl font-bold text-white sm:text-5xl">Let&apos;s build something.</h2>
-              <p className="mt-4 text-sm leading-6 text-white/60">
+            <div>
+              <motion.p
+                className="mono text-[11px] uppercase tracking-[0.2em] text-white/40"
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.6 }}
+                transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+              >
+                Get in touch
+              </motion.p>
+              <WordReveal
+                as="h2"
+                text="Let's build something."
+                className="mt-3 text-4xl font-bold text-white sm:text-5xl"
+                delay={0.1}
+              />
+              <motion.p
+                className="mt-4 text-sm leading-6 text-white/60"
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.6, delay: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
+              >
                 Open to full-time backend and full-stack roles.
-              </p>
+              </motion.p>
 
-              <div className="mt-9 flex flex-wrap items-center justify-center gap-x-4 gap-y-3">
+              <motion.div
+                className="mt-9 flex flex-wrap items-center justify-center gap-x-4 gap-y-3"
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.6, delay: 0.42, ease: [0.25, 0.46, 0.45, 0.94] }}
+              >
                 {links.map((link, i) => (
                   <span key={link.label} className={i === links.length - 1 ? 'flex w-full justify-center sm:w-auto' : 'flex items-center gap-4'}>
                     {link.onClick ? (
@@ -90,8 +111,8 @@ export function ContactSection() {
                     {i < links.length - 1 && <span className="hidden text-white/20 sm:inline">•</span>}
                   </span>
                 ))}
-              </div>
-            </motion.div>
+              </motion.div>
+            </div>
           </MagicCard>
         </div>
 

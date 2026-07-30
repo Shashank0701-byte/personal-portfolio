@@ -11,6 +11,7 @@ import { Magnetic } from '@/components/ui/magnetic';
 export function Navigation() {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState('#home');
+  const [hovered, setHovered] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
   const { toggleTerminal } = useTerminal();
   const { isOverlayOpen } = useOverlay();
@@ -100,7 +101,11 @@ export function Navigation() {
           </div>
 
           {/* Links */}
-          <nav ref={navRef} className="relative z-10 flex items-center gap-1.5">
+          <nav
+            ref={navRef}
+            className="relative z-10 flex items-center gap-1.5"
+            onMouseLeave={() => setHovered(null)}
+          >
             {navLinks.map((link, i) => {
               if (link.href === '#contact') return null;
               return (
@@ -110,12 +115,24 @@ export function Navigation() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4, delay: 0.1 + i * 0.05 }}
                   onClick={() => handleNavigate(link.href)}
+                  onMouseEnter={() => setHovered(link.href)}
+                  onFocus={() => setHovered(link.href)}
                   className={`relative rounded-xl px-4 py-2 text-[13px] font-medium transition-colors ${
                     isLight
                       ? active === link.href ? 'text-[#201a14]' : 'text-[#201a14]/50 hover:text-[#201a14]'
                       : active === link.href ? 'text-white' : 'text-white/50 hover:text-white'
                   }`}
                 >
+                  {/* Ghost pill glides ahead of the active pill on hover */}
+                  {hovered === link.href && active !== link.href && (
+                    <motion.div
+                      layoutId="hover-nav-elite"
+                      className={`absolute inset-0 rounded-xl ${
+                        isLight ? 'bg-black/[0.035]' : 'bg-white/[0.045]'
+                      }`}
+                      transition={{ type: 'spring', stiffness: 500, damping: 38 }}
+                    />
+                  )}
                   {active === link.href && (
                     <motion.div
                       layoutId="active-nav-elite"

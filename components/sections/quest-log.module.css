@@ -5,10 +5,11 @@
   --accent: var(--accent-v);
   --accent-dark: #5d4bb0;
   --warn: #b3492f;
-  --warn-bg: rgba(179, 73, 47, 0.1);
   --note: #9c7a2e;
-  --note-bg: rgba(156, 122, 46, 0.1);
   --live: #3f7a3a;
+  --gold: #e8b64c;
+  --gold-dark: #96731f;
+  --gold-hi: #ffe9ab;
   --placeholder-border: rgba(32, 26, 20, 0.28);
 }
 
@@ -18,7 +19,7 @@
 
 .rail {
   position: absolute;
-  left: 9px;
+  left: 11px;
   top: 10px;
   bottom: 10px;
   width: 2px;
@@ -28,6 +29,19 @@
     var(--border-h) 0 6px,
     transparent 6px 12px
   );
+}
+
+/* Traveling glow at the fill-edge of the rail — reads like an XP bar's lit head. */
+.railHead {
+  position: absolute;
+  left: 11px;
+  width: 14px;
+  height: 14px;
+  transform: translate(-6px, -6px);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(232, 182, 76, 0.9), transparent 72%);
+  filter: blur(3px);
+  pointer-events: none;
 }
 
 .entry {
@@ -40,19 +54,59 @@
   margin-bottom: 0;
 }
 
-.dot {
+/* Enchanted-item marker: beveled frame + idle glow, pops with a sparkle burst on reveal. */
+.marker {
   position: absolute;
   left: 0;
-  top: 6px;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 0 0 5px var(--hero-bg), 0 0 0 6px var(--border-h);
+  top: 4px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 7px;
+  background: linear-gradient(160deg, var(--gold-hi), var(--gold) 55%, var(--gold-dark));
+  border: 1.5px solid rgba(32, 26, 20, 0.45);
+  box-shadow:
+    inset 1px 1px 0 rgba(255, 255, 255, 0.55),
+    inset -1px -1px 0 rgba(0, 0, 0, 0.2),
+    0 0 0 5px var(--hero-bg),
+    0 0 14px 2px rgba(232, 182, 76, 0.35);
+  color: #3a2900;
 }
 
-.dotLive {
-  background: var(--live);
+.markerIcon {
+  width: 13px;
+  height: 13px;
+  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.4));
+}
+
+.markerPulse {
+  position: absolute;
+  inset: -6px;
+  border-radius: 10px;
+  box-shadow: 0 0 0 0 rgba(232, 182, 76, 0.45);
+  animation: markerPulse 2.8s ease-out infinite;
+  pointer-events: none;
+}
+
+@keyframes markerPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(232, 182, 76, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(232, 182, 76, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(232, 182, 76, 0);
+  }
+}
+
+.sparkle {
+  position: absolute;
+  color: var(--gold-dark);
+  font-size: 11px;
+  pointer-events: none;
 }
 
 .metaRow {
@@ -148,11 +202,24 @@
   }
 }
 
+/* Journal margin-notes: a quiet left rule + icon, not a colored block — reads
+   like handwritten annotations in a quest log rather than a status callout. */
 .callout {
-  padding: 12px 14px;
-  border-radius: 6px;
+  display: flex;
+  gap: 10px;
+  padding: 2px 0 2px 14px;
+  border-left: 2px solid var(--border-h);
   font-size: 13px;
-  line-height: 1.5;
+  line-height: 1.55;
+  color: var(--text-2);
+}
+
+.calloutIcon {
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  margin-top: 2px;
+  opacity: 0.75;
 }
 
 .calloutLabel {
@@ -161,37 +228,46 @@
   letter-spacing: 1px;
   text-transform: uppercase;
   display: block;
-  margin-bottom: 5px;
+  margin-bottom: 4px;
   font-weight: 600;
 }
 
 .calloutWrong {
-  background: var(--warn-bg);
-  color: #5a2618;
+  border-left-color: var(--warn);
 }
 .calloutWrong .calloutLabel {
   color: var(--warn);
 }
+.calloutWrong .calloutIcon {
+  color: var(--warn);
+  opacity: 0.9;
+}
 
 .calloutMiss {
-  background: var(--note-bg);
-  color: #4a3814;
+  border-left-color: var(--note);
 }
 .calloutMiss .calloutLabel {
   color: var(--note);
 }
+.calloutMiss .calloutIcon {
+  color: var(--note);
+  opacity: 0.9;
+}
 
 .calloutResult {
-  background: rgba(63, 122, 58, 0.1);
-  color: #1f3d1c;
+  border-left-color: var(--live);
 }
 .calloutResult .calloutLabel {
   color: var(--live);
 }
+.calloutResult .calloutIcon {
+  color: var(--live);
+  opacity: 0.9;
+}
 
 .calloutPlaceholder {
-  background: transparent;
-  border: 1.5px dashed var(--placeholder-border);
+  border-left-style: dashed;
+  border-left-color: var(--placeholder-border);
   color: var(--text-3);
   font-style: italic;
 }
@@ -206,6 +282,8 @@
 }
 
 .tagChip {
+  position: relative;
+  overflow: hidden;
   font-family: var(--font-mono), monospace;
   font-size: 11px;
   letter-spacing: 0.5px;
@@ -217,7 +295,33 @@
 }
 
 .tagCategory {
-  border-color: var(--accent-v);
-  color: var(--accent-dark);
-  background: rgba(143, 127, 214, 0.08);
+  border-color: var(--gold-dark);
+  color: #7a5c14;
+  background: rgba(232, 182, 76, 0.1);
+}
+
+/* Enchant-glint sweep on hover — a quick diagonal sheen, like light catching an item. */
+.tagCategory::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(115deg, transparent, rgba(255, 233, 171, 0.55), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.55s ease;
+}
+
+.tagCategory:hover::after {
+  left: 130%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .markerPulse {
+    animation: none;
+  }
+  .tagCategory::after {
+    transition: none;
+  }
 }

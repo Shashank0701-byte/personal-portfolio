@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { projects } from '@/lib/site-data';
 import { useOverlay } from '@/components/site/overlay-context';
+import { WordReveal } from '@/components/ui/word-reveal';
 import styles from './enchant-table.module.css';
 
 const PROJECT_ICONS: Record<string, string> = {
@@ -151,20 +152,31 @@ export function EnchantTableSection() {
         ))}
       </div>
 
-      <motion.div
-        className="relative z-10 mx-auto max-w-3xl text-center"
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.3 }}
-        transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
-      >
-        <p className="mono text-[11px] uppercase tracking-[0.2em] text-[var(--text-3)]">
+      <div className="relative z-10 mx-auto max-w-3xl text-center">
+        <motion.p
+          className="mono text-[11px] uppercase tracking-[0.2em] text-[var(--text-3)]"
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.6 }}
+          transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+        >
           Enchanter&apos;s Chamber
-        </p>
-        <h2 className="mt-3 text-4xl font-bold text-[var(--text-1)]">My Projects</h2>
-        <p className="mt-4 text-sm leading-6 text-[var(--text-2)]">
+        </motion.p>
+        <WordReveal
+          as="h2"
+          text="My Projects"
+          className="mt-3 text-4xl font-bold text-[var(--text-1)]"
+          delay={0.1}
+        />
+        <motion.p
+          className="mt-4 text-sm leading-6 text-[var(--text-2)]"
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6, delay: 0.28, ease: [0.25, 0.46, 0.45, 0.94] }}
+        >
           Click the enchanting table to reveal your works.
-        </p>
+        </motion.p>
 
         <div className="mt-12 flex justify-center">
           <button
@@ -220,7 +232,7 @@ export function EnchantTableSection() {
             </div>
           ))}
         </div>
-      </motion.div>
+      </div>
 
       <AnimatePresence>
         {open && (

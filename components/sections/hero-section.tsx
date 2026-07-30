@@ -108,14 +108,29 @@ export function HeroSection() {
   }, []);
 
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end start'] });
+
+  // Differential layer speed is what actually reads as depth: the background
+  // drifts slowly and pushes in, the content leaves faster and recedes.
   const bgOpacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
-  const contentY = useTransform(scrollYProgress, [0, 0.4], ['0px', '-40px']);
+  const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '10%']);
+  const bgScale = useTransform(scrollYProgress, [0, 1], [1, 1.08]);
+  const contentY = useTransform(scrollYProgress, [0, 0.6], ['0px', '-120px']);
+  const contentScale = useTransform(scrollYProgress, [0, 0.6], [1, 0.96]);
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.55], [1, 0]);
 
   return (
     <section ref={sectionRef} id="home" className="relative min-h-screen overflow-hidden bg-[var(--hero-bg)]">
 
       {/* ── Background layers ── */}
-      <motion.div className="absolute inset-0 z-0" style={{ opacity: bgOpacity }} aria-hidden="true">
+      <motion.div
+        className="absolute inset-0 z-0"
+        style={
+          shouldReduceMotion
+            ? undefined
+            : { opacity: bgOpacity, y: bgY, scale: bgScale }
+        }
+        aria-hidden="true"
+      >
 
         {/* Base image — always visible */}
         <div
@@ -168,7 +183,20 @@ export function HeroSection() {
         style={{ opacity: imagesLoaded ? 1 : 0, transition: 'opacity 0.6s ease' }}
       >
         <div className="mx-auto w-full max-w-7xl">
-          <motion.div ref={leftRef} className="max-w-2xl space-y-8" style={{ y: contentY }}>
+          <motion.div
+            ref={leftRef}
+            className="max-w-2xl space-y-8"
+            style={
+              shouldReduceMotion
+                ? undefined
+                : {
+                    y: contentY,
+                    scale: contentScale,
+                    opacity: contentOpacity,
+                    transformOrigin: 'left center',
+                  }
+            }
+          >
 
             {/* Eyebrow */}
             <p className="mono text-[11px] uppercase tracking-[0.2em] text-[var(--text-3)]">
