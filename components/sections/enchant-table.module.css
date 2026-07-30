@@ -43,13 +43,19 @@
   50% { transform: translateY(-10px); opacity: 0.7; }
 }
 
+/* `isolation` + a real tan background make this the blend group for .tableImg.
+   Without them the image's multiply resolves against the transparent backdrop
+   of the `relative z-10` wrapper further up and does nothing at all.
+   The padding keeps tan under the image when :hover nudges and scales it, so
+   no white corner can peek out past the blended area. */
 .tableWrap {
   position: relative;
   display: inline-block;
   cursor: pointer;
   border: 0;
-  background: none;
-  padding: 0;
+  background: var(--hero-bg);
+  padding: 20px;
+  isolation: isolate;
 }
 
 .tableGlow {
