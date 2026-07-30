@@ -206,6 +206,7 @@ button {
 #about,
 #experience,
 #projects,
+#workbench,
 #quest-log {
   --hero-bg: #d9cdbb;
   --hero-bg-rgb: 217, 205, 187;
@@ -221,6 +222,7 @@ button {
 #about,
 #experience,
 #projects,
+#workbench,
 #quest-log {
   background: var(--hero-bg);
 }

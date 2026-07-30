@@ -26,6 +26,7 @@ export function Navigation() {
     active === '#about' ||
     active === '#experience' ||
     active === '#projects' ||
+    active === '#workbench' ||
     active === '#quest-log';
 
   // Recede at the very top of Hero, arrive as a glass pill once the page scrolls
