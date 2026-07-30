@@ -2,6 +2,7 @@ export const navLinks = [
   { label: 'Home', href: '#home' },
   { label: 'About', href: '#about' },
   { label: 'Work', href: '#projects' },
+  { label: 'Systems', href: '#workbench' },
   { label: 'Quest Log', href: '#quest-log' },
   { label: 'Contact', href: '#contact' },
 ] as const;
@@ -256,5 +257,66 @@ export const questLog: QuestLogEntry[] = [
       { label: 'Neo4j' },
       { label: 'boto3' },
     ],
+  },
+];
+
+export interface WorkbenchItem {
+  id: string;
+  /** Display name of the crafted result. */
+  title: string;
+  /** The "ingredients" — core languages/tech, rendered as inventory slots. Keep to 2-3. */
+  materials: string[];
+  /** Single emoji for the crafted output slot. */
+  output: string;
+  description: string;
+  /** The transferable-insight line. This is what reframes the project as backend/systems depth. */
+  whyItMatters: string;
+  href: string;
+}
+
+export const workbench: WorkbenchItem[] = [
+  {
+    id: 'os-32bit',
+    title: '32-Bit Operating System',
+    materials: ['C', 'x86 Assembly'],
+    output: '💿',
+    description:
+      'A 32-bit operating system written from scratch in C and x86 assembly — no kernel to build on, no standard library to fall back to.',
+    whyItMatters:
+      'Every abstraction above it — processes, containers, schedulers — is built on these primitives.',
+    href: 'https://github.com/Shashank0701-byte/CoreX',
+  },
+  {
+    id: 'unix-shell',
+    title: 'Unix Shell',
+    materials: ['C'],
+    output: '⌨️',
+    description:
+      'A Unix shell with a REPL loop, command execution, I/O redirection, piping, and background process handling.',
+    whyItMatters:
+      'fork/exec, file descriptors, and pipes are the primitives every container runtime and deployment tool wraps.',
+    href: 'https://github.com/Shashank0701-byte/myshell',
+  },
+  {
+    id: 'git-heat',
+    title: 'git-heat',
+    materials: ['Go'],
+    output: '🔥',
+    description:
+      'A CLI tool that reads git history offline to render colour-coded heatmaps of code ownership and churn — file, directory, and per-author views.',
+    whyItMatters:
+      "Reading a repository's history is how you find risk — single-owner files, churn hotspots, and knowledge silos.",
+    href: 'https://github.com/Shashank0701-byte/git-heat',
+  },
+  {
+    id: 'clip-faiss',
+    title: 'Reverse Product Search',
+    materials: ['Python', 'CLIP', 'FAISS'],
+    output: '🔎',
+    description:
+      "Reverse image search for fashion products — image embeddings from OpenAI's CLIP, indexed and queried with FAISS for nearest-neighbour retrieval.",
+    whyItMatters:
+      'Vector search is retrieval infrastructure: embedding pipelines, index builds, and latency budgets at query time.',
+    href: 'https://github.com/Shashank0701-byte/AI-Product-Intelligence-System',
   },
 ];
