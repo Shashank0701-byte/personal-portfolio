@@ -281,9 +281,9 @@ export const workbench: WorkbenchItem[] = [
     materials: ['C', 'x86 Assembly'],
     output: '💿',
     description:
-      'A 32-bit operating system written from scratch in C and x86 assembly — no kernel to build on, no standard library to fall back to.',
+      'Two-stage x86 bootloader into 32-bit protected mode, bitmap page-frame allocation with 4KB paging, a 32-exception / 16-IRQ interrupt table, and a preemptive multitasking scheduler — with VGA, PS/2 keyboard, and timer drivers on top.',
     whyItMatters:
-      'Every abstraction above it — processes, containers, schedulers — is built on these primitives.',
+      'Writing the page allocator and the scheduler yourself is the difference between using a container and knowing what one actually is.',
     href: 'https://github.com/Shashank0701-byte/CoreX',
   },
   {
@@ -292,9 +292,9 @@ export const workbench: WorkbenchItem[] = [
     materials: ['C'],
     output: '⌨️',
     description:
-      'A Unix shell with a REPL loop, command execution, I/O redirection, piping, and background process handling.',
+      'A REPL shell with unlimited-depth piping, I/O redirection, background jobs, and POSIX job control — plus SIGINT handling, tab completion, history, and $VAR expansion.',
     whyItMatters:
-      'fork/exec, file descriptors, and pipes are the primitives every container runtime and deployment tool wraps.',
+      'fork/exec, file descriptors, and pipes are the primitives every container runtime and process supervisor wraps.',
     href: 'https://github.com/Shashank0701-byte/myshell',
   },
   {
@@ -314,9 +314,9 @@ export const workbench: WorkbenchItem[] = [
     materials: ['Python', 'CLIP', 'FAISS'],
     output: '🔎',
     description:
-      "Reverse image search for fashion products — image embeddings from OpenAI's CLIP, indexed and queried with FAISS for nearest-neighbour retrieval.",
+      'Text and image queries encoded into one shared CLIP embedding space, with FAISS nearest-neighbour retrieval across an indexed fashion catalogue and filtering by type, colour, and season.',
     whyItMatters:
-      'Vector search is retrieval infrastructure: embedding pipelines, index builds, and latency budgets at query time.',
+      'Cross-modal retrieval over a vector index is the same machinery that backs semantic search and RAG pipelines.',
     href: 'https://github.com/Shashank0701-byte/AI-Product-Intelligence-System',
   },
 ];
