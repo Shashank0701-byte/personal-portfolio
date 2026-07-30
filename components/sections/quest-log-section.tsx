@@ -135,7 +135,7 @@ export function QuestLogSection() {
       ref={sectionRef}
       className={`${styles.section} section-shell px-6 lg:px-12`}
     >
-      <div className="section-number">05</div>
+      <div className="section-number">06</div>
 
       <div className="relative z-10 mx-auto max-w-4xl">
         <motion.p
