@@ -163,13 +163,22 @@ export const projects: Project[] = [
 export interface QuestLogCallout {
   label: string;
   text: string;
-  tone: 'wrong' | 'miss' | 'result' | 'placeholder';
+  /** `fix` is for hindsight — what I'd change — as opposed to what actually went wrong. */
+  tone: 'wrong' | 'miss' | 'fix' | 'result' | 'placeholder';
+}
+
+export interface QuestLogPhoto {
+  src: string;
+  alt: string;
+  caption: string;
+  /** object-position for the square slot crop — keeps faces clear of the crop line. */
+  focus?: string;
 }
 
 export interface QuestLogMedia {
   kind: 'photo' | 'video';
-  src?: string;
-  caption?: string;
+  /** Photos fill the slot as a carousel; absent means the slot is still empty. */
+  photos?: QuestLogPhoto[];
   placeholderLabel: string;
 }
 
@@ -181,7 +190,8 @@ export interface QuestLogEntry {
   headline: string;
   media: QuestLogMedia;
   description: string;
-  callouts: [QuestLogCallout, QuestLogCallout];
+  /** Two or three; an odd last one spans the grid rather than sitting half-width. */
+  callouts: QuestLogCallout[];
   tags: { label: string; category?: boolean }[];
 }
 
@@ -191,12 +201,46 @@ export const questLog: QuestLogEntry[] = [
     event: 'Bruteforce',
     duration: '12 HOURS',
     headline: 'Food Rescue Marketplace',
-    media: { kind: 'photo', placeholderLabel: 'PHOTO GOES HERE' },
+    media: {
+      kind: 'photo',
+      placeholderLabel: 'PHOTO GOES HERE',
+      photos: [
+        {
+          src: '/quest-log/bruteforce-1.jpg',
+          alt: 'Four teammates leaning into a night selfie, each holding up a Bruteforce hackathon participant badge.',
+          caption: 'Checked in — badges out, before the clock started.',
+          focus: 'center 32%',
+        },
+        {
+          src: '/quest-log/bruteforce-2.jpg',
+          alt: 'The team crowded around two open laptops at a long desk, mid-build.',
+          caption: 'Heads down around the build table.',
+        },
+        {
+          src: '/quest-log/bruteforce-3.jpg',
+          alt: 'A mentor leaning over the desk talking to the seated team during the build.',
+          caption: 'A mentor stops by to poke holes in the plan.',
+        },
+      ],
+    },
     description:
       'Built a marketplace where hotels and restaurants could list unsold food at 50% off before it went to waste. Users could choose free delivery, no-charge pickup, or walk in to collect — built as a React + Node web app with the Maps API handling location and delivery logistics, plus a companion Flutter mobile app.',
     callouts: [
-      { label: 'What Went Wrong', text: 'add your note here', tone: 'placeholder' },
-      { label: 'Judge Feedback', text: 'add the remark here', tone: 'placeholder' },
+      {
+        label: 'What Went Wrong',
+        text: 'We split 12 hours across a React + Node web app and a companion Flutter app. That bought us a second screenshot and cost us depth on both — one client, actually finished, would have demoed better than two at seventy percent.',
+        tone: 'wrong',
+      },
+      {
+        label: 'Judge Feedback',
+        text: "A judge went after the framing, not the build: in India, food that's been sitting reads as unsafe, not as a bargain. Halving the price doesn't fix that — it confirms the suspicion. We had designed the logistics without ever asking whether anyone would place the first order.",
+        tone: 'miss',
+      },
+      {
+        label: "What I'd Change",
+        text: "Two things. Sell it as surplus from today's kitchen with a hard pickup-by time, not as leftovers at half price — the trust problem is a shelf-life problem in a marketing costume, and only one of those is fixable with copy. And free delivery on a ₹50 plate can't pay a rider: pickup should have been the default, delivery the paid upgrade.",
+        tone: 'fix',
+      },
     ],
     tags: [
       { label: 'Food Waste', category: true },
@@ -242,12 +286,42 @@ export const questLog: QuestLogEntry[] = [
     event: 'Sandbox',
     duration: '24 HOURS',
     headline: 'Shadow Permission Analyzer',
-    media: { kind: 'photo', placeholderLabel: 'PHOTO GOES HERE' },
+    media: {
+      kind: 'photo',
+      placeholderLabel: 'PHOTO GOES HERE',
+      photos: [
+        {
+          src: '/quest-log/sandbox-1.jpg',
+          alt: 'Shashank standing arms-crossed in front of the Sandbox sponsor backdrop, participant badge around his neck.',
+          caption: 'Badge on, in front of the Sandbox backdrop.',
+          focus: 'center 28%',
+        },
+        {
+          src: '/quest-log/sandbox-2.jpg',
+          alt: 'A teammate gesturing at a laptop on the demo table while three people look on.',
+          caption: 'Walking the table through the demo.',
+        },
+        {
+          src: '/quest-log/sandbox-3.jpg',
+          alt: 'Two handwritten Team Aegis participant badges held up: Shashank Chakraborty and Pratyush Kumar, both marked CyberPunk.',
+          caption: 'Team CyberPunk, handwriting and all.',
+          focus: 'center 55%',
+        },
+      ],
+    },
     description:
-      "Write your own account here — what the tool does, what you built in the 24 hours, and how the AWS IAM mocking came together with Neo4j's graph traversal.",
+      "AWS IAM privilege escalation is a graph problem wearing JSON's clothing: a low-privilege user assumes a role, that role assumes another, and four hops later they are effectively admin — invisible in any single policy document. Pratyush and I built the pipeline end to end in the 24 hours. boto3 pulled users, roles, policies, and trust relationships into Neo4j as nodes and edges; BFS and DFS walked the graph for escalation chains; a React dashboard scored each chain by how privileged the target was, how many paths reached it, and how deep it ran. We traversed a mocked IAM dataset rather than a live account — it was the only way to have something to walk by hour three.",
     callouts: [
-      { label: 'What Went Wrong / What We Missed', text: 'add your note here', tone: 'placeholder' },
-      { label: 'Result', text: 'add placement if any', tone: 'placeholder' },
+      {
+        label: 'What We Missed',
+        text: 'It only reads static IAM configuration, so it proves a path exists — never that anyone has walked it. With no CloudTrail history behind it, every finding is theoretical, and a security team buried in theoretical findings starts ignoring all of them.',
+        tone: 'miss',
+      },
+      {
+        label: 'Result',
+        text: "No placement. It's the only build on this page that outlived its hackathon though — development kept going after the 24 hours, and it's written up in full under Featured Projects.",
+        tone: 'result',
+      },
     ],
     tags: [
       { label: 'Security', category: true },

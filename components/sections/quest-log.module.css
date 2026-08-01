@@ -146,9 +146,10 @@
 
 .bodyGrid {
   display: grid;
-  grid-template-columns: 220px 1fr;
+  grid-template-columns: 240px 1fr;
   gap: 24px;
   margin-bottom: 18px;
+  align-items: start;
 }
 
 @media (max-width: 640px) {
@@ -183,6 +184,141 @@
   letter-spacing: 0.5px;
 }
 
+/* ─── Photo slot ─────────────────────────────────────────────────────────────
+   The filled counterpart to .mediaSlot: a square inventory slot with a hotbar
+   of thumbnails under it. Where the gold marker is beveled *out* like a held
+   item, every slot here is beveled *in* — light on the bottom-right, dark on
+   the top-left — so it reads as a socket the photo sits inside. */
+
+.photoSlot {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.frame {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 4px;
+  background: rgba(32, 26, 20, 0.08);
+  border: 1.5px solid rgba(32, 26, 20, 0.34);
+  box-shadow:
+    inset 2px 2px 0 rgba(0, 0, 0, 0.16),
+    inset -2px -2px 0 rgba(255, 255, 255, 0.42);
+  cursor: grab;
+  touch-action: pan-y;
+}
+
+.frame:active {
+  cursor: grabbing;
+}
+
+.frame:focus-visible {
+  outline: 2px solid var(--accent-dark);
+  outline-offset: 3px;
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+}
+
+.slideImg {
+  object-fit: cover;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* Quantity badge, bottom-right — same corner an item stack counts itself in. */
+.stackCount {
+  position: absolute;
+  right: 7px;
+  bottom: 5px;
+  z-index: 2;
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  color: #fff;
+  text-shadow: 1.5px 1.5px 0 rgba(0, 0, 0, 0.8);
+  pointer-events: none;
+}
+
+.hotbar {
+  display: flex;
+  gap: 6px;
+  padding: 3px 0;
+}
+
+.slot {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  flex: none;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.slotFace {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 3px;
+  background: rgba(32, 26, 20, 0.08);
+  border: 1.5px solid rgba(32, 26, 20, 0.26);
+  box-shadow:
+    inset 1px 1px 0 rgba(0, 0, 0, 0.14),
+    inset -1px -1px 0 rgba(255, 255, 255, 0.4);
+  transition:
+    filter 0.25s ease,
+    transform 0.25s ease;
+  filter: saturate(0.6) brightness(0.9);
+}
+
+.slot:hover .slotFace,
+.slotActive .slotFace {
+  filter: none;
+}
+
+.slot:hover .slotFace {
+  transform: translateY(-1px);
+}
+
+.slot:focus-visible {
+  outline: 2px solid var(--accent-dark);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+.slotImg {
+  object-fit: cover;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* The equipped-slot highlight, overhanging its slot and gliding between them. */
+.selector {
+  position: absolute;
+  inset: -3px;
+  border: 2px solid var(--gold-hi);
+  border-radius: 5px;
+  box-shadow:
+    0 0 0 1.5px rgba(32, 26, 20, 0.5),
+    0 0 10px 1px rgba(232, 182, 76, 0.5);
+  pointer-events: none;
+}
+
+.caption {
+  font-family: var(--font-mono), monospace;
+  font-size: 10.5px;
+  line-height: 1.55;
+  letter-spacing: 0.3px;
+  color: var(--text-3);
+  min-height: 33px;
+}
+
 .desc {
   font-size: 15px;
   line-height: 1.7;
@@ -194,6 +330,11 @@
   grid-template-columns: 1fr 1fr;
   gap: 12px;
   margin: 16px 0 18px;
+}
+
+/* An odd third note runs the full width instead of leaving a ragged half-column. */
+.callouts > :last-child:nth-child(odd) {
+  grid-column: 1 / -1;
 }
 
 @media (max-width: 640px) {
@@ -251,6 +392,19 @@
 }
 .calloutMiss .calloutIcon {
   color: var(--note);
+  opacity: 0.9;
+}
+
+/* Hindsight rather than history — carries the site's accent so it reads as a
+   present-tense note, not another entry in the failure column. */
+.calloutFix {
+  border-left-color: var(--accent-dark);
+}
+.calloutFix .calloutLabel {
+  color: var(--accent-dark);
+}
+.calloutFix .calloutIcon {
+  color: var(--accent-dark);
   opacity: 0.9;
 }
 
@@ -323,5 +477,11 @@
   }
   .tagCategory::after {
     transition: none;
+  }
+  .slotFace {
+    transition: none;
+  }
+  .slot:hover .slotFace {
+    transform: none;
   }
 }

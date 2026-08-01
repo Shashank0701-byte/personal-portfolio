@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
+import Image from 'next/image';
 import { AnimatePresence, motion } from 'framer-motion';
 import { projects } from '@/lib/site-data';
 import { useOverlay } from '@/components/site/overlay-context';
@@ -45,16 +46,18 @@ function toRunes(value: string) {
     .join('');
 }
 
-/* Fixed rune-field placements — random positions would break hydration */
+/* Fixed rune-field placements — random positions would break hydration.
+   Percentages are of the chamber, not the section, and all sit in the side
+   bands so nothing drifts across the table or the CTA. */
 const RUNE_SPOTS = [
-  { top: '8%', left: '6%', delay: '0s', duration: '8s' },
-  { top: '18%', left: '82%', delay: '1.2s', duration: '10s' },
-  { top: '30%', left: '14%', delay: '2.4s', duration: '9s' },
-  { top: '42%', left: '90%', delay: '0.6s', duration: '11s' },
-  { top: '55%', left: '4%', delay: '3.1s', duration: '8.5s' },
-  { top: '64%', left: '73%', delay: '1.8s', duration: '9.5s' },
-  { top: '76%', left: '22%', delay: '2.9s', duration: '10.5s' },
-  { top: '86%', left: '61%', delay: '0.4s', duration: '8.2s' },
+  { top: '10%', left: '7%', delay: '0s', duration: '8s' },
+  { top: '16%', left: '84%', delay: '1.2s', duration: '10s' },
+  { top: '34%', left: '13%', delay: '2.4s', duration: '9s' },
+  { top: '42%', left: '88%', delay: '0.6s', duration: '11s' },
+  { top: '58%', left: '5%', delay: '3.1s', duration: '8.5s' },
+  { top: '64%', left: '90%', delay: '1.8s', duration: '9.5s' },
+  { top: '78%', left: '16%', delay: '2.9s', duration: '10.5s' },
+  { top: '84%', left: '80%', delay: '0.4s', duration: '8.2s' },
 ];
 
 const SPARKLES: { top: string; left?: string; right?: string; glyph: string; delay: string }[] = [
@@ -135,23 +138,6 @@ export function EnchantTableSection() {
     <section id="projects" className={`${styles.section} section-shell px-6 lg:px-12`}>
       <div className="section-number">04</div>
 
-      <div className={styles.runeField} aria-hidden="true">
-        {RUNE_SPOTS.map((spot, index) => (
-          <span
-            key={index}
-            className={styles.rune}
-            style={{
-              top: spot.top,
-              left: spot.left,
-              animationDelay: spot.delay,
-              animationDuration: spot.duration,
-            }}
-          >
-            {toRunes(projects[index % projects.length].headline.slice(0, 6))}
-          </span>
-        ))}
-      </div>
-
       <div className="relative z-10 mx-auto max-w-3xl text-center">
         <motion.p
           className="mono text-[11px] uppercase tracking-[0.2em] text-[var(--text-3)]"
@@ -175,46 +161,74 @@ export function EnchantTableSection() {
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.6, delay: 0.28, ease: [0.25, 0.46, 0.45, 0.94] }}
         >
-          Click the enchanting table to reveal your works.
+          Each one opens on the problem, the decision, and what the trade-off cost.
         </motion.p>
+      </div>
 
-        <div className="mt-12 flex justify-center">
-          <button
-            ref={triggerRef}
-            type="button"
-            className={styles.tableWrap}
-            onClick={() => setOpen(true)}
-            aria-haspopup="dialog"
-          >
-            <span className={styles.tableGlow} aria-hidden="true" />
-            <img
-              src="/enchanting-table.webp"
-              alt="An enchanting table, glowing with purple light"
-              className={styles.tableImg}
-            />
-            {SPARKLES.map((sparkle, index) => (
+      {/* Wider than the copy column above it, so the aperture reads as an opening
+          in the wall and the section stops being a narrow strip of centred text. */}
+      <div className="relative z-10 mx-auto mt-10 max-w-4xl">
+        <div className={styles.chamber}>
+          <div className={styles.runeField} aria-hidden="true">
+            {RUNE_SPOTS.map((spot, index) => (
               <span
                 key={index}
-                className={styles.sparkle}
+                className={styles.rune}
                 style={{
-                  top: sparkle.top,
-                  left: sparkle.left,
-                  right: sparkle.right,
-                  animationDelay: sparkle.delay,
+                  top: spot.top,
+                  left: spot.left,
+                  animationDelay: spot.delay,
+                  animationDuration: spot.duration,
                 }}
-                aria-hidden="true"
               >
-                {sparkle.glyph}
+                {toRunes(projects[index % projects.length].headline.slice(0, 6))}
               </span>
             ))}
-          </button>
-        </div>
+          </div>
 
-        <p className={`${styles.ctaHint} mt-7`}>[ CLICK TO ENCHANT ]</p>
+          <div className="flex justify-center">
+            <button
+              ref={triggerRef}
+              type="button"
+              className={styles.tableWrap}
+              onClick={() => setOpen(true)}
+              aria-haspopup="dialog"
+            >
+              <span className={styles.tableGlow} aria-hidden="true" />
+              <Image
+                src="/enchanting-table-nobg.png"
+                alt="An enchanting table, glowing with purple light"
+                width={625}
+                height={713}
+                className={styles.tableImg}
+              />
+              {SPARKLES.map((sparkle, index) => (
+                <span
+                  key={index}
+                  className={styles.sparkle}
+                  style={{
+                    top: sparkle.top,
+                    left: sparkle.left,
+                    right: sparkle.right,
+                    animationDelay: sparkle.delay,
+                  }}
+                  aria-hidden="true"
+                >
+                  {sparkle.glyph}
+                </span>
+              ))}
+            </button>
+          </div>
+
+          <p className={`${styles.ctaHint} mt-8 text-center`}>[ CLICK TO ENCHANT ]</p>
+        </div>
+      </div>
+
+      <div className="relative z-10 mx-auto mt-8 max-w-3xl text-center">
         <button
           type="button"
           onClick={() => setOpen(true)}
-          className="link-underline mono mt-3 text-[11px] uppercase tracking-[0.14em] text-[var(--text-3)] transition-colors hover:text-[var(--text-1)]"
+          className="link-underline mono text-[11px] uppercase tracking-[0.14em] text-[var(--text-3)] transition-colors hover:text-[var(--text-1)]"
         >
           or browse projects as a list
         </button>
