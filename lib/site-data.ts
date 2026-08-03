@@ -87,7 +87,10 @@ export const projects: Project[] = [
     metric: 'Multi-stage privilege chains detected',
     metricValue: null,
     stack: ['FastAPI', 'Neo4j', 'React', 'boto3', 'Python'],
-    links: [{ label: 'View Code', href: 'https://github.com/Shashank0701-byte/Shadow-permission-analyser', type: 'ghost' }],
+    links: [
+      { label: 'Run the analyzer', href: '/analyzer', type: 'accent' },
+      { label: 'View Code', href: 'https://github.com/Shashank0701-byte/Shadow-permission-analyser', type: 'ghost' },
+    ],
     architectureVariant: 'iam-graph',
     accentColor: 'var(--accent-a)',
     bgGradient: 'linear-gradient(160deg,#0d0d14,#0a0a10)',
