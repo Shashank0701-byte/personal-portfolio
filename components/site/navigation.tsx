@@ -1,11 +1,12 @@
 'use client';
 
 import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion';
-import { Menu, Terminal, X } from 'lucide-react';
+import { Keyboard, Menu, Terminal, X } from 'lucide-react';
 import { useEffect, useMemo, useState, useRef } from 'react';
 import { navLinks } from '@/lib/site-data';
 import { useTerminal } from './terminal-context';
 import { useOverlay } from './overlay-context';
+import { useShortcuts } from './shortcuts-context';
 import { Magnetic } from '@/components/ui/magnetic';
 
 export function Navigation() {
@@ -15,6 +16,7 @@ export function Navigation() {
   const [scrolled, setScrolled] = useState(false);
   const { toggleTerminal } = useTerminal();
   const { isOverlayOpen } = useOverlay();
+  const { toggleShortcuts } = useShortcuts();
   const navRef = useRef<HTMLElement>(null);
 
   const { scrollYProgress } = useScroll();
@@ -151,6 +153,20 @@ export function Navigation() {
 
           {/* Actions */}
           <div className="relative z-10 flex items-center gap-3">
+            <Magnetic intensity={0.2}>
+              <button
+                onClick={toggleShortcuts}
+                className={`hidden h-9 w-9 items-center justify-center rounded-xl border border-transparent transition-all md:flex ${
+                  isLight
+                    ? 'text-[#201a14]/50 hover:border-black/10 hover:bg-black/5 hover:text-[#201a14]'
+                    : 'text-white/50 hover:border-white/10 hover:bg-white/5 hover:text-white'
+                }`}
+                aria-label="Keyboard shortcuts (?)"
+                title="Shortcuts (?)"
+              >
+                <Keyboard className="h-4 w-4" />
+              </button>
+            </Magnetic>
             <Magnetic intensity={0.2}>
               <button
                 onClick={toggleTerminal}

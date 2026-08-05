@@ -6,26 +6,16 @@ export interface AdvancementEntry {
 }
 
 /**
- * Deliberately three, not one per section. A toast on every scroll stop stops
- * reading as a reward and starts reading as a notification you want to dismiss.
- * These three mark the arc instead: arriving, the centrepiece, and the exit.
+ * Deliberately one, not one per section. Every other delight on this site waits
+ * to be found — the toast is the one thing that arrives uninvited, so it only
+ * gets to interrupt once. Firing on arrival or mid-page rewards nothing (you
+ * haven't done anything yet); firing at Contact rewards reading the whole page.
  *
- * This is the single source of truth — the IntersectionObservers are derived
- * from it, so adding an entry here is all that's needed to wire a new one up.
+ * This is the single source of truth — the IntersectionObserver watching for it
+ * is derived from this list, so adding an entry here is all that's needed to
+ * wire a new one up.
  */
 export const ADVANCEMENT_CONFIG: readonly AdvancementEntry[] = [
-  {
-    id: 'home',
-    icon: '🌿',
-    advancementName: 'Taking First Steps',
-    description: "You've entered the world.",
-  },
-  {
-    id: 'projects',
-    icon: '🔮',
-    advancementName: "Enchanter's Apprentice",
-    description: 'Opened the enchanting table.',
-  },
   {
     id: 'contact',
     icon: '🌌',
