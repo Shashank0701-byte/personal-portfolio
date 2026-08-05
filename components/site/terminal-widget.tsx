@@ -5,6 +5,9 @@ import { Terminal, X, Maximize2, Minimize2 } from 'lucide-react';
 import React, { useState, useRef, useEffect } from 'react';
 import { useTerminal } from './terminal-context';
 import { useAdvancement } from './advancement-context';
+import { analyzableUsers, iamGraph } from '@/lib/analyzer/dataset';
+import { analyzeUser } from '@/lib/analyzer/escalation';
+import { formatPathTrace, formatResultSummary } from '@/lib/analyzer/format-trace';
 
 type HistoryItem = {
   id: string;
@@ -44,6 +47,60 @@ const CoreXBootSequence = () => {
     </div>
   );
 };
+
+const ANALYZE_USERS = analyzableUsers.map((u) => u.name);
+
+/**
+ * Runs the exact BFS + risk-scoring module the /analyzer page runs — this isn't
+ * a second, hand-authored trace, it's the same lib/analyzer/escalation.ts call
+ * with its output formatted for a terminal instead of an SVG canvas.
+ */
+function renderAnalyze(argRaw: string): React.ReactNode {
+  const arg = argRaw.trim();
+
+  if (!arg) {
+    return (
+      <div className="flex flex-col gap-1">
+        <span className="text-gray-300">Usage: analyze &lt;user&gt;</span>
+        <span className="text-gray-300">Available users:</span>
+        {ANALYZE_USERS.map((name) => (
+          <span key={name}>&nbsp;&nbsp;• {name}</span>
+        ))}
+      </div>
+    );
+  }
+
+  const match = analyzableUsers.find((u) => u.name.toLowerCase() === arg.toLowerCase());
+  if (!match) {
+    return (
+      <span className="text-red-400">
+        Unknown user: {argRaw}. Try one of: {ANALYZE_USERS.join(', ')}.
+      </span>
+    );
+  }
+
+  const result = analyzeUser(iamGraph, match.id);
+  const traceLines = result.topPath ? formatPathTrace(result.topPath, iamGraph) : [];
+
+  return (
+    <div className="flex flex-col gap-1">
+      <span className="text-gray-300">
+        &gt; breadth-first traversal from {match.name}
+        {result.paths.length === 0 && ' — no escalation path found. Clean.'}
+      </span>
+      {traceLines.map((line, i) => (
+        <span key={i} className="text-green-400">{line}</span>
+      ))}
+      <span aria-hidden="true" className="h-1" />
+      {formatResultSummary(result).map((line, i) => (
+        <span key={i} className="text-white">{line}</span>
+      ))}
+      <a href="/analyzer" className="text-blue-400 hover:underline mt-1 inline-block">
+        Open the full graph on /analyzer &rarr;
+      </a>
+    </div>
+  );
+}
 
 export function TerminalWidget() {
   const { isOpen, closeTerminal } = useTerminal();
@@ -88,6 +145,15 @@ export function TerminalWidget() {
 
     let output: React.ReactNode = '';
 
+    // Pulled out of the switch since it takes an argument — `analyze intern_a`
+    // isn't a fixed string the way the other commands are.
+    if (trimmedCmd === 'analyze' || trimmedCmd.startsWith('analyze ')) {
+      output = renderAnalyze(cmd.trim().slice('analyze'.length));
+      setHistory([...newHistory, { id: (Date.now() + 1).toString(), type: 'output', content: output }]);
+      setInput('');
+      return;
+    }
+
     switch (trimmedCmd) {
       case 'help':
         output = (
@@ -99,6 +165,7 @@ export function TerminalWidget() {
             <span><strong className="text-green-400">skills</strong>     - List of my skills</span>
             <span><strong className="text-green-400">experience</strong> - My professional experience</span>
             <span><strong className="text-green-400">contact</strong>    - Contact information</span>
+            <span><strong className="text-green-400">analyze</strong> &lt;user&gt; - Run the real IAM escalation traversal on a mock user</span>
             <span><strong className="text-green-400">clear</strong>      - Clear the terminal screen</span>
             <span><strong className="text-green-400">advancements</strong> - Reset earned advancements and replay them</span>
           </div>

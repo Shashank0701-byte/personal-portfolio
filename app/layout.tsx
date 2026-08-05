@@ -5,6 +5,8 @@ import { TerminalProvider } from '@/components/site/terminal-context';
 import { TerminalWidget } from '@/components/site/terminal-widget';
 import { OverlayProvider } from '@/components/site/overlay-context';
 import { DebugOverlay } from '@/components/site/debug-overlay';
+import { ShortcutsProvider } from '@/components/site/shortcuts-context';
+import { ShortcutsSheet } from '@/components/site/shortcuts-sheet';
 import { AdvancementProvider } from '@/components/site/advancement-context';
 import { SITE_NAME, siteUrl } from '@/lib/site-url';
 
@@ -63,11 +65,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={`${syne.variable} ${mono.variable} ${pixelDisplay.variable} ${pixelBody.variable}`}>
         <OverlayProvider>
           <TerminalProvider>
-            <AdvancementProvider>
-              {children}
-              <TerminalWidget />
-              <DebugOverlay />
-            </AdvancementProvider>
+            <ShortcutsProvider>
+              <AdvancementProvider>
+                {children}
+                <TerminalWidget />
+                <DebugOverlay />
+                <ShortcutsSheet />
+              </AdvancementProvider>
+            </ShortcutsProvider>
           </TerminalProvider>
         </OverlayProvider>
       </body>

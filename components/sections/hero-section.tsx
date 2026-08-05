@@ -236,7 +236,7 @@ export function HeroSection() {
 
             {/* Description — word-by-word fade-up */}
             <motion.p
-              className="max-w-[25rem] text-sm leading-7 text-[var(--text-2)]"
+              className="max-w-[25rem] text-sm leading-7 text-[rgba(32,26,20,0.78)]"
               initial="hidden"
               animate={revealed ? 'visible' : 'hidden'}
               variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.028, delayChildren: 1.7 } } }}
@@ -282,7 +282,7 @@ export function HeroSection() {
             >
               <CTAButton href="#projects" label="View Work" />
               <a
-                href="/resume.pdf"
+                href="/Shashank_Resume_Software.pdf"
                 download="Shashank_Chakraborty_Resume.pdf"
                 className="mono group inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.14em] text-[var(--text-2)] transition-colors hover:text-[var(--text-1)]"
               >
@@ -295,7 +295,7 @@ export function HeroSection() {
             {/* Availability — promoted out of the Contact section, which sits seven
                 sections down. It's the first thing anyone evaluating him needs. */}
             <motion.p
-              className="mono flex flex-wrap items-center gap-x-2.5 gap-y-1 pt-1 text-[11px] uppercase tracking-[0.14em] text-[var(--text-3)]"
+              className="mono flex flex-wrap items-center gap-x-2.5 gap-y-1 pt-1 text-[11px] uppercase tracking-[0.14em] text-[rgba(32,26,20,0.64)]"
               initial={{ opacity: 0, y: 10 }}
               animate={revealed ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: 2.3 }}

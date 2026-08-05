@@ -302,8 +302,9 @@
 .lvl {
   font-family: var(--font-display);
   font-size: 11px;
-  width: 16px;
+  width: 22px;
   flex-shrink: 0;
+  color: #cbb8f5;
 }
 
 .rowIcon { font-size: 18px; flex-shrink: 0; }
@@ -332,6 +333,11 @@
   background: #0d0a18;
   border: 1px solid #000;
   flex-shrink: 0;
+}
+
+.costLabel {
+  font-size: 8px;
+  color: #cbb8f5;
 }
 
 .tip {
@@ -407,6 +413,30 @@
   line-height: 1.55;
   color: #161616;
   margin-bottom: 16px;
+}
+
+/* Gold border reuses the same "this is the special tier" signal the enchanted
+   book icon and the impact number already carry elsewhere in this modal — the
+   tradeoff reasoning is the part worth a hiring engineer's attention most. */
+.notes {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0 0 16px;
+  padding: 0;
+  list-style: none;
+}
+
+.note {
+  position: relative;
+  background: #1c1c22;
+  border: 2px solid var(--panel-shadow);
+  border-left: 3px solid var(--gold-dark);
+  box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.06);
+  padding: 10px 14px 10px 16px;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: #d8d0ea;
 }
 
 .impact {
@@ -508,6 +538,13 @@
   border-top: 3px solid var(--panel-lo);
   padding: 14px 18px 18px;
   background: linear-gradient(180deg, #bcbcbc, #c6c6c6);
+}
+
+.inventoryHint {
+  margin: -5px 0 9px;
+  color: #555;
+  font-family: var(--font-body);
+  font-size: 10px;
 }
 
 .slots {

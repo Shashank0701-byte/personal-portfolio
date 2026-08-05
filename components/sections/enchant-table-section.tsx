@@ -300,8 +300,8 @@ export function EnchantTableSection() {
                           }`}
                           onClick={() => setSelectedId(project.id)}
                         >
-                          <span className={styles.lvl} style={{ color: project.accentColor }}>
-                            {index + 1}
+                          <span className={styles.lvl}>
+                            {String(index + 1).padStart(2, '0')}
                           </span>
                           <span className={styles.rowIcon} aria-hidden="true">
                             {PROJECT_ICONS[project.id] ?? '📦'}
@@ -315,8 +315,8 @@ export function EnchantTableSection() {
                               {project.stack.slice(0, 2).join(' · ')}
                             </span>
                           </span>
-                          <span className={styles.cost} style={{ color: project.accentColor }}>
-                            {project.stack.length}
+                          <span className={styles.cost}>
+                            {project.stack.length} <span className={styles.costLabel}>tech</span>
                           </span>
                           <span className={styles.tip} aria-hidden="true">
                             {project.headline}
@@ -346,6 +346,19 @@ export function EnchantTableSection() {
 
                   <p className={styles.sectionLabel}>The Trade-off</p>
                   <div className={styles.dBlock}>{selected.tradeoff}</div>
+
+                  {selected.engineeringNotes.length > 0 && (
+                    <>
+                      <p className={styles.sectionLabel}>Engineering Notes</p>
+                      <ul className={styles.notes}>
+                        {selected.engineeringNotes.map((note) => (
+                          <li key={note} className={styles.note}>
+                            {note}
+                          </li>
+                        ))}
+                      </ul>
+                    </>
+                  )}
 
                   <p className={styles.sectionLabel}>Impact</p>
                   <div className={styles.impact}>
@@ -386,6 +399,7 @@ export function EnchantTableSection() {
 
               <div className={styles.inventory}>
                 <p className={styles.sectionLabel}>Tech Inventory</p>
+                <p className={styles.inventoryHint}>Used across projects</p>
                 <div className={styles.slots}>
                   {techCounts.map(([tech, count]) => {
                     const isActive = activeTech === tech;
@@ -402,7 +416,7 @@ export function EnchantTableSection() {
                           {TECH_ICONS[tech] ?? '🔹'}
                         </span>
                         {tech}
-                        <span className={styles.slotCount}>{count}</span>
+                        <span className={styles.slotCount}>×{count}</span>
                       </button>
                     );
                   })}
