@@ -5,6 +5,7 @@ import { TerminalProvider } from '@/components/site/terminal-context';
 import { TerminalWidget } from '@/components/site/terminal-widget';
 import { OverlayProvider } from '@/components/site/overlay-context';
 import { DebugOverlay } from '@/components/site/debug-overlay';
+import { AdvancementProvider } from '@/components/site/advancement-context';
 import { SITE_NAME, siteUrl } from '@/lib/site-url';
 
 const syne = Syne({
@@ -62,9 +63,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={`${syne.variable} ${mono.variable} ${pixelDisplay.variable} ${pixelBody.variable}`}>
         <OverlayProvider>
           <TerminalProvider>
-            {children}
-            <TerminalWidget />
-            <DebugOverlay />
+            <AdvancementProvider>
+              {children}
+              <TerminalWidget />
+              <DebugOverlay />
+            </AdvancementProvider>
           </TerminalProvider>
         </OverlayProvider>
       </body>

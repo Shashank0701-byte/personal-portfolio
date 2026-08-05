@@ -7,11 +7,13 @@ import { QuestLogSection } from '@/components/sections/quest-log-section';
 import { WorkbenchSection } from '@/components/sections/workbench-section';
 import { Navigation } from '@/components/site/navigation';
 import { CustomCursor } from '@/components/site/custom-cursor';
+import { AdvancementTrigger } from '@/components/site/advancement-trigger';
 
 export default function HomePage() {
   return (
     <>
       <CustomCursor />
+      <AdvancementTrigger />
       <Navigation />
       <main className="relative z-10">
         <HeroSection />

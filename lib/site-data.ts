@@ -1,3 +1,18 @@
+/**
+ * Every section on the page, in DOM order — the source of truth for anything
+ * that counts or locates sections. Deliberately separate from `navLinks`, which
+ * omits Experience and so undercounts by one.
+ */
+export const pageSections = [
+  'home',
+  'about',
+  'experience',
+  'projects',
+  'workbench',
+  'quest-log',
+  'contact',
+] as const;
+
 export const navLinks = [
   { label: 'Home', href: '#home' },
   { label: 'About', href: '#about' },

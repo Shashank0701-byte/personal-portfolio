@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { navLinks } from '@/lib/site-data';
+import { pageSections } from '@/lib/site-data';
 
 /**
  * Minecraft's F3 debug screen, pointed at this site instead of a world.
@@ -35,7 +35,9 @@ interface ClientStats {
   section: string;
 }
 
-const SECTION_IDS = navLinks.map((l) => l.href.replace('#', ''));
+// Derived from the page, not the nav — the nav has no Experience entry, so the
+// biome readout used to go blank while scrolling through that section.
+const SECTION_IDS = pageSections;
 
 function currentSection(): string {
   if (typeof document === 'undefined') return '—';

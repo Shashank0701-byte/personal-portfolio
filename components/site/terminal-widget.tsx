@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Terminal, X, Maximize2, Minimize2 } from 'lucide-react';
 import React, { useState, useRef, useEffect } from 'react';
 import { useTerminal } from './terminal-context';
+import { useAdvancement } from './advancement-context';
 
 type HistoryItem = {
   id: string;
@@ -46,6 +47,7 @@ const CoreXBootSequence = () => {
 
 export function TerminalWidget() {
   const { isOpen, closeTerminal } = useTerminal();
+  const { resetAdvancements } = useAdvancement();
   const [isExpanded, setIsExpanded] = useState(false);
   const [input, setInput] = useState('');
   const [history, setHistory] = useState<HistoryItem[]>([
@@ -98,6 +100,7 @@ export function TerminalWidget() {
             <span><strong className="text-green-400">experience</strong> - My professional experience</span>
             <span><strong className="text-green-400">contact</strong>    - Contact information</span>
             <span><strong className="text-green-400">clear</strong>      - Clear the terminal screen</span>
+            <span><strong className="text-green-400">advancements</strong> - Reset earned advancements and replay them</span>
           </div>
         );
         break;
@@ -147,6 +150,12 @@ export function TerminalWidget() {
           </div>
         );
         break;
+      case 'advancements':
+      case 'advancements reset':
+        // Clears persisted progress and reloads, so they fire again from the top.
+        output = 'Clearing earned advancements and reloading…';
+        setTimeout(resetAdvancements, 600);
+        break;
       case 'clear':
         setHistory([]);
         setInput('');
@@ -156,7 +165,7 @@ export function TerminalWidget() {
         break;
       case 'cat resume.pdf':
         output = (
-          <a href="/Shashank%27s%20CV.pdf" target="_blank" rel="noopener noreferrer" className="text-green-400 hover:underline inline-block border border-green-400 px-2 py-1 mt-1">
+          <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" className="text-green-400 hover:underline inline-block border border-green-400 px-2 py-1 mt-1">
             [📄 Download Shashank_CV.pdf]
           </a>
         );
