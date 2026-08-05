@@ -1,16 +1,18 @@
 'use client';
 
-import { useRef } from 'react';
-import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
-import { AlertTriangle, Feather, Gem, MessageSquare, Trophy } from 'lucide-react';
+import { useCallback, useRef, useState } from 'react';
+import Image from 'next/image';
+import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
+import { AlertTriangle, Feather, Gem, MessageSquare, Trophy, Wrench } from 'lucide-react';
 import { questLog } from '@/lib/site-data';
 import { WordReveal } from '@/components/ui/word-reveal';
-import type { QuestLogCallout } from '@/lib/site-data';
+import type { QuestLogCallout, QuestLogPhoto } from '@/lib/site-data';
 import styles from './quest-log.module.css';
 
 const CALLOUT_CLASS: Record<QuestLogCallout['tone'], string> = {
   wrong: styles.calloutWrong,
   miss: styles.calloutMiss,
+  fix: styles.calloutFix,
   result: styles.calloutResult,
   placeholder: styles.calloutPlaceholder,
 };
@@ -18,6 +20,7 @@ const CALLOUT_CLASS: Record<QuestLogCallout['tone'], string> = {
 const CALLOUT_ICON: Record<QuestLogCallout['tone'], typeof AlertTriangle> = {
   wrong: AlertTriangle,
   miss: MessageSquare,
+  fix: Wrench,
   result: Trophy,
   placeholder: Feather,
 };
@@ -28,6 +31,136 @@ const SPARKLE_OFFSETS = [
   { x: 14, y: -14 },
   { x: 4, y: 16 },
 ];
+
+// The photo slot is an inventory slot; the thumbnails under it are a hotbar. Same
+// grammar the rest of the section already speaks — so switching photos is "equipping"
+// one: click a slot, arrow through them, or press its number key like in-game.
+const slideVariants = {
+  enter: (dir: number) => ({ x: dir > 0 ? '52%' : '-52%', opacity: 0, scale: 0.97 }),
+  center: { x: '0%', opacity: 1, scale: 1 },
+  exit: (dir: number) => ({ x: dir > 0 ? '-52%' : '52%', opacity: 0, scale: 0.97 }),
+};
+
+const SWIPE_THRESHOLD = 44;
+
+function PhotoSlot({ photos, entryId }: { photos: QuestLogPhoto[]; entryId: string }) {
+  const shouldReduceMotion = useReducedMotion();
+  const [[index, direction], setSlot] = useState<[number, number]>([0, 0]);
+
+  const equip = useCallback(
+    (next: number, dir: number) => {
+      const wrapped = (next + photos.length) % photos.length;
+      setSlot(([current]) => (wrapped === current ? [current, dir] : [wrapped, dir]));
+    },
+    [photos.length],
+  );
+
+  const onKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === 'ArrowRight') {
+      event.preventDefault();
+      equip(index + 1, 1);
+    } else if (event.key === 'ArrowLeft') {
+      event.preventDefault();
+      equip(index - 1, -1);
+    } else if (/^[1-9]$/.test(event.key)) {
+      const slot = Number(event.key) - 1;
+      if (slot < photos.length) {
+        event.preventDefault();
+        equip(slot, slot > index ? 1 : -1);
+      }
+    }
+  };
+
+  const active = photos[index];
+
+  return (
+    <div className={styles.photoSlot}>
+      <div
+        className={styles.frame}
+        tabIndex={0}
+        onKeyDown={onKeyDown}
+        role="group"
+        aria-roledescription="carousel"
+        aria-label={`${photos.length} photos — arrow keys to browse`}
+      >
+        <AnimatePresence initial={false} custom={direction}>
+          <motion.div
+            key={index}
+            className={styles.slide}
+            custom={direction}
+            variants={shouldReduceMotion ? undefined : slideVariants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={{ duration: 0.42, ease: [0.25, 0.46, 0.45, 0.94] }}
+            drag="x"
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={0.16}
+            onDragEnd={(_, info) => {
+              if (info.offset.x < -SWIPE_THRESHOLD) equip(index + 1, 1);
+              else if (info.offset.x > SWIPE_THRESHOLD) equip(index - 1, -1);
+            }}
+          >
+            <Image
+              src={active.src}
+              alt={active.alt}
+              fill
+              draggable={false}
+              sizes="(max-width: 640px) 100vw, 240px"
+              className={styles.slideImg}
+              style={{ objectPosition: active.focus ?? 'center' }}
+            />
+          </motion.div>
+        </AnimatePresence>
+        {/* Stack count, bottom-right of the slot — where an item's quantity sits. */}
+        <span className={styles.stackCount} aria-hidden="true">
+          {index + 1}/{photos.length}
+        </span>
+      </div>
+
+      <div className={styles.hotbar}>
+        {photos.map((photo, i) => (
+          <button
+            key={photo.src}
+            type="button"
+            className={`${styles.slot}${i === index ? ` ${styles.slotActive}` : ''}`}
+            onClick={() => equip(i, i > index ? 1 : -1)}
+            aria-label={`Photo ${i + 1}: ${photo.caption}`}
+            aria-current={i === index}
+          >
+            <span className={styles.slotFace}>
+              <Image
+                src={photo.src}
+                alt=""
+                fill
+                draggable={false}
+                sizes="44px"
+                className={styles.slotImg}
+                style={{ objectPosition: photo.focus ?? 'center' }}
+              />
+            </span>
+            {i === index && (
+              <motion.span
+                layoutId={`${entryId}-slot-selector`}
+                className={styles.selector}
+                transition={
+                  shouldReduceMotion
+                    ? { duration: 0 }
+                    : { type: 'spring', stiffness: 520, damping: 36 }
+                }
+                aria-hidden="true"
+              />
+            )}
+          </button>
+        ))}
+      </div>
+
+      <p className={styles.caption} aria-live="polite">
+        {active.caption}
+      </p>
+    </div>
+  );
+}
 
 function QuestEntry({ entry, index }: { entry: (typeof questLog)[number]; index: number }) {
   const shouldReduceMotion = useReducedMotion();
@@ -80,12 +213,16 @@ function QuestEntry({ entry, index }: { entry: (typeof questLog)[number]; index:
       <h3 className="text-2xl font-bold text-[var(--text-1)]">{entry.headline}</h3>
 
       <div className={`${styles.bodyGrid} mt-3`}>
-        <div className={styles.mediaSlot}>
-          <span className={styles.mediaIcon} aria-hidden="true">
-            {entry.media.kind === 'video' ? '🎞️' : '🖼️'}
-          </span>
-          <span className={styles.mediaLabel}>{entry.media.placeholderLabel}</span>
-        </div>
+        {entry.media.photos?.length ? (
+          <PhotoSlot photos={entry.media.photos} entryId={entry.id} />
+        ) : (
+          <div className={styles.mediaSlot}>
+            <span className={styles.mediaIcon} aria-hidden="true">
+              {entry.media.kind === 'video' ? '🎞️' : '🖼️'}
+            </span>
+            <span className={styles.mediaLabel}>{entry.media.placeholderLabel}</span>
+          </div>
+        )}
         <p className={styles.desc}>{entry.description}</p>
       </div>
 

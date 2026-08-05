@@ -5,11 +5,19 @@ import { ArrowRight, Download } from 'lucide-react';
 import { useRef, useState, useEffect } from 'react';
 import { useTypewriter } from '@/hooks/useTypewriter';
 import { GhostText } from '@/components/scene/GhostText';
+import { pageSections } from '@/lib/site-data';
 
-const HEADLINE = "Hello there, I'm a backend engineer and AI systems builder.";
+// Headline and description are written as a pair so neither restates the other —
+// the previous version opened both with "backend engineer", spending the most
+// valuable line on the page on something the next line already said.
+const HEADLINE = 'Backend engineer building systems that hold under load.';
 const HEADLINE_WORDS = HEADLINE.split(' ');
-const DESC_WORDS = 'Backend engineer focused on distributed systems, AI tooling, and production infrastructure. I build software, validate it under load, and measure how it behaves in production-like environments.'.split(' ');
-const TAGS = ['FastAPI', 'Neo4j', 'Docker', 'AWS', 'React'];
+const DESC_WORDS =
+  'Bengaluru. Production APIs, graph-based security tooling, and measured results.'.split(
+    ' ',
+  );
+
+const TAGS = ['FastAPI', 'Neo4j', 'Docker', 'AWS'];
 
 /* ─── Image preload ─────────────────────────────────────────────────────────── */
 function useImagePreload(srcs: string[]) {
@@ -274,7 +282,7 @@ export function HeroSection() {
             >
               <CTAButton href="#projects" label="View Work" />
               <a
-                href="/Shashank's Resume (5).pdf"
+                href="/resume.pdf"
                 download="Shashank_Chakraborty_Resume.pdf"
                 className="mono group inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.14em] text-[var(--text-2)] transition-colors hover:text-[var(--text-1)]"
               >
@@ -283,6 +291,23 @@ export function HeroSection() {
                 <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
               </a>
             </motion.div>
+
+            {/* Availability — promoted out of the Contact section, which sits seven
+                sections down. It's the first thing anyone evaluating him needs. */}
+            <motion.p
+              className="mono flex flex-wrap items-center gap-x-2.5 gap-y-1 pt-1 text-[11px] uppercase tracking-[0.14em] text-[var(--text-3)]"
+              initial={{ opacity: 0, y: 10 }}
+              animate={revealed ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, delay: 2.3 }}
+            >
+              <span className="relative flex h-1.5 w-1.5" aria-hidden="true">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--live,#3f7a3a)] opacity-70" />
+                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[var(--live,#3f7a3a)]" />
+              </span>
+              Open to full-time backend roles
+              <span className="text-[var(--border-h)]">·</span>
+              Bengaluru, IN
+            </motion.p>
 
             {/* Scroll hint */}
             <motion.div
@@ -294,7 +319,7 @@ export function HeroSection() {
               <div className="scroll-shimmer h-px w-16 bg-[var(--border-h)]" />
               <div className="mono flex w-full max-w-xs items-center justify-between text-[10px] uppercase tracking-[0.18em] text-[var(--text-3)]">
                 <span>Scroll to explore</span>
-                <span>01 / 05</span>
+                <span>01 / {String(pageSections.length).padStart(2, '0')}</span>
               </div>
             </motion.div>
 

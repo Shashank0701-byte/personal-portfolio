@@ -17,9 +17,53 @@
   --ink: #1b1b1b;
   --font-display: var(--font-pixel-display), monospace;
   --font-body: var(--font-pixel-body), sans-serif;
+
+  /* Chamber interior. Deliberately the tan wall's own hue dropped to near-black
+     rather than a violet: a cool slab on warm tan reads as a pasted-in panel,
+     while warm shadow reads as the same wall unlit. Purple is light in this
+     section, never material — it only appears where the book casts it. */
+  --chamber-bg: #1a1510;
+  --chamber-deep: #0c0906;
+  --chamber-lit: rgba(150, 100, 232, 0.34);
+  --lip-lit: #b8ab94;
+  --lip-shadow: #5e5544;
+  --rune-lit: rgba(178, 142, 255, 0.5);
+  --cta-lit: #c8abff;
 }
 
-/* ── Section wrapper (sits on the site's tan background) ─────────────────── */
+/* ── The chamber ─────────────────────────────────────────────────────────── */
+
+/* Every effect in here is emissive, and emission needs darkness to read — on the
+   section's tan they all resolved to nothing. Rather than darkening the whole
+   band (which would strand #workbench below it), the table sits in a bounded
+   dark aperture.
+
+   The bevel is the oversized version of .slot further down: dark top-left, light
+   bottom-right, which is Minecraft's own convention for a slot pressed INTO a
+   panel. At room scale that reads as a doorway in the wall instead of a card
+   floating on top of it. Square corners for the same reason — nothing in this
+   vocabulary is rounded. */
+.chamber {
+  position: relative;
+  overflow: hidden;
+  padding: 2.75rem 1.5rem 2rem;
+  border: 0;
+  /* One light source: the book pools light at the centre and falls off fast.
+     Kept tight on purpose — widen it and the purple stops being a glow and
+     becomes the room's colour again. */
+  background:
+    radial-gradient(ellipse 27% 31% at 50% 43%, var(--chamber-lit), transparent 72%),
+    radial-gradient(ellipse 85% 95% at 50% 45%, var(--chamber-bg), var(--chamber-deep) 92%);
+  /* Stepped aperture instead of a hard outline: interior → shadowed inner lip →
+     lit outer lip → wall. Both lips are tan-family, so the cut belongs to the
+     wall it's cut into and there is no cool/warm collision at the edge. */
+  box-shadow:
+    inset 0 0 80px 28px rgba(0, 0, 0, 0.55),
+    inset 4px 4px 0 rgba(0, 0, 0, 0.38),
+    0 0 0 4px var(--lip-shadow),
+    0 0 0 9px var(--lip-lit),
+    0 5px 14px 9px rgba(58, 44, 26, 0.16);
+}
 
 .runeField {
   position: absolute;
@@ -31,8 +75,9 @@
 .rune {
   position: absolute;
   font-family: var(--font-body);
-  color: rgba(90, 58, 148, 0.22);
-  font-size: 15px;
+  color: var(--rune-lit);
+  text-shadow: 0 0 10px rgba(150, 100, 240, 0.45);
+  font-size: 14px;
   letter-spacing: 2px;
   user-select: none;
   animation: drift 9s ease-in-out infinite;
@@ -43,27 +88,27 @@
   50% { transform: translateY(-10px); opacity: 0.7; }
 }
 
-/* `isolation` + a real tan background make this the blend group for .tableImg.
-   Without them the image's multiply resolves against the transparent backdrop
-   of the `relative z-10` wrapper further up and does nothing at all.
-   The padding keeps tan under the image when :hover nudges and scales it, so
-   no white corner can peek out past the blended area. */
 .tableWrap {
   position: relative;
   display: inline-block;
   cursor: pointer;
   border: 0;
-  background: var(--hero-bg);
-  padding: 20px;
-  isolation: isolate;
+  background: transparent;
+  padding: 0;
 }
 
 .tableGlow {
   position: absolute;
-  inset: -30px;
-  background: radial-gradient(circle, rgba(122, 82, 196, 0.3), transparent 70%);
-  filter: blur(6px);
+  inset: -20% -14%;
+  background: radial-gradient(
+    circle at 50% 42%,
+    rgba(176, 130, 255, 0.5),
+    rgba(122, 82, 196, 0.16) 45%,
+    transparent 72%
+  );
+  filter: blur(10px);
   border-radius: 50%;
+  pointer-events: none;
   animation: pulse 3.2s ease-in-out infinite;
 }
 
@@ -72,36 +117,37 @@
   50% { opacity: 0.9; transform: scale(1.05); }
 }
 
-/* The source render sits on a flat light-grey studio backdrop. Lifting it to
-   near-white and compositing with multiply lets that backdrop take on the
-   section's tan exactly (white x anything = anything), so the image stops
-   reading as a pasted-in rectangle. A drop-shadow here would redraw that
-   rectangle, so depth comes from .tableGlow behind it instead. */
+/* /enchanting-table-nobg.png is keyed off its studio backdrop, so the old
+   multiply compositing is gone — multiply against the chamber would have
+   crushed the table to black anyway. Real alpha also means a drop-shadow is
+   finally safe: it follows the silhouette instead of redrawing the backdrop
+   rectangle, which is what grounds the table on the chamber floor. */
 .tableImg {
   position: relative;
-  width: min(340px, 70vw);
+  display: block;
+  width: min(300px, 62vw);
+  height: auto;
   image-rendering: -webkit-optimize-contrast;
-  mix-blend-mode: multiply;
-  filter: brightness(1.07);
+  filter: drop-shadow(0 18px 20px rgba(0, 0, 0, 0.55));
   transition: transform 0.25s ease, filter 0.25s ease;
 }
 
 .tableWrap:hover .tableImg,
 .tableWrap:focus-visible .tableImg {
   transform: translateY(-6px) scale(1.02);
-  filter: brightness(1.13);
+  filter: drop-shadow(0 26px 26px rgba(0, 0, 0, 0.5)) brightness(1.08);
 }
 
 .tableWrap:focus-visible {
-  outline: 3px solid var(--purple-1);
+  outline: 3px solid var(--gold);
   outline-offset: 10px;
-  border-radius: 14px;
 }
 
 .sparkle {
   position: absolute;
-  color: var(--gold-dark);
-  font-size: 14px;
+  color: var(--gold);
+  text-shadow: 0 0 8px rgba(246, 212, 60, 0.65);
+  font-size: 13px;
   pointer-events: none;
   animation: twinkle 1.8s ease-in-out infinite;
 }
@@ -111,11 +157,15 @@
   50% { opacity: 1; transform: scale(1.1) rotate(20deg); }
 }
 
+/* Lives inside the chamber: the instruction belongs to the thing it acts on,
+   and --purple-1 only clears contrast against the dark interior. */
 .ctaHint {
+  position: relative;
   font-family: var(--font-display);
   font-size: 11px;
   letter-spacing: 2px;
-  color: var(--purple-1);
+  color: var(--cta-lit);
+  text-shadow: 0 0 12px rgba(160, 110, 255, 0.5);
   animation: blinkHint 1.6s steps(2) infinite;
 }
 

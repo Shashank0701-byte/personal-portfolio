@@ -11,7 +11,14 @@ services:
       - NODE_ENV=production
       - NEXT_TELEMETRY_DISABLED=1
     restart: unless-stopped
-    # Read-only root filesystem — nothing should write at runtime
+    # Read-only root filesystem. Verified safe: next/image falls back to in-memory
+    # caching when .next/cache isn't writable, and nothing else writes at runtime.
     read_only: true
     tmpfs:
       - /tmp
+    healthcheck:
+      test: ['CMD', 'node', '-e', "require('http').get('http://127.0.0.1:3000/',r=>process.exit(r.statusCode<400?0:1)).on('error',()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      start_period: 15s
+      retries: 3

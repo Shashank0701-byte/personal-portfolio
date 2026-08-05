@@ -1,0 +1,228 @@
+/* Security-console palette. Deliberately not Minecraft: the portfolio's theme is
+   the wrapper, but the tool itself is the serious artifact and should read that way. */
+
+.shell {
+  --bg: #0a0a0f;
+  --panel: rgba(255, 255, 255, 0.035);
+  --line: rgba(255, 255, 255, 0.1);
+  --dim: rgba(255, 255, 255, 0.34);
+  --text: rgba(255, 255, 255, 0.82);
+  --user: #7dd3fc;
+  --role: #a78bfa;
+  --safe: #64748b;
+  --warn: #fbbf24;
+  --danger: #f87171;
+}
+
+/* ─── Graph ──────────────────────────────────────────────────────────────── */
+
+/* Below roughly a tablet the graph would shrink until the node labels are
+   unreadable, so it scrolls sideways at a legible size instead. The page body
+   itself never scrolls horizontally — only this container does. */
+.canvasScroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+.canvas {
+  width: 100%;
+  height: auto;
+  min-width: 720px;
+  overflow: visible;
+}
+
+@media (min-width: 1024px) {
+  .canvas {
+    min-width: 0;
+  }
+}
+
+.edge {
+  fill: none;
+  stroke-width: 1.5;
+  transition:
+    stroke-dashoffset 0.42s ease-out,
+    stroke 0.3s ease,
+    opacity 0.3s ease;
+}
+
+.edgeGhost {
+  stroke: rgba(255, 255, 255, 0.55);
+}
+
+.edgeAssigned {
+  stroke: var(--safe);
+}
+.edgeAssume {
+  stroke: var(--role);
+}
+.edgeAccess {
+  stroke: var(--warn);
+}
+
+.edgeHot {
+  stroke: var(--danger);
+  stroke-width: 2.4;
+  filter: drop-shadow(0 0 6px rgba(248, 113, 113, 0.55));
+}
+
+.nodeBox {
+  fill: rgba(255, 255, 255, 0.02);
+  stroke: var(--line);
+  stroke-width: 1.25;
+  transition:
+    fill 0.3s ease,
+    stroke 0.3s ease;
+}
+
+.nodeGroup {
+  opacity: 0.26;
+  transition: opacity 0.32s ease;
+}
+
+.nodeVisited {
+  opacity: 1;
+}
+
+.nodeVisited .nodeBox {
+  fill: rgba(255, 255, 255, 0.05);
+}
+
+.nodeUser .nodeBox {
+  stroke: var(--user);
+}
+.nodeRole .nodeBox {
+  stroke: var(--role);
+}
+.nodeResource .nodeBox {
+  stroke: var(--warn);
+}
+
+.nodeDeadEnd {
+  opacity: 0.4;
+}
+.nodeDeadEnd .nodeBox {
+  stroke-dasharray: 3 3;
+}
+
+.nodeHot .nodeBox {
+  fill: rgba(248, 113, 113, 0.12);
+  stroke: var(--danger);
+  stroke-width: 2;
+}
+
+.nodeFrontier .nodeBox {
+  animation: frontierPulse 1.1s ease-out infinite;
+}
+
+@keyframes frontierPulse {
+  0% {
+    stroke-opacity: 1;
+  }
+  55% {
+    stroke-opacity: 0.35;
+  }
+  100% {
+    stroke-opacity: 1;
+  }
+}
+
+.nodeLabel {
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  fill: var(--text);
+  dominant-baseline: middle;
+}
+
+.nodeKind {
+  font-family: var(--font-mono), monospace;
+  font-size: 8px;
+  letter-spacing: 0.12em;
+  fill: var(--dim);
+  dominant-baseline: middle;
+}
+
+.sensBadge {
+  font-family: var(--font-mono), monospace;
+  font-size: 9px;
+  dominant-baseline: middle;
+  text-anchor: end;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.clickable:focus-visible {
+  outline: none;
+}
+
+.clickable:focus-visible .nodeBox {
+  stroke: #fff;
+  stroke-width: 2;
+}
+
+/* ─── Trace panel ────────────────────────────────────────────────────────── */
+
+.trace {
+  font-family: var(--font-mono), monospace;
+  font-size: 11.5px;
+  line-height: 1.75;
+  color: var(--text);
+}
+
+.tracePrompt {
+  color: var(--role);
+}
+
+.traceHop {
+  display: grid;
+  grid-template-columns: 46px 74px 1fr;
+  gap: 8px;
+  color: var(--dim);
+}
+
+.traceHop strong {
+  font-weight: 400;
+  color: var(--text);
+}
+
+.traceRel {
+  color: var(--role);
+}
+
+.traceStat {
+  display: grid;
+  grid-template-columns: 118px 1fr;
+  gap: 8px;
+  color: var(--dim);
+}
+
+.traceStat span:last-child {
+  color: var(--text);
+}
+
+.levelCritical {
+  color: var(--danger);
+}
+.levelHigh {
+  color: var(--warn);
+}
+.levelMedium {
+  color: var(--user);
+}
+.levelLow {
+  color: #4ade80;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .edge,
+  .nodeGroup,
+  .nodeBox {
+    transition: none;
+  }
+  .nodeFrontier .nodeBox {
+    animation: none;
+  }
+}

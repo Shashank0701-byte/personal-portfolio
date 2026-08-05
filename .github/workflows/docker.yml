@@ -1,0 +1,100 @@
+name: Docker
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  # On PRs the image is only rebuilt when something that affects it changed —
+  # no point rebuilding a container because a CSS file moved.
+  pull_request:
+    paths:
+      - 'Dockerfile'
+      - '.dockerignore'
+      - 'docker-compose.yml'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'next.config.mjs'
+      - '.github/workflows/docker.yml'
+
+concurrency:
+  group: docker-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  image:
+    name: Build, smoke test, publish
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Derive image tags
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository }}
+          tags: |
+            type=ref,event=branch
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=sha,format=short
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      # Built into the local daemon first so it can be run before it's published.
+      # A published image that doesn't boot is worse than no image.
+      - name: Build
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          load: true
+          tags: portfolio:ci
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Smoke test
+        run: |
+          docker run -d --name portfolio-ci -p 3000:3000 portfolio:ci
+          for attempt in $(seq 1 30); do
+            if curl -fsS http://localhost:3000 > /dev/null; then
+              echo "Container served a response after ${attempt} attempt(s)."
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "::error::Container never served a response on :3000"
+          exit 1
+
+      - name: Container logs
+        if: failure()
+        run: docker logs portfolio-ci
+
+      - name: Stop container
+        if: always()
+        run: docker rm -f portfolio-ci || true
+
+      - name: Log in to GHCR
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Re-runs against a warm layer cache, so this is close to instant.
+      - name: Publish
+        if: github.event_name != 'pull_request'
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
