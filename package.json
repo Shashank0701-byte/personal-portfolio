@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@react-three/drei": "^9.122.0",
-    "@react-three/fiber": "^8.18.0",
+    "@react-three/fiber": "^9.7.0",
     "@tailwindcss/postcss": "^4.1.18",
     "@types/three": "^0.176.0",
     "autoprefixer": "^10.4.23",
