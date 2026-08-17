@@ -1,0 +1,63 @@
+/* ── Sidebar wrapper ───────────────────────────────────────────── */
+.sidebar {
+  position: fixed;
+  right: 1.5rem;
+  z-index: 50;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  transform: translateY(-50%); /* centres the sprite column on top: yPosition vh */
+  pointer-events: none;        /* children re-enable where needed */
+}
+
+/* ── Bob — translateY lives on this wrapper ────────────────────── */
+.bobWrapper {
+  animation: allay-bob 1.2s ease-in-out infinite;
+}
+
+@keyframes allay-bob {
+  0%, 100% { transform: translateY(-4px); }
+  50%       { transform: translateY(4px); }
+}
+
+/* ── Sprite — flap and spin live here (separate from bob) ──────── */
+.sprite {
+  width: 32px;
+  height: 32px;
+  background-image: url('/allay/allay-sprite.png');
+  background-size: auto 100%;
+  image-rendering: pixelated;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.spriteIdle {
+  animation: allay-flap 0.6s steps(6) infinite;
+}
+
+.spriteHover {
+  animation: allay-flap 0.375s steps(6) infinite;
+}
+
+/* Spin + faster flap during click */
+.spriteSpin {
+  animation: allay-flap 0.375s steps(6) infinite,
+             allay-spin 0.4s ease-in-out forwards;
+}
+
+@keyframes allay-flap {
+  from { background-position-x: 0px; }
+  to   { background-position-x: -192px; }
+}
+
+@keyframes allay-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ── Item ──────────────────────────────────────────────────────── */
+.item {
+  width: 24px;
+  height: 24px;
+  image-rendering: pixelated;
+}

@@ -412,3 +412,14 @@ export const workbench: WorkbenchItem[] = [
     href: 'https://github.com/Shashank0701-byte/AI-Product-Intelligence-System',
   },
 ];
+
+/** Maps each page section ID to the item filename stem the Allay carries. */
+export const SECTION_ITEMS: Record<string, string> = {
+  home:            'diamond',
+  about:           'book',
+  experience:      'compass',
+  projects:        'nether-star',
+  workbench:       'crafting-table',
+  'quest-log':     'map',
+  contact:         'ender-pearl',
+};
