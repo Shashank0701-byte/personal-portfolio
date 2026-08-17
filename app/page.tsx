@@ -8,6 +8,7 @@ import { WorkbenchSection } from '@/components/sections/workbench-section';
 import { Navigation } from '@/components/site/navigation';
 import { CustomCursor } from '@/components/site/custom-cursor';
 import { AdvancementTrigger } from '@/components/site/advancement-trigger';
+import { AllaySidebar } from '@/components/site/allay-companion';
 
 export default function HomePage() {
   return (
@@ -15,6 +16,7 @@ export default function HomePage() {
       <CustomCursor />
       <AdvancementTrigger />
       <Navigation />
+      <AllaySidebar />
       <main className="relative z-10">
         <HeroSection />
         <AboutSection />
