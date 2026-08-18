@@ -120,11 +120,12 @@ export function AllaySidebar() {
       className={`hidden lg:flex ${styles.sidebar}`}
       style={{ top: `${yPosition}vh` }}
     >
-      <AnimatePresence>
-        {bubbleText && <SpeechBubble key={bubbleText} text={bubbleText} />}
-      </AnimatePresence>
       <AllayItem itemId={itemId} isDropping={isDropping} />
-      <AllaySprite
+      <div className={styles.spriteAnchor}>
+        <AnimatePresence>
+          {bubbleText && <SpeechBubble key={bubbleText} text={bubbleText} />}
+        </AnimatePresence>
+        <AllaySprite
         isHovered={isHovered}
         isDropping={isDropping}
         isLeaning={isLeaning}
@@ -133,6 +134,7 @@ export function AllaySidebar() {
         onMouseLeave={handleMouseLeave}
         onClick={handleClick}
       />
+      </div>
     </div>
   );
 }

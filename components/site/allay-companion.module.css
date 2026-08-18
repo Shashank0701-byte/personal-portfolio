@@ -63,34 +63,45 @@
 }
 
 /* ── Speech bubble ─────────────────────────────────────────────── */
+/* Anchored to .spriteAnchor (position:relative). Sits to the left of the Allay. */
 .bubble {
   position: absolute;
-  bottom: calc(100% + 10px);
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(0, 0, 0, 0.8);
+  right: calc(100% + 12px); /* to the left of the sprite anchor */
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.85);
   border: 1px solid var(--accent-a);
   border-radius: 4px;
   padding: 6px 10px;
-  max-width: 160px;
+  width: max-content;
+  max-width: 140px;
   color: #fff;
   font-family: var(--font-pixel-body);
   font-size: 10px;
-  line-height: 1.5;
+  line-height: 1.6;
   text-align: center;
   white-space: normal;
   pointer-events: none;
   z-index: 10;
 }
 
+/* Right-pointing tail toward the Allay */
 .bubble::after {
   content: '';
   position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
+  top: 50%;
+  left: 100%;
+  transform: translateY(-50%);
   border: 5px solid transparent;
-  border-top-color: var(--accent-a);
+  border-left-color: var(--accent-a);
+}
+
+/* Wrapper that gives the bubble an anchor point */
+.spriteAnchor {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 /* ── Lean (applied to sprite div — inner element) ──────────────── */
