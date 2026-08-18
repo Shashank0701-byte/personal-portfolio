@@ -413,6 +413,23 @@ export const workbench: WorkbenchItem[] = [
   },
 ];
 
+export const SECTION_SPEECH: Record<string, string> = {
+  home:           'hi!! pick me up!! 🎵',
+  about:          'ooh a book! read me!',
+  experience:     'i know the way! 🧭',
+  projects:       'so many stars... ✨',
+  workbench:      'craft something! 🪵',
+  'quest-log':    'adventure awaits! 🗺️',
+  contact:        'throw the pearl!! 🌌',
+};
+
+export const PROJECT_SPEECH: Record<string, string> = {
+  'systemcraft':                '350 req/s?? woah!! 🤯',
+  'shadow-permission-analyzer': 'spooky graph... 👀',
+  'interview-prep-ai':          'i can help practice! 🎤',
+  'docuflow':                   'async go brrr 🚀',
+};
+
 /** Maps each page section ID to the item filename stem the Allay carries. */
 export const SECTION_ITEMS: Record<string, string> = {
   home:            'diamond',
