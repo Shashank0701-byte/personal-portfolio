@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { AnimatePresence, motion } from 'framer-motion';
 import { projects } from '@/lib/site-data';
 import { useOverlay } from '@/components/site/overlay-context';
+import { useAllayContext } from '@/components/site/allay-context';
 import { WordReveal } from '@/components/ui/word-reveal';
 import styles from './enchant-table.module.css';
 
@@ -99,6 +100,7 @@ export function EnchantTableSection() {
 
   // Lock body scroll and wire Escape while the GUI is open
   const { setOverlayOpen } = useOverlay();
+  const { setHoveredProject } = useAllayContext();
 
   useEffect(() => {
     setOverlayOpen(open);
@@ -299,6 +301,8 @@ export function EnchantTableSection() {
                             isHidden ? ` ${styles.rowHidden}` : ''
                           }`}
                           onClick={() => setSelectedId(project.id)}
+                          onMouseEnter={() => setHoveredProject(project.id)}
+                          onMouseLeave={() => setHoveredProject(null)}
                         >
                           <span className={styles.lvl}>
                             {String(index + 1).padStart(2, '0')}

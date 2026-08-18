@@ -9,10 +9,11 @@ import { Navigation } from '@/components/site/navigation';
 import { CustomCursor } from '@/components/site/custom-cursor';
 import { AdvancementTrigger } from '@/components/site/advancement-trigger';
 import { AllaySidebar } from '@/components/site/allay-companion';
+import { AllayProvider } from '@/components/site/allay-context';
 
 export default function HomePage() {
   return (
-    <>
+    <AllayProvider>
       <CustomCursor />
       <AdvancementTrigger />
       <Navigation />
@@ -26,6 +27,6 @@ export default function HomePage() {
         <QuestLogSection />
         <ContactSection />
       </main>
-    </>
+    </AllayProvider>
   );
 }
