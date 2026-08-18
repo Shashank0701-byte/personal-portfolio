@@ -5,6 +5,21 @@ import { useAllay } from '@/hooks/useAllay';
 import { SECTION_ITEMS } from '@/lib/site-data';
 import styles from './allay-companion.module.css';
 
+// ── SpeechBubble ───────────────────────────────────────────────────────────
+
+function SpeechBubble({ text }: { text: string }) {
+  return (
+    <motion.div
+      className={styles.bubble}
+      initial={{ opacity: 0, y: 4 }}
+      animate={{ opacity: 1, y: 0, transition: { duration: 0.15 } }}
+      exit={{ opacity: 0, y: 4, transition: { duration: 0.2 } }}
+    >
+      {text}
+    </motion.div>
+  );
+}
+
 // ── AllayItem ──────────────────────────────────────────────────────────────
 
 interface AllayItemProps {
@@ -36,25 +51,41 @@ function AllayItem({ itemId, isDropping }: AllayItemProps) {
 interface AllaySpriteProps {
   isHovered: boolean;
   isDropping: boolean;
+  isLeaning: boolean;
+  isBouncing: boolean;
   onMouseEnter: () => void;
   onMouseLeave: () => void;
   onClick: () => void;
 }
 
-function AllaySprite({ isHovered, isDropping, onMouseEnter, onMouseLeave, onClick }: AllaySpriteProps) {
-  const spriteClass = isDropping
+function AllaySprite({
+  isHovered,
+  isDropping,
+  isLeaning,
+  isBouncing,
+  onMouseEnter,
+  onMouseLeave,
+  onClick,
+}: AllaySpriteProps) {
+  // bobWrapper: handles bob + bounce (outer element)
+  const wrapperClass = isBouncing ? styles.bouncing : styles.bobWrapper;
+
+  // sprite div: handles flap + spin + lean (inner element)
+  const flapClass = isDropping
     ? styles.spriteSpin
-    : isHovered
+    : isHovered || isLeaning
       ? styles.spriteHover
       : styles.spriteIdle;
 
+  const leanClass = isLeaning ? styles.leanLeft : styles.leanNone;
+
   return (
-    <div className={styles.bobWrapper}>
+    <div className={wrapperClass}>
       <div
         role="button"
         aria-label="Allay companion — click to interact"
         tabIndex={0}
-        className={`${styles.sprite} ${spriteClass}`}
+        className={`${styles.sprite} ${flapClass} ${leanClass}`}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
         onClick={onClick}
@@ -74,6 +105,9 @@ export function AllaySidebar() {
     activeSection,
     isHovered,
     isDropping,
+    isBouncing,
+    isLeaning,
+    bubbleText,
     handleMouseEnter,
     handleMouseLeave,
     handleClick,
@@ -86,10 +120,15 @@ export function AllaySidebar() {
       className={`hidden lg:flex ${styles.sidebar}`}
       style={{ top: `${yPosition}vh` }}
     >
+      <AnimatePresence>
+        {bubbleText && <SpeechBubble key={bubbleText} text={bubbleText} />}
+      </AnimatePresence>
       <AllayItem itemId={itemId} isDropping={isDropping} />
       <AllaySprite
         isHovered={isHovered}
         isDropping={isDropping}
+        isLeaning={isLeaning}
+        isBouncing={isBouncing}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         onClick={handleClick}
