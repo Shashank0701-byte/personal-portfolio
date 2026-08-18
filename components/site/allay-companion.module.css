@@ -22,8 +22,8 @@
 
 /* ── Sprite — flap and spin live here (separate from bob) ──────── */
 .sprite {
-  width: 64px;
-  height: 64px;
+  width: 72px;
+  height: 80px;
   background-image: url('/allay/allay-sprite.png');
   background-size: auto 100%;
   image-rendering: pixelated;
@@ -47,7 +47,7 @@
 
 @keyframes allay-flap {
   from { background-position-x: 0px; }
-  to   { background-position-x: -384px; }
+  to   { background-position-x: -432px; }
 }
 
 @keyframes allay-spin {
