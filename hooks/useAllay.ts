@@ -33,9 +33,11 @@ export function useAllay() {
   const bubbleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const hoveredProjectRef = useRef(hoveredProject);
   const activeSectionRef = useRef(activeSection);
+  const isHoveredRef = useRef(isHovered);
 
   useEffect(() => { hoveredProjectRef.current = hoveredProject; }, [hoveredProject]);
   useEffect(() => { activeSectionRef.current = activeSection; }, [activeSection]);
+  useEffect(() => { isHoveredRef.current = isHovered; }, [isHovered]);
 
   const clearBubbleTimer = useCallback(() => {
     if (bubbleTimerRef.current !== null) {
@@ -80,7 +82,18 @@ export function useAllay() {
       const observer = new IntersectionObserver(
         (entries) => {
           for (const entry of entries) {
-            if (entry.isIntersecting) setActiveSection(sectionId);
+            if (entry.isIntersecting && activeSectionRef.current !== sectionId) {
+              activeSectionRef.current = sectionId;
+              setActiveSection(sectionId);
+              if (!isHoveredRef.current && !hoveredProjectRef.current) {
+                clearBubbleTimer();
+                const text = SECTION_SPEECH[sectionId] ?? null;
+                setBubbleText(text);
+                if (text) {
+                  bubbleTimerRef.current = setTimeout(() => setBubbleText(null), BUBBLE_AUTO_DURATION_MS);
+                }
+              }
+            }
           }
         },
         { threshold: 0.4 },
@@ -88,33 +101,14 @@ export function useAllay() {
       observer.observe(el);
       observers.push(observer);
     }
-    return () => observers.forEach((o) => o.disconnect());
-  }, []);
-
-  // Section change → auto-show bubble for 3s (lowest priority — skip if hovered)
-  useEffect(() => {
-    if (isHovered || hoveredProject) return;
-    clearBubbleTimer();
-    const text = SECTION_SPEECH[activeSection] ?? null;
-    setBubbleText(text);
-    if (text) {
-      bubbleTimerRef.current = setTimeout(() => setBubbleText(null), BUBBLE_AUTO_DURATION_MS);
-    }
-    return clearBubbleTimer;
-  }, [activeSection, isHovered, hoveredProject, clearBubbleTimer]);
-
-  // Project hover → show project speech (highest priority)
-  useEffect(() => {
-    if (hoveredProject) {
+    return () => {
+      observers.forEach((o) => o.disconnect());
       clearBubbleTimer();
-      setBubbleText(PROJECT_SPEECH[hoveredProject] ?? null);
-    } else if (!isHovered) {
-      // project un-hovered and allay not hovered → hide bubble
-      setBubbleText(null);
-    }
-  }, [hoveredProject, isHovered, clearBubbleTimer]);
+    };
+  }, [clearBubbleTimer]);
 
   const isLeaning = hoveredProject !== null;
+  const resolvedBubbleText = hoveredProject ? (PROJECT_SPEECH[hoveredProject] ?? null) : bubbleText;
 
   const handleMouseEnter = useCallback(() => {
     setIsHovered(true);
@@ -144,7 +138,7 @@ export function useAllay() {
     isDropping,
     isBouncing,
     isLeaning,
-    bubbleText,
+    bubbleText: resolvedBubbleText,
     handleMouseEnter,
     handleMouseLeave,
     handleClick,
