@@ -1,0 +1,129 @@
+/* ── Sidebar wrapper ───────────────────────────────────────────── */
+.sidebar {
+  position: fixed;
+  right: 1.5rem;
+  z-index: 50;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  transform: translateY(-50%); /* centres the sprite column on top: yPosition vh */
+  pointer-events: none;        /* children re-enable where needed */
+}
+
+/* ── Bob — translateY lives on this wrapper ────────────────────── */
+.bobWrapper {
+  animation: allay-bob 1.2s ease-in-out infinite;
+}
+
+@keyframes allay-bob {
+  0%, 100% { transform: translateY(-4px); }
+  50%       { transform: translateY(4px); }
+}
+
+/* ── Sprite — flap and spin live here (separate from bob) ──────── */
+.sprite {
+  width: 72px;
+  height: 80px;
+  background-image: url('/allay/allay-sprite.png');
+  background-size: auto 100%;
+  image-rendering: pixelated;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.spriteIdle {
+  animation: allay-flap 0.6s steps(6) infinite;
+}
+
+.spriteHover {
+  animation: allay-flap 0.375s steps(6) infinite;
+}
+
+/* Spin + faster flap during click */
+.spriteSpin {
+  animation: allay-flap 0.375s steps(6) infinite,
+             allay-spin 0.4s ease-in-out forwards;
+}
+
+@keyframes allay-flap {
+  from { background-position-x: 0px; }
+  to   { background-position-x: -432px; }
+}
+
+@keyframes allay-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ── Item ──────────────────────────────────────────────────────── */
+.item {
+  width: 32px;
+  height: 32px;
+  image-rendering: pixelated;
+}
+
+/* ── Speech bubble ─────────────────────────────────────────────── */
+/* Anchored to .spriteAnchor (position:relative). Sits to the left of the Allay. */
+.bubble {
+  position: absolute;
+  right: calc(100% + 12px); /* to the left of the sprite anchor */
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.85);
+  border: 1px solid var(--accent-a);
+  border-radius: 4px;
+  padding: 6px 10px;
+  width: max-content;
+  max-width: 140px;
+  color: #fff;
+  font-family: var(--font-pixel-body);
+  font-size: 10px;
+  line-height: 1.6;
+  text-align: center;
+  white-space: normal;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Right-pointing tail toward the Allay */
+.bubble::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  transform: translateY(-50%);
+  border: 5px solid transparent;
+  border-left-color: var(--accent-a);
+}
+
+/* Wrapper that gives the bubble an anchor point */
+.spriteAnchor {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ── Lean (applied to sprite div — inner element) ──────────────── */
+.leanLeft {
+  transform: rotate(-12deg) translateX(-6px);
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.leanNone {
+  transform: rotate(0deg) translateX(0px);
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ── Bounce (applied to bobWrapper — outer element) ────────────── */
+.bouncing {
+  animation: allay-bounce 0.6s ease-out;
+}
+
+@keyframes allay-bounce {
+  0%   { transform: translateY(0px); }
+  30%  { transform: translateY(-12px); }
+  60%  { transform: translateY(-4px); }
+  80%  { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
